@@ -1,0 +1,21 @@
+### Create Notification
+POST http://localhost:8001/api/users/create
+Content-Type: application/json
+
+{
+    "ID": "1",
+    "Name": "Nuevo Usuario",
+    "Email": "nuevo@example.com",
+    "Password": "nuevopassword"
+}
+
+
+### Get Users
+GET  http://localhost:8001/api/users
+
+
+dotnet add package coverlet.msbuild
+
+dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+test/test.csproj
+dotnet test test/test.csproj --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
