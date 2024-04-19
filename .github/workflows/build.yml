@@ -50,5 +50,5 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner begin /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.sonarconfig.path="./sonar-project.properties"
           cd users-microservice 
           dotnet build
-          cd users-microservice
+          cd ..
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
