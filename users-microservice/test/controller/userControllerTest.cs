@@ -24,9 +24,12 @@ public class UserControllerTests
         var user = new UserModel { Name = "Test User", Email = "test@example.com", Password = "password" };
         _mockUserService.Setup(x => x.CreateUser(It.IsAny<UserModel>())).Returns(user);
         var result = _userController.CreateUser(user) as OkObjectResult;
-        Assert.IsNotNull(result);
-        Assert.AreEqual(200, result.StatusCode);
-        Assert.AreEqual(user, result.Value);
+        Assert.That(result, Is.Not.Null);
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.StatusCode, Is.EqualTo(200));
+            Assert.That(result.Value, Is.EqualTo(user));
+        });
     }
 
     [Test]
@@ -35,8 +38,11 @@ public class UserControllerTests
         var users = new List<UserModel> { new UserModel { Id = 1, Name = "User1", Email = "email1@example.com", Password = "pass1" } };
         _mockUserService.Setup(x => x.GetUsers()).Returns(users);
         var result = _userController.GetUsers() as OkObjectResult;
-        Assert.IsNotNull(result);
-        Assert.AreEqual(200, result.StatusCode);
-        Assert.AreEqual(users, result.Value);
+        Assert.That(result, Is.Not.Null);
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.StatusCode, Is.EqualTo(200));
+            Assert.That(result.Value, Is.EqualTo(users));
+        });
     }
 }

@@ -20,16 +20,19 @@ public class UserServiceTests
     {
         var user = new UserModel { Name = "New User", Email = "newuser@example.com", Password = "test1234" };
         var createdUser = _userService.CreateUser(user);
-        Assert.AreEqual(3, createdUser.Id);
-        Assert.AreEqual("New User", createdUser.Name);
-        Assert.IsTrue(_userService.GetUsers().Exists(u => u.Id == createdUser.Id));
+        Assert.Multiple(() =>
+        {
+            Assert.That(createdUser.Id, Is.EqualTo(3));
+            Assert.That(createdUser.Name, Is.EqualTo("New User"));
+        });
+        Assert.That(_userService.GetUsers().Exists(u => u.Id == createdUser.Id), Is.True);
     }
 
     [Test]
     public void GetUsers_ShouldReturnAllUsers()
     {
         var users = _userService.GetUsers();
-        Assert.AreEqual(3, users.Count);
+        Assert.That(users, Has.Count.EqualTo(3));
     }
 }
 
