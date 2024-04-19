@@ -44,11 +44,18 @@ jobs:
         shell: powershell
         run: |
           cd users-microservice
-          dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
-          Move-Item -Path .\test\coverage.cobertura.xml -Destination ..\ 
-          cd ..
-          .\.sonar\scanner\dotnet-sonarscanner begin /d:sonar.key="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.sonarconfig.path="./users-microservice/sonar-project.properties"
-          cd users-microservice 
+          ..\.sonar\scanner\dotnet-sonarscanner begin /k:"i-am-sergio_enrollapp" /o:"i-am-sergio" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build
-          cd ..
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
+
+
+
+          # # dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+          # Move-Item -Path .\test\coverage.cobertura.xml -Destination ..\ 
+          # cd ..
+          # .\.sonar\scanner\dotnet-sonarscanner begin /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.sonarconfig.path="./users-microservice/sonar-project.properties"
+          # cd users-microservice 
+          # dotnet build
+          # cd ..
+          # .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
