@@ -44,7 +44,7 @@ jobs:
           cd users-microservice
           dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
           echo "SONAR SCANNER BEGIN ---------------"
-          ../.sonar/scanner/dotnet-sonarscanner begin /k:"i-am-sergio_enrollapp" /o:"i-am-sergio" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="*/test/coverage.opencover.xml"
+          ../.sonar/scanner/dotnet-sonarscanner begin /k:"i-am-sergio_enrollapp" /o:"i-am-sergio" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/test/coverage.opencover.xml"
           dotnet build
           echo "SONAR SCANNER END ---------------"
-          ../.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          ../.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
