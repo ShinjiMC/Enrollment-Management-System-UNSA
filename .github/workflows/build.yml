@@ -45,6 +45,6 @@ jobs:
         run: |
           cd users-microservice
           dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
-          ..\.sonar\scanner\dotnet-sonarscanner begin /k:"i-am-sergio_enrollapp" /o:"i-am-sergio" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.sonarconfig.path="./sonar-project.properties /d:sonar.host.url="https://sonarcloud.io"
+          ..\.sonar\scanner\dotnet-sonarscanner begin /k:"i-am-sergio_enrollapp" /o:"i-am-sergio" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.sonarconfig.path="./sonar-project.properties /d:sonar.host.url="https://sonarcloud.io"
           dotnet build
-          ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
