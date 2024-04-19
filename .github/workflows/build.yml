@@ -44,9 +44,10 @@ jobs:
         shell: powershell
         run: |
           cd users-microservice
+          dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+          
           Write-Host "SONAR SCANNER BEGIN ---------------"
-          ..\.sonar\scanner\dotnet-sonarscanner begin /k:"i-am-sergio_enrollapp" /o:"i-am-sergio" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io /d:sonar.cs.opencover.reportsPaths="**/coverage.cobertura.xml"
+          ..\.sonar\scanner\dotnet-sonarscanner begin /k:"i-am-sergio_enrollapp" /o:"i-am-sergio" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io /d:sonar.cs.opencover.reportsPaths="**/test/coverage.opencover.xml"
           dotnet build
-          dotnet test
           Write-Host "SONAR SCANNER END ---------------"
           ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

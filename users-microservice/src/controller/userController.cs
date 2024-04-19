@@ -11,6 +11,7 @@ public interface IUserController
 }
 
 [ApiController]
+[Route("[controller]")]
 public class UserController : ControllerBase, IUserController
 {
     private readonly IUserService _userService;

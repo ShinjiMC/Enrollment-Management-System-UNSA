@@ -11,7 +11,7 @@ public interface IUserService
 
 public class UserService : IUserService
 {
-    private static int nextId = 3;
+    private int nextId = 3;
     private static List<UserModel> Users = new List<UserModel>
     {
         new UserModel

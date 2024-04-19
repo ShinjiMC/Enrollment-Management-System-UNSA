@@ -10,3 +10,11 @@ sonar.binaries=**/bin/**
 sonar.cs.opencover.reportsPaths=**/coverage.cobertura.xml
 sonar.exclusions=**/*Test.cs,Dockerfile
 sonar.sourceEncoding=UTF-8
+
+
+dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+
+dotnet sonarscanner begin /o:"unsa" /k:"unsa_enroll-system" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.token="73029d341e4a26f3aec5a865f1cfa096d1e83cd9" /d:sonar.cs.opencover.reportsPaths="**/test/coverage.opencover.xml"
+
+dotnet build
+dotnet sonarscanner end /d:sonar.token="73029d341e4a26f3aec5a865f1cfa096d1e83cd9"
