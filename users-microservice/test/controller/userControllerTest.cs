@@ -3,7 +3,7 @@ using Moq;
 using Microsoft.AspNetCore.Mvc;
 using users_microservice.models;
 using users_microservice.services;
-using users_microservice.controllers; 
+using users_microservice.controllers;
 
 namespace test.controller;
 public class UserControllerTests
@@ -19,30 +19,51 @@ public class UserControllerTests
     }
 
     [Test]
-    public void CreateUser_ShouldReturnCreatedUser()
+    public async Task CreateUser_WhenValidUser_ReturnsOk()
     {
-        var user = new UserModel { Name = "Test User", Email = "test@example.com", Password = "password" };
-        _mockUserService.Setup(x => x.CreateUser(It.IsAny<UserModel>())).Returns(user);
-        var result = _userController.CreateUser(user) as OkObjectResult;
+        // GIVEN
+        var userModel = new UserModel
+        {
+            Name = "Alice",
+            Email = "alice@example.com",
+            Password = "password3"
+        };
+        _mockUserService.Setup(service => service.CreateUser(userModel))
+                        .ReturnsAsync(userModel);
+
+        // WHEN
+        var result = await _userController.CreateUser(userModel) as OkObjectResult;
+
+        // THEN
         Assert.That(result, Is.Not.Null);
         Assert.Multiple(() =>
         {
             Assert.That(result.StatusCode, Is.EqualTo(200));
-            Assert.That(result.Value, Is.EqualTo(user));
+            Assert.That(result.Value, Is.EqualTo(userModel));
         });
     }
 
     [Test]
-    public void GetUsers_ShouldReturnAllUsers()
+    public async Task GetUsers_ShouldReturnAllUsers()
     {
-        var users = new List<UserModel> { new UserModel { Id = 1, Name = "User1", Email = "email1@example.com", Password = "pass1" } };
-        _mockUserService.Setup(x => x.GetUsers()).Returns(users);
-        var result = _userController.GetUsers() as OkObjectResult;
+        // GIVEN
+        var usersList = new List<UserModel>
+            {
+                new() { Id = 1, Name = "John Doe", Email = "john@example.com", Password = "password1" },
+                new() { Id = 2, Name = "Jane Doe", Email = "jane@example.com", Password = "password2" }
+            };
+
+        _mockUserService.Setup(service => service.GetUsers())
+                            .ReturnsAsync(usersList);
+
+        // WHEN
+        var result = await _userController.GetUsers() as OkObjectResult;
+
         Assert.That(result, Is.Not.Null);
         Assert.Multiple(() =>
         {
             Assert.That(result.StatusCode, Is.EqualTo(200));
-            Assert.That(result.Value, Is.EqualTo(users));
+            Assert.That(result.Value, Is.EqualTo(usersList));
         });
     }
 }

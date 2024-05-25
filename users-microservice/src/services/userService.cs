@@ -1,42 +1,29 @@
-using System.Collections.Generic;
 using users_microservice.models;
+using users_microservice.repositories;
 
 namespace users_microservice.services;
 
 public interface IUserService
 {
-    UserModel CreateUser(UserModel user);
-    List<UserModel> GetUsers();
+    Task<UserModel> CreateUser(UserModel user);
+    Task<List<UserModel>> GetUsers();
 }
 
 public class UserService : IUserService
 {
-    private int nextId = 3;
-    private static List<UserModel> Users = new List<UserModel>
+    private readonly IUserRepository _userRepository;
+
+    public UserService(IUserRepository userRepository)
     {
-        new UserModel
-        {
-            Id = 1,
-            Name = "John Doe",
-            Email = "Example@gmail.com",
-            Password = "password"
-        },
-        new UserModel
-        {
-            Id = 2,
-            Name = "Jane Doe",
-            Email = "xample2@gmail.com",
-            Password = "password2"
-        }
-    };
-    public UserModel CreateUser(UserModel user)
-    {
-        user.Id = nextId++;
-        Users.Add(user);
-        return user;
+        _userRepository = userRepository;
     }
-    public List<UserModel> GetUsers()
+
+    public async Task<UserModel> CreateUser(UserModel user)
     {
-        return Users;
+        return await _userRepository.CreateUser(user);
+    }
+    public async Task<List<UserModel>> GetUsers()
+    {
+        return await _userRepository.GetUsers();
     }
 }

@@ -6,12 +6,12 @@ namespace users_microservice.controllers;
 
 public interface IUserController
 {
-    IActionResult CreateUser(UserModel user);
-    IActionResult GetUsers();
+    Task<IActionResult> CreateUser(UserModel user);
+    Task<IActionResult> GetUsers();
 }
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class UserController : ControllerBase, IUserController
 {
     private readonly IUserService _userService;
@@ -19,18 +19,20 @@ public class UserController : ControllerBase, IUserController
     {
         _userService = userService;
     }
-    
-    [HttpPost("api/users/create")]
-    public IActionResult CreateUser(UserModel user)
+
+
+    [HttpPost("create")]
+    public async Task<IActionResult> CreateUser(UserModel user)
     {
-        var createdUser = _userService.CreateUser(user);
+        var createdUser = await _userService.CreateUser(user);
         return Ok(createdUser);
     }
-    
-    [HttpGet("api/users")]
-    public IActionResult GetUsers()
+
+
+    [HttpGet("all")]
+    public async Task<IActionResult> GetUsers() 
     {
-        var users = _userService.GetUsers();
+        var users = await _userService.GetUsers();
         return Ok(users);
     }
 }
