@@ -1,7 +1,8 @@
 # Enrollment Management System UNSA (By Dexo Corp)
 
-By:
+By: Dexo Corp
 
+Members:
 - Mogollon Caceres Sergio Daniel
 - Davis Coropuna Leon Felipe
 - Apaza Apaza Nelzon Jorge
