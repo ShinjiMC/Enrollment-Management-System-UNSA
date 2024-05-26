@@ -16,6 +16,7 @@
 .DS_Store
 TestResults/
 coverage/
+Migrations/
 *.out
 *.xml
 .env

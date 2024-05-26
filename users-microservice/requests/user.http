@@ -1,11 +1,27 @@
-### Create Notification
+### Create Admin
 POST http://localhost:8001/api/user/create
 Content-Type: application/json
 
 {
-  "name": "Nombre del usuario 2",
-  "email": "correo@example.com",
-  "password": "contraseña"
+    "UserName": "adminuser",
+    "Password": "securepassword123",
+    "FullName": "John Admin",
+    "Role": 1,
+    "Department": "IT"
+}
+
+### Create Student
+POST http://localhost:8001/api/user/create
+Content-Type: application/json
+
+{
+    "UserName": "studentuser",
+    "Password": "securepassword123",
+    "FullName": "Jane Student",
+    "Role": 0,
+    "CUI": "CUI123456",
+    "Email": "jane.student@example.com",
+    "Courses": []
 }
 
 
