@@ -6,6 +6,6 @@ public class MySqlContext : DbContext
 {
     public MySqlContext(DbContextOptions<MySqlContext> options) : base(options) { }
     
-    public DbSet<UserModel> Users { get; set; } // Debes tener una clase User que represente tu entidad de usuario
+    public DbSet<UserModel> Users { get; set; } 
 
 }

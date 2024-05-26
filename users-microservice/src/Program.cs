@@ -22,9 +22,11 @@ app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
 app.MapGet("/", () => "Hello World!");
+
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<MySqlContext>();
     dbContext.Database.Migrate();
 }
+
 app.Run();
