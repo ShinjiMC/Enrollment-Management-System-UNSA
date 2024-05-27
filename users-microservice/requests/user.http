@@ -1,16 +1,15 @@
 ### Create Admin
-POST http://localhost:8001/api/user/create
+POST http://localhost:8001/api/admin/create
 Content-Type: application/json
 
 {
     "UserName": "adminuser",
     "Password": "securepassword123",
     "FullName": "John Admin",
-    "Role": 1,
-    "Department": "IT"
+    "Role": 1
 }
 
-### Create Student
+### Create Student DONT WORKS
 POST http://localhost:8001/api/user/create
 Content-Type: application/json
 
@@ -26,10 +25,17 @@ Content-Type: application/json
 
 
 
-### Get Users
-GET  http://localhost:8001/api/user/all
+### Get Users Admins
+GET  http://localhost:8001/api/admin/all
 
+### Login and get Token
+POST http://localhost:8001/api/authentication/login
+Content-Type: application/json
 
+{
+    "userId": 1,
+    "username": "adminuser"
+}
 
 
 # dotnet add package coverlet.msbuild

@@ -90,8 +90,13 @@ cd src/
 cd src/
 ```
 
+```bash
 dotnet ef migrations add NameMigrate
+```
+
+```bash
 dotnet ef database update
+```
 
 #### **6. Run App**
 
