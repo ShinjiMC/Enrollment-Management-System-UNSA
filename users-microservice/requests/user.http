@@ -1,3 +1,47 @@
+### Register Admin First Time
+{
+    "Name": "Admin User",
+    "Email": "admin@example.com",
+    "Password": "Admin@123",
+    "ConfirmPassword": "Admin@123",
+    "Role": "Admin"
+}
+
+### Register User without Role
+{
+    "Name": "Student 1",
+    "Email": "student1@example.com",
+    "Password": "Student@123",
+    "ConfirmPassword": "Student@123",
+    "Role": ""
+}
+
+### Register User with Role
+{
+    "Name": "Student 2",
+    "Email": "student2@example.com",
+    "Password": "Student@123",
+    "ConfirmPassword": "Student@123",
+    "Role": "Student"
+}
+
+### Login as Admin
+POST http://localhost:8001/api/auth/login
+{
+  "email": "admin@example.com",
+  "password": "Admin@123"
+}
+
+
+### Login as Student
+POST http://localhost:8001/api/auth/login
+{
+  "email": "student1@example.com",
+  "password": "User@123"
+}
+
+
+
 ### Create Admin
 POST http://localhost:8001/api/admin/create
 Content-Type: application/json
@@ -36,7 +80,6 @@ Content-Type: application/json
     "userId": 1,
     "username": "adminuser"
 }
-
 
 # dotnet add package coverlet.msbuild
 
