@@ -1,3 +1,24 @@
+### New Requests
+### Login
+POST http://localhost:8001/api/Auth/login
+{
+  "email": "user@example.com",
+  "password": "User@123"
+}
+
+### Register
+POST http://localhost:8001/api/Auth/register
+{
+  "id": "string",
+  "name": "string",
+  "email": "user3@example.com",
+  "password": "string",
+  "confirmPassword": "string"
+}
+
+
+
+
 ### Create Admin
 POST http://localhost:8001/api/admin/create
 Content-Type: application/json
@@ -36,7 +57,6 @@ Content-Type: application/json
     "userId": 1,
     "username": "adminuser"
 }
-
 
 # dotnet add package coverlet.msbuild
 
