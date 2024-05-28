@@ -5,5 +5,5 @@ namespace users_microservice.context;
 
 public class MySqlIdentityContext : IdentityDbContext<ApplicationUser>
 {
-    public MySqlIdentityContext(DbContextOptions options) : base(options) { }
+    public MySqlIdentityContext(DbContextOptions<MySqlIdentityContext> options) : base(options) { }
 }

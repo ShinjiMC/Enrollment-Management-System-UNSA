@@ -1,13 +1,21 @@
 ### New Requests
 ### Login
-POST http://localhost:8001/api/Auth/login
+POST http://localhost:8001/api/auth/login
 {
-  "email": "user@example.com",
+  "email": "user1@example.com",
   "password": "User@123"
 }
 
+### Login as Admin
+POST http://localhost:8001/api/auth/login
+{
+  "email": "admin@example.com",
+  "password": "Admin@123"
+}
+
+
 ### Register
-POST http://localhost:8001/api/Auth/register
+POST http://localhost:8001/api/auth/register
 {
   "id": "string",
   "name": "string",
