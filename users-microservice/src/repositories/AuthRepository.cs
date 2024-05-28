@@ -40,14 +40,39 @@ public class AuthRepository : IAuthRepository
         var createUser = await userManager.CreateAsync(newUser!, userDto.Password);
         if (!createUser.Succeeded) return new GeneralResponse(false, "Error occured.. please try again");
 
-        var roleExists = await roleManager.RoleExistsAsync(userDto.Role);
-        if (!roleExists)
+        var usersCount = userManager.Users.Count();
+        if (usersCount == 1) // Primer usuario registrado
         {
-            await roleManager.CreateAsync(new IdentityRole() { Name = userDto.Role });
+            var adminRoleExists = await roleManager.RoleExistsAsync("Admin");
+            if (!adminRoleExists)
+            {
+                await roleManager.CreateAsync(new IdentityRole() { Name = "Admin" });
+            }
+
+            await userManager.AddToRoleAsync(newUser, "Admin");
+            return new GeneralResponse(true, "Account Created with Admin role");
+        }
+        else
+        {
+            var roleToAssign = string.IsNullOrEmpty(userDto.Role) ? "Student" : userDto.Role;
+            var roleExists = await roleManager.RoleExistsAsync(roleToAssign);
+            if (!roleExists)
+            {
+                await roleManager.CreateAsync(new IdentityRole() { Name = roleToAssign });
+            }
+
+            await userManager.AddToRoleAsync(newUser, roleToAssign);
+            return new GeneralResponse(true, "Account Created");
         }
 
-        await userManager.AddToRoleAsync(newUser, userDto.Role);
-            return new GeneralResponse(true, "Account Created");
+        // var roleExists = await roleManager.RoleExistsAsync(userDto.Role);
+        // if (!roleExists)
+        // {
+        //     await roleManager.CreateAsync(new IdentityRole() { Name = userDto.Role });
+        // }
+
+        // await userManager.AddToRoleAsync(newUser, userDto.Role);
+        //     return new GeneralResponse(true, "Account Created");
 
         //Assign Default Role : Admin to first registrar; rest is user
         // var checkAdmin = await roleManager.FindByNameAsync("Admin");

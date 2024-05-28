@@ -1,4 +1,4 @@
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using users_microservice.models;
 using users_microservice.services;
@@ -7,7 +7,7 @@ namespace users_microservice.controllers;
 
 public interface IStudentController
 {
-    IEnumerable<StudentModel> GetAllStudents();
+    Task<IActionResult> GetAllStudents();
 }
 
 
@@ -23,9 +23,10 @@ public class StudentController : ControllerBase, IStudentController
     }
 
     [HttpGet("all")]
-    public IEnumerable<StudentModel> GetAllStudents()
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetAllStudents() 
     {
-        var users = _studentService.GetAllStudents();
-        return users;
+        var users = await _studentService.GetAllStudents();
+        return Ok(users);
     }
 }

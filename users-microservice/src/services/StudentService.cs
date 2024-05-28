@@ -5,7 +5,7 @@ namespace users_microservice.services;
 
 public interface IStudentService 
 {
-    IEnumerable<StudentModel> GetAllStudents();
+     Task<List<StudentModel>> GetAllStudents();
 }
 
 public class StudentService : IStudentService
@@ -17,7 +17,7 @@ public class StudentService : IStudentService
             _studentRepository = studentRepository;
         }
 
-        public IEnumerable<StudentModel> GetAllStudents()
+        public Task<List<StudentModel>> GetAllStudents()
         {
             return _studentRepository.GetAllStudents();
         }
