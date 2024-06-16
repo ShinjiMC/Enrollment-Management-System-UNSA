@@ -5,6 +5,7 @@ const LoginForm = () => {
   const handleForgotPassword = () => {
     console.log("Forgot password clicked");
   };
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
