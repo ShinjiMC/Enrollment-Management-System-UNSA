@@ -1,0 +1,57 @@
+@import "../../sass/index.scss";
+
+.footer {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid #33353f;
+  border-top-color: #33353f;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  z-index: 10;
+  color: white;
+  width: 100%;
+  padding-top: 0.5rem;
+  padding-bottom: 0.8rem;
+  @include sm {
+    padding: 0rem;
+    padding-top: 0.5rem;
+  }
+  @include md {
+    padding-top: 1.5rem;
+  }
+}
+
+.container {
+  padding-bottom: 0rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  @include sm {
+    padding-bottom: 0.5rem;
+  }
+  @include md {
+    align-items: center;
+    padding-bottom: 0.5rem;
+  }
+}
+
+.text {
+  color: #718096;
+  font-size: 1rem;
+  @include sm {
+    font-size: 0.5rem;
+  }
+  @include md {
+    font-size: 1rem;
+  }
+}
+.logo {
+  height: 3rem;
+  @include sm {
+    height: 1.5rem;
+  }
+  @include md {
+    height: 2.4rem;
+  }
+}
