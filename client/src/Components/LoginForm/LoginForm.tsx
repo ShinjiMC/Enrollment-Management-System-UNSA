@@ -11,7 +11,7 @@ const LoginForm = () => {
       <div className={styles.wrapper}>
         <form action="">
           <h1>
-            <img src="/public/logoUnsa.png" alt="UNSA" />
+            <img src="/logoUnsa.png" alt="UNSA" />
           </h1>
           <div className={styles.input_box}>
             <input type="text" placeholder="Username" required />

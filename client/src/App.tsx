@@ -1,15 +1,29 @@
-// import LoginForm from "./components/LoginForm/LoginForm";
 // import Footer from "./components/footer/Footer";
 import styles from "./sass/App.module.scss";
+import AuthPage from "./pages/AuthPage";
+import { Navigate, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import { useSelector } from "react-redux";
 
-function App() {
+function App(): JSX.Element {
+
+  const user = useSelector((state: any) => state.authReducer.authData);
+
   return (
     <div className={styles.app}>
       <div className={styles.principal}>
-        <h1>App</h1>
-        {/* <LoginForm /> */}
+        <Routes>
+          <Route path="/" element={ 
+            user ? <Navigate to="home" /> : <Navigate to="auth" />
+          } />
+          <Route path="/home" element={
+            user ? <HomePage /> : <AuthPage />
+          } />
+          <Route path="/auth" element={
+            user ? <HomePage /> : <AuthPage />
+          } />
+        </Routes>
       </div>
-      {/* <Footer /> */}
     </div>
   );
 }

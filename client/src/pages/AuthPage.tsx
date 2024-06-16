@@ -1,7 +1,16 @@
+import { useSelector } from "react-redux";
+import LoginForm from "../components/LoginForm/LoginForm";
 
-const AuthPage = () => {
+const AuthPage : React.FC = () => {
+  
+  const loading : boolean = useSelector((state: any) => state.authReducer.loading);
+  
+  console.log("Loading: ", loading);
+  
   return (
-    <div>AuthPage</div>
+    <div>
+        <LoginForm />
+    </div>
   )
 }
 

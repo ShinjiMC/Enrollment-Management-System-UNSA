@@ -1,8 +1,10 @@
+import { useSelector } from "react-redux";
 
-const HomePage = () => {
-  return (
-    <div>HomePage</div>
-  )
-}
+const HomePage: React.FC = () => {
+  const { user } = useSelector((state: any) => state.authReducer.authData);
+  console.log(user);
 
-export default HomePage
+  return <div>HomePage</div>;
+};
+
+export default HomePage;
