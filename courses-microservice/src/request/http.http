@@ -1,0 +1,28 @@
+### Obtener todos los cursos ###
+GET http://localhost:8000/api/course/all
+
+### Obtener un curso por su ID ###
+GET http://localhost:8000/api/course/2
+
+### Actualizar un curso por su ID ###
+PUT http://localhost:8000/api/course/1
+Content-Type: application/json
+
+{
+    "id": 1,
+    "name": "Introducción a la Ética",
+    "semester": "A",
+    "credits": 6
+}
+
+### Eliminar un curso por su ID ###
+DELETE http://localhost:8000/api/course/1
+
+### Agregar un nuevo curso ###
+POST http://localhost:8000/api/course
+Content-Type: application/json
+{
+    "name": "Etica",
+    "semester": "B",
+    "credits": 7
+}
