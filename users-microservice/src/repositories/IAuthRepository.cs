@@ -7,14 +7,15 @@ public interface IAuthRepository
 {
     Task<GeneralResponse> CreateAccount(UserDto userDto);
     Task<LoginResponse> LoginAccount(LoginDto loginDto);
+    Task<GeneralResponse> CreateAccountStudent(StudentDto studentDto);
     
     // Future implementations
-    // Task<ApplicationUser> GetUserById(string id);
-    // Task<ApplicationUser> GetUserByEmail(string email);
-    // Task<ApplicationUser> GetUserByUserName(string userName);
-    // Task<ApplicationUser> CreateUser(ApplicationUser user, string password);
-    // Task<ApplicationUser> UpdateUser(ApplicationUser user);
-    // Task<ApplicationUser> DeleteUser(string id);
-    // Task<ApplicationUser> LoginUser(string email, string password);
-    // Task<ApplicationUser> LogoutUser(string id);
+    // Task<GeneralResponse> GetUserById(string id);
+    // Task<GeneralResponse> GetUserByEmail(string email);
+    // Task<GeneralResponse> GetUserByUserName(string userName);
+    // Task<GeneralResponse> CreateUser(ApplicationUser user, string password);
+    // Task<GeneralResponse> UpdateUser(ApplicationUser user);
+    // Task<GeneralResponse> DeleteUser(string id);
+    // Task<GeneralResponse> LoginUser(string email, string password);
+    // Task<GeneralResponse> LogoutUser(string id);
 }
