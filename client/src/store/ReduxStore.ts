@@ -6,7 +6,6 @@ import {
 import { thunk } from "redux-thunk";
 import { reducers } from "../reducers";
 
-// Save the state to local storage
 const saveToLocalStorage = (state: any): void => {
   try {
     const serializedState = JSON.stringify(state);
@@ -16,7 +15,6 @@ const saveToLocalStorage = (state: any): void => {
   }
 };
 
-// Load the state from local storage: if there is no state, return undefined
 const loadFromLocalStorage = (): any => {
   try {
     const serializedState = window.localStorage.getItem("store");
@@ -28,12 +26,9 @@ const loadFromLocalStorage = (): any => {
   }
 };
 
-// Use the Redux DevTools extension if it is installed
 const composeEnhancers =
   (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
 const persistedState = loadFromLocalStorage();
-
 const store = createStore(
   reducers,
   persistedState,

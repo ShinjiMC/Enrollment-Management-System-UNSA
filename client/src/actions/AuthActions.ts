@@ -5,10 +5,15 @@ export const logIn =
         dispatch({ type: "AUTH_START" });
         try {
             const { data } = await AuthApi.logIn(formData);
+            const { flag, token } = data;
+            if (!token || !flag) {
+                dispatch({ type: "AUTH_FAIL" });
+                return;
+            }
             dispatch({ type: "AUTH_SUCCESS", data: data });
             navigate("../home", { replace: true });
         } catch (error) {
-            console.log(error);
+            console.log("ERROR: ",error);
             dispatch({ type: "AUTH_FAIL" });
         }
     };
