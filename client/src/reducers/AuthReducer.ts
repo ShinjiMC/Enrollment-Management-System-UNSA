@@ -10,6 +10,7 @@ export interface Action {
     data?: any;
 }
 
+// The authReducer function is a reducer that manages the state of the authentication
 const authReducer = (
     state: AuthState = {
         authData: null,
@@ -19,6 +20,7 @@ const authReducer = (
     },
     action: Action
 ): AuthState => {
+    // The reducer function takes the current state and an action, and returns the new state
     switch (action.type) {
         case "AUTH_START":
             return { ...state, loading: true, error: false };
