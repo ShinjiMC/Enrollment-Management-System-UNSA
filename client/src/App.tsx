@@ -1,14 +1,15 @@
-import LoginForm from "./Components/LoginForm/LoginForm";
-import Footer from "./Components/footer/Footer";
+// import LoginForm from "./components/LoginForm/LoginForm";
+// import Footer from "./components/footer/Footer";
 import styles from "./sass/App.module.scss";
 
 function App() {
   return (
     <div className={styles.app}>
       <div className={styles.principal}>
-        <LoginForm />
+        <h1>App</h1>
+        {/* <LoginForm /> */}
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
