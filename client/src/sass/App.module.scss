@@ -1,0 +1,36 @@
+@import "index.scss";
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; // Asegura que el contenedor principal abarque toda la altura de la pantalla
+}
+
+.principal {
+  max-width: 100%;
+  margin-top: 6rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem 3rem;
+  flex: 1;
+
+  @include sm {
+    max-width: 640px; /* sm */
+  }
+
+  @include md {
+    max-width: 768px; /* md */
+  }
+
+  @include lg {
+    max-width: 1024px; /* lg */
+  }
+
+  @include xl {
+    max-width: 1280px; /* xl */
+  }
+
+  @include xxl {
+    max-width: 1536px; /* 2xl */
+  }
+}
