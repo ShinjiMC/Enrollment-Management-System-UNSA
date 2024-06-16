@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styles from "../../sass/Components/LoginForm.module.scss";
+import styles from "./LoginForm.module.scss";
 import { FaUser, FaLock } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { logIn } from "../../actions/AuthActions";

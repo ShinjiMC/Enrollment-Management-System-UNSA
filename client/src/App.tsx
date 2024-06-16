@@ -1,8 +1,8 @@
 // import Footer from "./components/footer/Footer";
 import styles from "./sass/App.module.scss";
-import AuthPage from "./pages/AuthPage";
+import AuthPage from "./pages/AuthPage/AuthPage";
 import { Navigate, Route, Routes } from "react-router-dom";
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/HomePage/HomePage";
 import { useSelector } from "react-redux";
 
 function App(): JSX.Element {

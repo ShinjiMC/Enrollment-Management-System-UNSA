@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
-import LoginForm from "../components/LoginForm/LoginForm";
+import styles from "./AuthPage.module.scss";
+import LoginForm from "../../components/LoginForm/LoginForm";
 
 const AuthPage : React.FC = () => {
   
@@ -8,8 +9,8 @@ const AuthPage : React.FC = () => {
   console.log("Loading: ", loading);
   
   return (
-    <div>
-        <LoginForm />
+    <div className={styles.container}>
+      <LoginForm />
     </div>
   )
 }
