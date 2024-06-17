@@ -7,6 +7,6 @@ public interface IStudentRepository
 {
     Task<List<StudentModel>> GetAllStudents();
     Task<StudentModel> GetStudentByCUI(string cui);
-    Task<GeneralResponse> UpdateStudent(StudentDto studentDto);
-    Task<GeneralResponse> DeleteStudent(string cui);
+    Task<GeneralResponse> UpdateStudentById(StudentDto studentDto);
+    Task<GeneralResponse> DeleteStudentById(string cui);
 }

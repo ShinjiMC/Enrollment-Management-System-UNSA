@@ -4,6 +4,7 @@ using users_microservice.DTOs;
 using users_microservice.models;
 using static users_microservice.DTOs.ServiceResponses;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace users_microservice.repositories;
 
@@ -11,106 +12,173 @@ namespace users_microservice.repositories;
 public class StudentRepository : IStudentRepository
 {
 
-    // public StudentRepository()
-    // {
-    //     // Inicialización de datos de ejemplo
-    //     _students.Add(new () { 
-    //         ID = 1, 
-    //         UserName = "student1", 
-    //         Password = "pass1", 
-    //         FullName = "Student One", 
-    //         Role = Role.STUDENT, 
-    //         CUI = "123456789", 
-    //         Email = "student1@example.com" });
-    //     _students.Add(new () { 
-    //         ID = 2, 
-    //         UserName = "student2", 
-    //         Password = "pass2", 
-    //         FullName = "Student Two", 
-    //         Role = Role.STUDENT, 
-    //         CUI = "987654321", 
-    //         Email = "student2@example.com" });
-    // }
+   
+    private readonly UserManager<ApplicationUser> userManager;
+    private readonly RoleManager<IdentityRole> roleManager;
+    private readonly IHttpContextAccessor httpContextAccessor;
 
-    private readonly MySqlIdentityContext _context;
-
-    public StudentRepository(MySqlIdentityContext context)
+    // Constructor
+    public StudentRepository(UserManager<ApplicationUser> userManager, 
+                          RoleManager<IdentityRole> roleManager, 
+                          IHttpContextAccessor httpContextAccessor)
     {
-        _context = context;
+        this.userManager = userManager;
+        this.roleManager = roleManager;        
+        this.httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<List<StudentModel>> GetAllStudents()
+    public  async Task<GeneralResponse> CreateStudentAccount(StudentDto studentDto)
     {
-        return await _context.StudentsModel.ToListAsync();
-    }
+        var roleToAssign = Role.STUDENT;
 
-    public async Task<StudentModel> GetStudentByCUI(string cui)
-    {
-        
-        var res = await _context.StudentsModel.FirstOrDefaultAsync(s => s.CUI == cui) ?? throw new InvalidOperationException("No student in DB");
-        return res;
-        
-    }
-
-    public async Task<GeneralResponse> UpdateStudent(StudentDto studentDto)
-    {
-        if (studentDto is not null)
+        // Obtener el claim de rol del contexto
+        var userRoleClaim = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+        if (userRoleClaim == null || !userRoleClaim.Value.Equals(Role.ADMIN.ToString(), StringComparison.OrdinalIgnoreCase))
         {
-            var existingStudent = await _context.StudentsModel.FirstOrDefaultAsync(s => s.CUI == studentDto.CUI);
-            if (existingStudent == null)
-            {
-                return new GeneralResponse(false, "Student not found", 404);
-            }
-
-            // Actualizar la información del estudiante en la tabla Students
-            existingStudent.UserName = studentDto.UserName;
-            existingStudent.Password = studentDto.Password;
-            existingStudent.FullName = studentDto.FullName;
-            existingStudent.CUI = studentDto.CUI;
-            existingStudent.Email = studentDto.Email;
-
-            _context.StudentsModel.Update(existingStudent);
-            await _context.SaveChangesAsync();
-
-            // Buscar y actualizar la información en la tabla UserManager usando el ID del estudiante
-            // var userManagerEntry = await _context.UserManager.FirstOrDefaultAsync(u => u.StudentId == existingStudent.Id);
-            // if (userManagerEntry != null)
-            // {
-            //     userManagerEntry.UserName = studentDto.UserName;
-            //     userManagerEntry.Password = studentDto.Password;
-
-            //     _context.UserManager.Update(userManagerEntry);
-            //     await _context.SaveChangesAsync();
-            // }
-
-            return new GeneralResponse(true, "Student and UserManager updated successfully", 200);
+            return new GeneralResponse(false, "Unauthorized. Only Admin can create students.", 401);
         }
 
-        throw new ArgumentNullException(nameof(studentDto));
+        if (studentDto is null) return new GeneralResponse(false, "Model is empty", 400);
+
+        // Crear un nuevo usuario de tipo Student
+        var newStudentUser = new Student()
+        {
+            FullName = studentDto.FullName,
+            Email = studentDto.Email,
+            UserName = studentDto.Email?.Split('@')[0],
+            Cui = studentDto.CUI
+            // Agregar otros campos específicos de Student si es necesario
+        };
+
+        var createUserResult = await userManager.CreateAsync(newStudentUser!, studentDto.Password);
+        if (!createUserResult.Succeeded)
+        {
+            // Devuelve el primer error encontrado para mayor claridad
+            var errorMessage = createUserResult.Errors.FirstOrDefault()?.Description ?? "Error occurred. Please try again";
+            return new GeneralResponse(false, errorMessage, 403);
+        }
+
+        if (!await roleManager.RoleExistsAsync(roleToAssign.ToString()))
+        {
+            await roleManager.CreateAsync(new IdentityRole(roleToAssign.ToString()));
+        }
+
+        var addToRoleResult = await userManager.AddToRoleAsync(newStudentUser, roleToAssign.ToString());
+        if (!addToRoleResult.Succeeded)
+        {
+            var errorMessage = addToRoleResult.Errors.FirstOrDefault()?.Description ?? "Error occurred while adding role. Please try again";
+            return new GeneralResponse(false, errorMessage, 403);
+        }
+        return new GeneralResponse(true, "Account created", 201);
     }
 
-
-    public async Task<GeneralResponse> DeleteStudent(string cui)
+    public async Task<List<StudentDto>> GetAllStudents()
     {
-        // Buscar el estudiante por su CUI
-        var student = await _context.StudentsModel.FirstOrDefaultAsync(s => s.CUI == cui);
+        var students = await userManager.GetUsersInRoleAsync(Role.STUDENT.ToString());
+
+        var studentDtos = students.Select(user => new StudentDto
+        {
+            Id = user.Id,
+            FullName = user.FullName,
+            Email = user.Email,
+            UserName = user.UserName,
+            CUI = (user as Student)?.Cui, // Aquí se asume que Student es una clase derivada de ApplicationUser y tiene el campo CUI
+            // Agregar otros campos específicos de StudentDto si es necesario
+        }).ToList();
+
+        return studentDtos;
+    }
+
+    public async Task<StudentDto> GetStudentByCUI(string cui)
+    {
+        // Obtener todos los usuarios que tienen el rol de estudiante
+        var studentUsers = await userManager.GetUsersInRoleAsync(Role.STUDENT.ToString());
+
+        // Buscar el estudiante por el campo CUI entre los usuarios con el rol de estudiante
+        var studentUser = studentUsers.FirstOrDefault(u => u.Cui == cui);
+
+        if (studentUser == null)
+        {
+            throw new InvalidOperationException("No student found in DB with the given CUI");
+        }
+
+        // Mapear el estudiante encontrado a StudentDto
+        var studentDto = new StudentDto
+        {
+            Id = studentUser.Id,
+            FullName = studentUser.FullName,
+            Email = studentUser.Email,
+            UserName = studentUser.UserName,
+            CUI = studentUser.CUI,
+            // Agregar otros campos específicos de StudentDto si es necesario
+        };
+
+        return studentDto;
+        
+    }
+
+    public async Task<GeneralResponse> UpdateStudentById(StudentDto studentDto)
+    {
+         // Obtener el claim de rol del contexto
+        var userRoleClaim = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+        if (userRoleClaim == null || !userRoleClaim.Value.Equals(Role.ADMIN.ToString(), StringComparison.OrdinalIgnoreCase))
+        {
+            return new GeneralResponse(false, "Unauthorized. Only Admin can create students.", 401);
+        }
+
+        if (studentDto == null || string.IsNullOrEmpty(studentDto.Id))
+        {
+            return new GeneralResponse(false, "Invalid student ID", 400);
+        }
+
+        // Buscar al estudiante por su Id
+        var student = await userManager.FindByIdAsync(studentDto.Id);
         if (student == null)
         {
             return new GeneralResponse(false, "Student not found", 404);
         }
 
-        // Eliminar la entrada correspondiente en la tabla UserManager usando el ID del estudiante
-        // var userManagerEntry = await userManager.FirstOrDefaultAsync(u => u.StudentId == student.Id);
-        // if (userManagerEntry != null)
-        // {
-        //     userManager.Remove(userManagerEntry);
-        // }
+        // Actualizar propiedades específicas de Student
+        student.FullName = studentDto.FullName;
+        student.Email = studentDto.Email;
+        student.Cui = studentDto.CUI;
 
-        // Eliminar el estudiante de la tabla Students
-        _context.StudentsModel.Remove(student);
-        await _context.SaveChangesAsync();
+        // Actualizar el estudiante en la tabla ApplicationUser (AspNetUsers)
+        var result = await userManager.UpdateAsync(student);
 
-        return new GeneralResponse(true, "Student and related UserManager entry deleted successfully", 200);
-    
+        // Verificar el resultado de la actualización
+        if (result.Succeeded)
+        {
+            return new GeneralResponse(true, "Student updated successfully", 200);
+        }
+        else
+        {
+            return new GeneralResponse(false, string.Join(", ", result.Errors.Select(e => e.Description)), 400);
+        }
+    }
+
+
+    public async Task<GeneralResponse> DeleteStudentById(string id)
+    {
+        if (string.IsNullOrEmpty(id))
+        {
+            return new GeneralResponse(false, "Invalid student ID", 400);
+        }
+
+        // Buscar el estudiante por Id
+        var student = await userManager.FindByIdAsync(id);
+        if (student == null)
+        {
+            return new GeneralResponse(false, "Student not found", 404);
+        }
+
+        // Eliminar el usuario (que también es estudiante) de ASP.NET Identity
+        var result = await userManager.DeleteAsync(student);
+        if (!result.Succeeded)
+        {
+            return new GeneralResponse(false, "Failed to delete student", 500); // Cambia el código de estado según sea necesario
+        }
+
+        return new GeneralResponse(true, "Student deleted successfully", 200);
     }
 }

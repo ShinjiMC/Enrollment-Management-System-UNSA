@@ -19,6 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 var connectionString = builder.Configuration.GetConnectionString("MySqlConnection") ??
 throw new InvalidOperationException("Connection string not found in appsettings.json");
 
+// Add MySql context
 builder.Services.AddDbContext<MySqlIdentityContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
@@ -61,8 +62,33 @@ builder.Services.AddSwaggerGen(options =>
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
+// CORS settings with allow all of the origin localhost:5173
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+// CORS settings with allow all origins
+// builder.Services.AddCors(options =>
+// {
+//     options.AddDefaultPolicy(builder =>
+//     {
+//         builder.AllowAnyOrigin()
+//             .AllowAnyHeader()
+//             .AllowAnyMethod();
+//     });
+// });
+
+
+// Repositories
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 
 builder.Services.AddScoped<IStudentService, StudentService>();
 
@@ -76,6 +102,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
@@ -85,7 +112,7 @@ app.MapGet("/", () => "This is Users Microservice !!!");
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<MySqlIdentityContext>();
-    // dbContext.Database.Migrate();
+    dbContext.Database.Migrate();
 }
 
 app.Run();

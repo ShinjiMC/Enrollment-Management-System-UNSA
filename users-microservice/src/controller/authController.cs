@@ -10,19 +10,23 @@ namespace users_microservice.controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthRepository userAccount;
+    private readonly IAdminRepository adminAccount;
+    private readonly IStudentRepository studentAccount;
 
     // Constructor
-    public AuthController(IAuthRepository userAccount)
+    public AuthController(IAuthRepository userAccount, IAdminRepository adminRepository, IStudentRepository studentAccount)
     {
         this.userAccount = userAccount;
+        this.adminAccount = adminRepository;
+        this.studentAccount = studentAccount;
     }
 
     // Endpoints
     [HttpPost("register")]
-    [Authorize(Roles = "ADMIN")] // Only Admin can register new users
+    // [Authorize(Roles = "ADMIN")] // Only Admin can register new users
     public async Task<IActionResult> Register(UserDto userDTO)
     {
-        var response = await userAccount.CreateAccount(userDTO);
+        var response = await adminAccount.CreateAdminAccount(userDTO);
         return StatusCode(response.StatusCode, response);
     }
 
@@ -38,7 +42,7 @@ public class AuthController : ControllerBase
     [Authorize(Roles = "ADMIN")] // Only Admin can register new students
     public async Task<IActionResult> RegisterNewStudent(StudentDto studentDTO)
     {
-        var response = await userAccount.CreateAccountStudent(studentDTO);
+        var response = await studentAccount.CreateStudentAccount(studentDTO);
         return StatusCode(response.StatusCode, response);
     }
 }
