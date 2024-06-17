@@ -1,3 +1,4 @@
+using users_microservice.DTOs;
 using users_microservice.models;
 using users_microservice.repositories;
 

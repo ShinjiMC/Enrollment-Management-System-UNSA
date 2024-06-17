@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using users_microservice.context;
+using users_microservice.DTOs;
 using users_microservice.repositories;
 using users_microservice.services;
 

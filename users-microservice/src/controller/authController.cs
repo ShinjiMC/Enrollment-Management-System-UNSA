@@ -34,7 +34,7 @@ public class AuthController : ControllerBase
         return StatusCode(response.StatusCode, response);
     }
 
-    [HttpPost("newstudent")]
+    [HttpPost("new-student")]
     [Authorize(Roles = "ADMIN")] // Only Admin can register new students
     public async Task<IActionResult> RegisterNewStudent(StudentDto studentDTO)
     {

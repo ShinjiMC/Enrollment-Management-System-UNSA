@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using users_microservice.context;
 using users_microservice.DTOs;
@@ -35,17 +36,48 @@ public class AuthRepository : IAuthRepository
     // Implementation of new methods
     public async Task<ApplicationUser> GetUserById(string id)
     {
-        return await userManager.FindByIdAsync(id);
+        var res = await userManager.FindByIdAsync(id) ?? throw new InvalidOperationException("No user found in DB");
+
+        var newUser = new ApplicationUser()
+        {
+            Name = res.Name,
+            Email = res.Email,
+            UserName = res.Email
+        };
+        return newUser;
     }
 
     public async Task<ApplicationUser> GetUserByEmail(string email)
     {
-        return await userManager.FindByEmailAsync(email);
+        var res = await userManager.FindByEmailAsync(email) ?? throw new InvalidOperationException("No user found with the specified email");
+        var newUser = new ApplicationUser()
+        {
+            Id = res.Id,
+            Name = res.UserName, // Asignar el nombre o cualquier otro campo que desees utilizar
+            Email = res.Email,
+            UserName = res.Email
+        };
+
+        return newUser;
     }
 
     public async Task<ApplicationUser> GetUserByUserName(string userName)
     {
-        return await userManager.FindByNameAsync(userName);
+        var res = await userManager.FindByNameAsync(userName);
+        if (res == null)
+        {
+            throw new InvalidOperationException("No user found with the specified username");
+        }
+
+        var newUser = new ApplicationUser()
+        {
+            Id = res.Id,
+            Name = res.UserName, // Asignar el nombre o cualquier otro campo que desees utilizar
+            Email = res.Email,
+            UserName = res.Email
+        };
+
+        return newUser;
     }
 
     public async Task<GeneralResponse> CreateUser(ApplicationUser user, string password)
@@ -58,17 +90,70 @@ public class AuthRepository : IAuthRepository
         return new GeneralResponse(false, string.Join(", ", result.Errors.Select(e => e.Description)), 400);
     }
 
-    public async Task<GeneralResponse> UpdateUser(ApplicationUser user)
+   public async Task<GeneralResponse> UpdateUserById(UserDto userDto)
     {
-        var result = await userManager.UpdateAsync(user);
+        if (userDto == null || string.IsNullOrEmpty(userDto.Id))
+        {
+            return new GeneralResponse(false, "Invalid user ID", 400);
+        }
+
+        // Check if the user exists in the User table
+        var user = await userManager.FindByIdAsync(userDto.Id);
+        if (user == null)
+        {
+            return new GeneralResponse(false, "User not found", 404);
+        }
+
+        // Update common properties for both User and Student
+        user.Name = userDto.Name;
+        user.Email = userDto.Email;
+
+        IdentityResult result;
+
+        if (await userManager.IsInRoleAsync(user, Role.ADMIN.ToString()))
+        {
+            // Update user properties in the User table
+            result = await userManager.UpdateAsync(user);
+        }
+        else if (await userManager.IsInRoleAsync(user, Role.STUDENT.ToString()))
+        {
+            // Update user properties in the StudentModel table
+            var student = await context.StudentsModel.FirstOrDefaultAsync(s => s.Email == userDto.Email);
+            if (student == null)
+            {
+                return new GeneralResponse(false, "Student not found", 404);
+            }
+
+            // Update properties in StudentModel
+            student.UserName = userDto.Email;
+            student.FullName = userDto.Name;
+            student.Email = userDto.Email;
+
+            // Save changes to StudentModel table
+            context.StudentsModel.Update(student);
+            await context.SaveChangesAsync();
+
+            // Update properties in ApplicationUser table
+            result = await userManager.UpdateAsync(user);
+        }
+        else
+        {
+            return new GeneralResponse(false, "User is not an admin or student", 400);
+        }
+
+        // Check the update result
         if (result.Succeeded)
         {
             return new GeneralResponse(true, "User updated successfully", 200);
         }
-        return new GeneralResponse(false, string.Join(", ", result.Errors.Select(e => e.Description)), 400);
+        else
+        {
+            return new GeneralResponse(false, string.Join(", ", result.Errors.Select(e => e.Description)), 400);
+        }
     }
 
-    public async Task<GeneralResponse> DeleteUser(string id)
+
+    public async Task<GeneralResponse> DeleteUserById(string id)
     {
         var user = await GetUserById(id);
         if (user == null)
@@ -83,29 +168,14 @@ public class AuthRepository : IAuthRepository
         return new GeneralResponse(false, string.Join(", ", result.Errors.Select(e => e.Description)), 400);
     }
 
-    public async Task<LoginResponse> LoginUser(string email, string password)
-    {
-        var user = await GetUserByEmail(email);
-        if (user == null)
-        {
-            return new LoginResponse(false, null!, "User not found", 404);
-        }
-        var result = await userManager.CheckPasswordAsync(user, password);
-        if (!result)
-        {
-            return new LoginResponse(false, null!, "Invalid email/password", 401);
-        }
+   
 
-        var roles = await userManager.GetRolesAsync(user);
-        var userSession = new UserSession(user.Id, user.Name, user.Email, roles.FirstOrDefault());
-
-        string token = GenerateToken(userSession);
-        return new LoginResponse(true, token, "Login successful", 200);
-    }
-
-    public Task<GeneralResponse> LogoutUser(string id)
+    public Task<GeneralResponse> LogOutUser(string id)
     {
         // Implement logout logic here (e.g., removing user sessions, tokens, etc.)
+        // localStorage.removeItem('token'); // Eliminar el token del almacenamiento local
+        // // Redirigir a la página de inicio de sesión u otra página deseada
+        // window.location.href = '/login';
         return Task.FromResult(new GeneralResponse(true, "Logout successful", 200));
     }
 
@@ -114,7 +184,6 @@ public class AuthRepository : IAuthRepository
     public async Task<GeneralResponse> CreateAccount(UserDto userDto)
     {
         if (userDto is null) return new GeneralResponse(false, "Model is empty", 400);
-
         var newUser = new ApplicationUser()
         {
             Name = userDto.Name,
@@ -122,23 +191,36 @@ public class AuthRepository : IAuthRepository
             UserName = userDto.Email
         };
 
-        var existingUser = await GetUserByEmail(newUser.Email);
-        if (existingUser != null) return new GeneralResponse(false, "User already registered", 409);
+        var user = await userManager.FindByEmailAsync(newUser.Email);
+        if (user is not null) return new GeneralResponse(false, "User registered already",409);
 
-        var createUserResponse = await CreateUser(newUser, userDto.Password);
-        if (!createUserResponse.Flag) return createUserResponse;
+        var createUser = await userManager.CreateAsync(newUser!, userDto.Password);
+        if (!createUser.Succeeded) return new GeneralResponse(false, "Error occured.. please try again", 403);
 
         var usersCount = userManager.Users.Count();
-        var roleName = usersCount == 1 ? Role.ADMIN.ToString() : Role.STUDENT.ToString();
-
-        if (!await roleManager.RoleExistsAsync(roleName))
+        if (usersCount == 1) // Primer usuario registrado
         {
-            await roleManager.CreateAsync(new IdentityRole(roleName));
+            var adminRoleExists = await roleManager.RoleExistsAsync(Role.ADMIN.ToString());
+            if (!adminRoleExists)
+            {
+                await roleManager.CreateAsync(new IdentityRole() { Name = Role.ADMIN.ToString() });
+            }
+
+            await userManager.AddToRoleAsync(newUser, "Admin");
+            return new GeneralResponse(true, "Account Created with Admin role",200);
         }
+        else
+        {
+            var roleToAssign = string.IsNullOrEmpty(userDto.Role) ? Role.STUDENT.ToString() : userDto.Role;
+            var roleExists = await roleManager.RoleExistsAsync(roleToAssign);
+            if (!roleExists)
+            {
+                await roleManager.CreateAsync(new IdentityRole() { Name = roleToAssign });
+            }
 
-        await userManager.AddToRoleAsync(newUser, roleName);
-
-        return new GeneralResponse(true, $"Account created with {roleName} role", 201);
+            await userManager.AddToRoleAsync(newUser, roleToAssign);
+           return new GeneralResponse(true, $"Account created with  role", 201);
+        }
     }
 
     public async Task<GeneralResponse> CreateAccountStudent(StudentDto studentDto)
@@ -147,7 +229,7 @@ public class AuthRepository : IAuthRepository
 
         // Obtener el claim de rol del contexto
         var userRoleClaim = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
-        if (userRoleClaim == null || !userRoleClaim.Value.Equals("ADMIN", StringComparison.OrdinalIgnoreCase))
+        if (userRoleClaim == null || !userRoleClaim.Value.Equals(Role.ADMIN.ToString(), StringComparison.OrdinalIgnoreCase))
         {
             return new GeneralResponse(false, "Unauthorized. Only Admin can create students.", 401);
         }
@@ -160,10 +242,9 @@ public class AuthRepository : IAuthRepository
             Email = studentDto.Email,
             UserName = studentDto.Email
         };
-
-        var existingUser = await GetUserByEmail(newStudentUser.Email);
-        if (existingUser != null) return new GeneralResponse(false, "Student already registered", 409);
-
+        var user = await userManager.FindByEmailAsync(newStudentUser.Email);
+        if (user is not null) return new GeneralResponse(false, "User registered already",409);
+        
         var createUserResponse = await CreateUser(newStudentUser, studentDto.Password);
         if (!createUserResponse.Flag) return createUserResponse;
 
@@ -193,11 +274,22 @@ public class AuthRepository : IAuthRepository
     public async Task<LoginResponse> LoginAccount(LoginDto loginDto)
     {
         if (loginDto == null)
-            return new LoginResponse(false, null!, "Login container is empty", 400);
+            return new LoginResponse(false, "--", "Login container is empty", 400);
 
-        return await LoginUser(loginDto.Email, loginDto.Password);
+        var getUser = await userManager.FindByEmailAsync(loginDto.Email);
+        if (getUser is null)
+            return new LoginResponse(false, "--", "User not found", 401);
+
+        bool checkUserPasswords = await userManager.CheckPasswordAsync(getUser, loginDto.Password);
+        if (!checkUserPasswords)
+            return new LoginResponse(false, "--", "Invalid email/password", 401);
+
+        var getUserRole = await userManager.GetRolesAsync(getUser);
+        var userSession = new UserSession(getUser.Id, getUser.Name, getUser.Email, getUserRole[0]);
+
+        string token = GenerateToken(userSession);
+        return new LoginResponse(true, token!, "Login completed",200);
     }
-
     private string GenerateToken(UserSession user)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!));
@@ -205,10 +297,10 @@ public class AuthRepository : IAuthRepository
 
         var userClaims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id ?? ""),
-            new Claim(ClaimTypes.Name, user.Name ?? ""),
-            new Claim(ClaimTypes.Email, user.Email ?? ""),
-            new Claim(ClaimTypes.Role, user.Role ?? "")
+            new Claim("id", user.Id ?? ""),
+            new Claim("username", user.Name ?? ""),
+            new Claim("email", user.Email ?? ""),
+            new Claim("role", user.Role ?? "")
         };
 
         var token = new JwtSecurityToken(
