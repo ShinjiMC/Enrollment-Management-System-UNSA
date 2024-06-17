@@ -1,20 +1,85 @@
-### Create Notification
-POST http://localhost:8001/api/user/create
-Content-Type: application/json
-
+### Register Admin First Time
 {
-  "name": "Nombre del usuario 2",
-  "email": "correo@example.com",
-  "password": "contraseña"
+    "Name": "Admin User",
+    "Email": "admin@example.com",
+    "Password": "Admin@123",
+    "ConfirmPassword": "Admin@123",
+    "Role": "Admin"
+}
+
+### Register User without Role
+{
+    "Name": "Student 1",
+    "Email": "student1@example.com",
+    "Password": "Student@123",
+    "ConfirmPassword": "Student@123",
+    "Role": ""
+}
+
+### Register User with Role
+{
+    "Name": "Student 2",
+    "Email": "student2@example.com",
+    "Password": "Student@123",
+    "ConfirmPassword": "Student@123",
+    "Role": "Student"
+}
+
+### Login as Admin
+POST http://localhost:8001/api/auth/login
+{
+  "email": "admin@example.com",
+  "password": "Admin@123"
+}
+
+
+### Login as Student
+POST http://localhost:8001/api/auth/login
+{
+  "email": "student1@example.com",
+  "password": "User@123"
 }
 
 
 
-### Get Users
-GET  http://localhost:8001/api/user/all
+### Create Admin
+POST http://localhost:8001/api/admin/create
+Content-Type: application/json
+
+{
+    "UserName": "adminuser",
+    "Password": "securepassword123",
+    "FullName": "John Admin",
+    "Role": 1
+}
+
+### Create Student DONT WORKS
+POST http://localhost:8001/api/user/create
+Content-Type: application/json
+
+{
+    "UserName": "studentuser",
+    "Password": "securepassword123",
+    "FullName": "Jane Student",
+    "Role": 0,
+    "CUI": "CUI123456",
+    "Email": "jane.student@example.com",
+    "Courses": []
+}
 
 
 
+### Get Users Admins
+GET  http://localhost:8001/api/admin/all
+
+### Login and get Token
+POST http://localhost:8001/api/authentication/login
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "username": "adminuser"
+}
 
 # dotnet add package coverlet.msbuild
 
