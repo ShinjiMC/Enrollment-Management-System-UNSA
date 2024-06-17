@@ -21,7 +21,8 @@ public class AuthController : ControllerBase
 
     // Endpoints
     [HttpPost("register")]
-    [Authorize(Roles = "Admin")] // Only Admin can register new users
+    [AllowAnonymous]
+    //[Authorize(Roles = "Admin")] // Only Admin can register new users
     public async Task<IActionResult> Register(UserDto userDTO)
     {
         var response = await userAccount.CreateAccount(userDTO);

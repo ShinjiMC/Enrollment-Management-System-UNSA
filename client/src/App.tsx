@@ -4,9 +4,12 @@ import AuthPage from "./pages/AuthPage/AuthPage";
 import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import { useSelector } from "react-redux";
+import { AuthState } from "./types";
 
 function App(): JSX.Element {
-  const user = useSelector((state: any) => state.authReducer.authData);
+  const user = useSelector(
+    (state: { authReducer: AuthState }) => state.authReducer.authData
+  );
 
   return (
     <div className={styles.app}>
