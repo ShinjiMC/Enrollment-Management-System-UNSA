@@ -4,9 +4,9 @@
   --font-weight: 400;
   --color-scheme: light dark;
   --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 17, 17, 17;
+  --background-start-rgb: 55, 0, 0;
   --background-end-rgb: 17, 17, 17;
-  --background-color: #111111;
+  --background-color: #3b1a1a;
   --font-synthesis: none;
   --text-rendering: optimizeLegibility;
   --webkit-font-smoothing: antialiased;
@@ -29,7 +29,13 @@ a {
 }
 
 body {
-  // background: url("https://img.freepik.com/fotos-premium/fondo-rojo-negro-red-puntos-lineas_542670-3170.jpg?w=996");
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
