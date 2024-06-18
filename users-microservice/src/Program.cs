@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using users_microservice.context;
+using users_microservice.DTOs;
 using users_microservice.repositories;
 using users_microservice.services;
 
@@ -85,10 +86,11 @@ builder.Services.AddCors(options =>
 
 
 // Repositories
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 
 // Build app
