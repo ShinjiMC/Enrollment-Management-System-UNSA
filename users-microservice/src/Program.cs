@@ -86,11 +86,11 @@ builder.Services.AddCors(options =>
 
 
 // Repositories
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 
 // Build app

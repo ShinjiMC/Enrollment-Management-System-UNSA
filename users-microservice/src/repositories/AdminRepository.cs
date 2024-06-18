@@ -1,3 +1,4 @@
+using System.Net.NetworkInformation;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using users_microservice.context;
@@ -9,164 +10,99 @@ namespace users_microservice.repositories;
 
 public class AdminRepository : IAdminRepository
 {
-    private readonly UserManager<ApplicationUser> userManager;
-    private readonly RoleManager<IdentityRole> roleManager;
-    private readonly IHttpContextAccessor httpContextAccessor;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
-    // Constructor
-    public AdminRepository(UserManager<ApplicationUser> userManager, 
-                          RoleManager<IdentityRole> roleManager, 
-                          IHttpContextAccessor httpContextAccessor)
+    public AdminRepository(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
     {
-        this.userManager = userManager;
-        this.roleManager = roleManager;        
-        this.httpContextAccessor = httpContextAccessor;
+        _userManager = userManager;
+        _roleManager = roleManager;
     }
 
-    public  async Task<GeneralResponse> CreateAdminAccount(UserDto userDto)
+    public async Task<GeneralResponse> CreateUser(ApplicationUser user, string password)
     {
-        if (userDto is null) return new GeneralResponse(false, "Model is empty", 400);
-        var newUser = new ApplicationUser()
-        {
-            FullName = userDto.Name,
-            Email = userDto.Email,
-            UserName = userDto.Email?.Split('@')[0]
-        };
+        var result = await _userManager.CreateAsync(user, password);
 
-        var user = await userManager.FindByEmailAsync(newUser.Email);
-        if (user is not null) return new GeneralResponse(false, "User registered already",409);
-
-        var createUser = await userManager.CreateAsync(newUser!, userDto.Password);
-        if (!createUser.Succeeded) return new GeneralResponse(false, "Error occured.. please try again", 403);
-
-        var adminRoleExists = await roleManager.RoleExistsAsync(Role.ADMIN.ToString());
-        if (!adminRoleExists)
-        {
-            await roleManager.CreateAsync(new IdentityRole() { Name = Role.ADMIN.ToString() });
-        }
-
-        await userManager.AddToRoleAsync(newUser, Role.ADMIN.ToString());
-
-        return new GeneralResponse(true, "Account Created with Admin role",200);
+        return result.Succeeded
+            ? new GeneralResponse(true, "User created successfully", 200)
+            : new GeneralResponse(false, string.Join(", ", result.Errors.Select(e => e.Description)), 403);
     }
 
-    // Refactoring
-    public async Task<ApplicationUser> GetUserById(string id)
+    public async Task<ApplicationUser?> GetUserById(string id)
     {
-        var res = await userManager.FindByIdAsync(id) ?? throw new InvalidOperationException("No user found in DB");
-
-        var newUser = new ApplicationUser()
-        {
-            Id = res.Id,
-            FullName = res.FullName, // Asignar el nombre o cualquier otro campo que desees utilizar
-            Email = res.Email,
-            UserName = res.UserName
-        };
-        return newUser;
+        var user = await _userManager.FindByIdAsync(id);
+        return user;
     }
 
-    public async Task<ApplicationUser> GetUserByEmail(string email)
+    public async Task<ApplicationUser?> GetUserByEmail(string email)
     {
-        var res = await userManager.FindByEmailAsync(email) ?? throw new InvalidOperationException("No user found with the specified email");
-        var newUser = new ApplicationUser()
-        {
-            Id = res.Id,
-            FullName = res.FullName, // Asignar el nombre o cualquier otro campo que desees utilizar
-            Email = res.Email,
-            UserName = res.UserName
-        };
-
-        return newUser;
+        var user = await _userManager.FindByEmailAsync(email);
+        return user;
     }
 
-    public async Task<ApplicationUser> GetUserByUserName(string userName)
+    public async Task<ApplicationUser?> GetUserByUserName(string userName)
     {
-        var res = await userManager.FindByNameAsync(userName);
-        if (res == null)
-        {
-            throw new InvalidOperationException("No user found with the specified username");
-        }
-
-        var newUser = new ApplicationUser()
-        {
-            Id = res.Id,
-            FullName = res.FullName, // Asignar el nombre o cualquier otro campo que desees utilizar
-            Email = res.Email,
-            UserName = res.UserName
-        };
-
-        return newUser;
+        var user = await _userManager.FindByNameAsync(userName);
+        return user;
     }
 
-    public async Task<GeneralResponse> UpdateUserById(UserDto userDto)
+    public async Task<GeneralResponse> UpdateUser(ApplicationUser userDto)
     {
-        if (userDto == null || string.IsNullOrEmpty(userDto.Id))
-        {
-            return new GeneralResponse(false, "Invalid user ID", 400);
-        }
-
-        // Check if the user exists in the User table
-        var user = await userManager.FindByIdAsync(userDto.Id);
-        if (user == null)
-        {
-            return new GeneralResponse(false, "User not found", 404);
-        }
-
-        // Update common properties for both User and Student
-        user.FullName = userDto.Name;
-        user.Email = userDto.Email;
-
-        IdentityResult result;
-
-        if (await userManager.IsInRoleAsync(user, Role.ADMIN.ToString()))
-        {
-            // Update user properties in the User table
-            result = await userManager.UpdateAsync(user);
-        }
-        else if (await userManager.IsInRoleAsync(user, Role.STUDENT.ToString()))
-        {
-            // Update user properties in the ApplicationUser table (AspNetUsers)
-            result = await userManager.UpdateAsync(user);
-        }
-        else
-        {
-            return new GeneralResponse(false, "User is not an admin or student", 400);
-        }
-
-        // Check the update result
-        if (result.Succeeded)
-        {
-            return new GeneralResponse(true, "User updated successfully", 200);
-        }
-        else
-        {
-            return new GeneralResponse(false, string.Join(", ", result.Errors.Select(e => e.Description)), 400);
-        }
+        var updateUserResult = await  _userManager.UpdateAsync(userDto);
+        
+        return updateUserResult.Succeeded
+            ? new GeneralResponse(true, "User updated successfully", 200)
+            : new GeneralResponse(false, string.Join(", ", updateUserResult.Errors.Select(e => e.Description)), 400);
     }
 
-    public async Task<GeneralResponse> DeleteUserById(string id)
+    public async Task<GeneralResponse> DeleteUser(ApplicationUser user)
     {
-        if (string.IsNullOrEmpty(id))
-        {
-            return new GeneralResponse(false, "Invalid user ID", 400);
-        }
+        var deleteUserResult = await _userManager.DeleteAsync(user);
 
-        // Buscar el usuario por Id en ASP.NET Identity
-        var user = await userManager.FindByIdAsync(id);
-        if (user == null)
-        {
-            return new GeneralResponse(false, "User not found", 404);
-        }
+        return deleteUserResult.Succeeded
+            ? new GeneralResponse(true, "Admin account deleted successfully", 200)
+            : new GeneralResponse(false, string.Join(", ", deleteUserResult.Errors.Select(e => e.Description)), 500);
 
-        // Eliminar el usuario de ASP.NET Identity
-        var result = await userManager.DeleteAsync(user);
-        if (!result.Succeeded)
-        {
-            return new GeneralResponse(false, "Failed to delete user", 500); // Cambia el código de estado según sea necesario
-        }
-
-        return new GeneralResponse(true, "User deleted successfully", 200);
+    }
+    public async Task<bool> CheckRoleExists(string roleName)
+    {
+        return await _roleManager.RoleExistsAsync(roleName);
     }
 
+    public async Task<GeneralResponse> CreateRole(string roleName)
+    {
+        var result = await _roleManager.CreateAsync(new IdentityRole(roleName));
+
+        return result.Succeeded
+            ? new GeneralResponse(true, "Role created successfully", 200)
+            : new GeneralResponse(false, string.Join(", ", result.Errors.Select(e => e.Description)), 403);
+    }
+
+    public async Task<GeneralResponse> AddUserToRole(ApplicationUser user, string roleName)
+    {
+        var result = await _userManager.AddToRoleAsync(user, roleName);
+
+        return result.Succeeded
+            ? new GeneralResponse(true, "User added to role successfully", 200)
+            : new GeneralResponse(false, string.Join(", ", result.Errors.Select(e => e.Description)), 403);
+    }
     
+    public async Task<IList<ApplicationUser>> GetAllUserByRol(string userRole){
+        
+        var listUsers = await _userManager.GetUsersInRoleAsync(userRole);
+        
+        return listUsers?.ToList() ?? [];
+    }
+
+
+    // Implementación de los nuevos métodos
+    public async Task<bool> CheckPassword(ApplicationUser user, string password)
+    {
+        return await _userManager.CheckPasswordAsync(user, password);
+    }
+
+    public async Task<IList<string>> GetUserRole(ApplicationUser user)
+    {
+        return await _userManager.GetRolesAsync(user);
+    }
 }
