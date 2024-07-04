@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace course_microservice.DTOs
 {
-    public class CourseDto
+    public class CourseModel
     {
         [Required]
         public int ID { get; set; }
@@ -18,5 +18,8 @@ namespace course_microservice.DTOs
         [Required]
         [Range(1, 50, ErrorMessage = "Credits must be between 1 and 50.")]
         public int Credits { get; set; }
+
+        [Required]
+        public int Year { get; set; }
     }
 }

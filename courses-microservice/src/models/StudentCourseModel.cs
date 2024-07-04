@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace course_microservice.DTOs
 {
-    public class StudentCourseDto
+    public class StudentCourseModel
     {
         [Key]
         public int StudentCourseID { get; set; }
@@ -12,7 +12,6 @@ namespace course_microservice.DTOs
         public int StudentID { get; set; }
 
         [Required]
-        [ForeignKey("Course")]
         public int CourseID { get; set; }
 
         [Required]
@@ -24,6 +23,6 @@ namespace course_microservice.DTOs
         [Range(2000, 2100, ErrorMessage = "Year must be between 2000 and 2100.")]
         public int Year { get; set; }
 
-        public CourseDto? Course { get; set; }
+        public CourseModel? Course { get; set; }
     }
 }

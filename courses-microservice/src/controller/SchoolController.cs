@@ -53,7 +53,7 @@ namespace course_microservice.controllers
         {
             var schoolModel = ConvertToSchoolModel(schoolDto);
             var addedSchool = await _schoolService.AddSchool(schoolModel);
-            return CreatedAtAction(nameof(GetSchool), new { id = addedSchool.SchoolID }, addedSchool);
+            return CreatedAtAction(nameof(GetSchool), new { id = addedSchool.ID }, addedSchool);
         }
 
         [HttpPut("{id}")]
@@ -85,7 +85,7 @@ namespace course_microservice.controllers
         {
             return new SchoolModel
             {
-                SchoolID = schoolDto.SchoolID,
+                ID = schoolDto.ID,
                 Name = schoolDto.Name,
                 Faculty = schoolDto.Faculty,
                 Area = schoolDto.Area,

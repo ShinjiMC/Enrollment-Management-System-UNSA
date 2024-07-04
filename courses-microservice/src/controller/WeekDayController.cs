@@ -48,7 +48,7 @@ namespace course_microservice.controllers
         {
             var weekDayModel = ConvertToWeekDayModel(weekDayDto);
             var addedWeekDay = await _weekDayService.AddWeekDay(weekDayModel);
-            return CreatedAtAction(nameof(GetWeekDay), new { id = addedWeekDay.DayOfWeekID }, addedWeekDay);
+            return CreatedAtAction(nameof(GetWeekDay), new { id = addedWeekDay.ID }, addedWeekDay);
         }
 
         [HttpPut("{id}")]
@@ -78,7 +78,7 @@ namespace course_microservice.controllers
         {
             return new WeekDayModel
             {
-                DayOfWeekID = weekDayDto.DayOfWeekID,
+                ID = weekDayDto.ID,
                 Name = weekDayDto.Name
             };
         }

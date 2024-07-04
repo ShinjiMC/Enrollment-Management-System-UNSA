@@ -1,4 +1,5 @@
 using course_microservice.context;
+using course_microservice.DTOs;
 using course_microservice.models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -58,6 +59,7 @@ namespace course_microservice.repositories
                 course.Name = updatedCourse.Name;
                 course.Semester = updatedCourse.Semester;
                 course.Credits = updatedCourse.Credits;
+                course.Year = updatedCourse.Year;
                 await _dbContext.SaveChangesAsync();
             }
             return course;

@@ -32,6 +32,11 @@ builder.Services.AddSwaggerGen(options =>
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
+
+builder.Services.AddScoped<IWeekDayRepository, WeekDayRepository>();
+
+builder.Services.AddScoped<IWeekDayService, WeekDayService>();
+
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 
 builder.Services.AddScoped<ICourseService, CourseService>();
@@ -39,6 +44,11 @@ builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
 
 builder.Services.AddScoped<ISchoolService, SchoolService>();
+
+builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
+
+builder.Services.AddScoped<IScheduleService, ScheduleService>();
+
 
 
 // Build app
@@ -55,11 +65,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapGet("/", () => "This is Courses Microservice !!!");
-
-using (var scope = app.Services.CreateScope())
-{
-    //var dbContext = scope.ServiceProvider.GetRequiredService<MyDbContext>();
-    //dbContext.Database.Migrate();
-}
 
 app.Run();

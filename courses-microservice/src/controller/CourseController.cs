@@ -88,7 +88,8 @@ namespace course_microservice.controllers
                 ID = courseDto.ID,
                 Name = courseDto.Name,
                 Semester = courseDto.Semester,
-                Credits = courseDto.Credits
+                Credits = courseDto.Credits,
+                Year = courseDto.Year
             };
         }
     }

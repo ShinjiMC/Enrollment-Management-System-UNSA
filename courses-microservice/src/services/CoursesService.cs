@@ -1,3 +1,4 @@
+using course_microservice.DTOs;
 using course_microservice.models;
 using course_microservice.repositories;
 

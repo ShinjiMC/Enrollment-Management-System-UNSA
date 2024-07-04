@@ -38,7 +38,7 @@ namespace course_microservice.repositories
         public async Task<SchoolModel> AddSchool(SchoolModel school)
         {
             // Verificar si ya existe una escuela con el mismo ID
-            var existingSchool = await _dbContext.School.FindAsync(school.SchoolID);
+            var existingSchool = await _dbContext.School.FindAsync(school.ID);
             if (existingSchool != null)
             {
                 // Si ya existe una escuela con el mismo ID, no la agregamos y devolvemos null
