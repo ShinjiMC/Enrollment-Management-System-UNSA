@@ -40,19 +40,6 @@ namespace course_microservice.repositories
 
         public async Task<ScheduleModel> AddSchedule(ScheduleModel schedule)
         {
-            var existingSchedule = await _dbContext.Schedule
-                .FirstOrDefaultAsync(s => s.CourseID == schedule.CourseID &&
-                                          s.WeekDayID == schedule.WeekDayID &&
-                                          s.SchoolID == schedule.SchoolID &&
-                                          s.Group == schedule.Group &&
-                                          s.Year == schedule.Year);
-
-            if (existingSchedule != null)
-            {
-                // Si ya existe un horario con la misma combinación, no lo agregamos
-                return null;
-            }
-
             _dbContext.Schedule.Add(schedule);
             await _dbContext.SaveChangesAsync();
             return schedule;

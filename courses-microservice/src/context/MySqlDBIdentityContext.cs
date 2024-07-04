@@ -10,13 +10,14 @@ namespace course_microservice.context
         public MyDbContext(DbContextOptions<MyDbContext> options)
             : base(options)
         {
-            InitializeDatabase();
+            //InitializeDatabase();
         }
 
         public DbSet<WeekDayModel> WeekDay { get; set; }
         public DbSet<CourseModel> Course { get; set; }
         public DbSet<SchoolModel> School { get; set; }
         public DbSet<ScheduleModel> Schedule { get; set; }
+        public DbSet<CoursePrerequisiteModel> CoursePrerequisites { get; set; }
 
         // Mover la inicialización de la base de datos a un método separado
         public void InitializeDatabase()
@@ -32,6 +33,8 @@ namespace course_microservice.context
 
             SaveChanges();
 
+            AddCoursePrerequisites();
+
             // Añadir horarios de ejemplo
             AddSchedules();
 
@@ -45,23 +48,52 @@ namespace course_microservice.context
             var course1 = new CourseModel
             {
                 ID = 1,
-                Name = "Curso 1",
+                Name = "Ingenieria de Software I",
                 Semester = 'A',
                 Credits = 3,
-                Year = 3
+                Year = 3,
+                Hours = 8
             };
 
             var course2 = new CourseModel
             {
                 ID = 2,
-                Name = "Curso 2",
+                Name = "Ingenieria de Software II",
                 Semester = 'B',
                 Credits = 4,
-                Year = 4
+                Year = 3,
+                Hours = 6
+            };
+
+            var course3 = new CourseModel
+            {
+                ID = 3,
+                Name = "Ingenieria de Software III",
+                Semester = 'A',
+                Credits = 4,
+                Year = 4,
+                Hours = 8
             };
 
             if (Course.Find(1) == null) Course.Add(course1);
             if (Course.Find(2) == null) Course.Add(course2);
+            if (Course.Find(3) == null) Course.Add(course3);
+
+        }
+        private void AddCoursePrerequisites(){
+            var prerequisite1 = new CoursePrerequisiteModel{
+                ID = 1,
+                CourseID = 3,
+                PrerequisiteCourseID = 2
+            };
+            var prerequisite2 = new CoursePrerequisiteModel{
+                ID = 2,
+                CourseID = 2,
+                PrerequisiteCourseID = 1
+            };
+
+            if (CoursePrerequisites.Find(1) == null) CoursePrerequisites.Add(prerequisite1);
+            if (CoursePrerequisites.Find(2) == null) CoursePrerequisites.Add(prerequisite2);
         }
 
         private void AddWeekDays()
@@ -93,7 +125,7 @@ namespace course_microservice.context
                     Name = "Software Engineering",
                     Faculty = "Engineering",
                     Area = "Software",
-                    FoundationDate = new DateTime(2000, 1, 1)
+                    FoundationDate = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                 },
                 new SchoolModel
                 {
@@ -101,7 +133,7 @@ namespace course_microservice.context
                     Name = "Computer Science",
                     Faculty = "Engineering",
                     Area = "Information Technology",
-                    FoundationDate = new DateTime(1990, 1, 1)
+                    FoundationDate = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                 },
                 new SchoolModel
                 {
@@ -109,7 +141,7 @@ namespace course_microservice.context
                     Name = "Systems Engineering",
                     Faculty = "Engineering",
                     Area = "Systems",
-                    FoundationDate = new DateTime(1985, 1, 1)
+                    FoundationDate = new DateTime(1985, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                 },
                 new SchoolModel
                 {
@@ -117,9 +149,10 @@ namespace course_microservice.context
                     Name = "Art",
                     Faculty = "Humanity",
                     Area = "Humanity",
-                    FoundationDate = new DateTime(2004, 1, 1)
+                    FoundationDate = new DateTime(2004, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                 }
             };
+
 
             foreach (var school in schools)
             {

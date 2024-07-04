@@ -14,6 +14,8 @@ namespace course_microservice.repositories
         Task<CourseModel> AddCourse(CourseModel course);
         Task<CourseModel> UpdateCourse(int ID, CourseModel updatedCourse);
         Task<bool> DeleteCourse(int ID);
+        Task<List<CourseModel>> GetCoursePrerequisites(int courseId);
+        Task<CoursePrerequisiteModel> AddCoursePrerequisite(int courseId, int prerequisiteCourseId);
     }
 
     public class CourseRepository : ICourseRepository
@@ -75,6 +77,29 @@ namespace course_microservice.repositories
                 return true;
             }
             return false;
+        }
+
+        public async Task<List<CourseModel>> GetCoursePrerequisites(int courseId)
+        {
+            var prerequisites = await _dbContext.CoursePrerequisites
+                .Where(cp => cp.CourseID == courseId)
+                .Include(cp => cp.PrerequisiteCourse)
+                .Select(cp => cp.PrerequisiteCourse)
+                .ToListAsync();
+
+            return prerequisites;
+        }
+
+        public async Task<CoursePrerequisiteModel> AddCoursePrerequisite(int courseId, int prerequisiteCourseId)
+        {
+            var coursePrerequisite = new CoursePrerequisiteModel
+            {
+                CourseID = courseId,
+                PrerequisiteCourseID = prerequisiteCourseId
+            };
+            _dbContext.CoursePrerequisites.Add(coursePrerequisite);
+            await _dbContext.SaveChangesAsync();
+            return coursePrerequisite;
         }
     }
 }

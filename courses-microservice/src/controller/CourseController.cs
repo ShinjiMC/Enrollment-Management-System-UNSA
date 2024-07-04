@@ -14,6 +14,8 @@ namespace course_microservice.controllers
         Task<IActionResult> AddCourse(CourseDto courseDto);
         Task<IActionResult> UpdateCourse(int id, CourseDto courseDto);
         Task<IActionResult> DeleteCourse(int id);
+        Task<IActionResult> GetCoursePrerequisites(int courseId);
+        Task<IActionResult> AddCoursePrerequisite(int courseId, int prerequisiteCourseId);
     }
 
     [Route("api/[controller]")]
@@ -81,6 +83,25 @@ namespace course_microservice.controllers
             return NoContent();
         }
 
+        [HttpGet("{courseId}/prerequisites")]
+        public async Task<IActionResult> GetCoursePrerequisites(int courseId)
+        {
+            var prerequisites = await _courseService.GetCoursePrerequisites(courseId);
+            return Ok(prerequisites);
+        }
+
+        [HttpPost("prerequisites")]
+        //[Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddCoursePrerequisite(int courseId, int prerequisiteCourseId)
+        {
+            var addedPrerequisite = await _courseService.AddCoursePrerequisite(courseId, prerequisiteCourseId);
+            if (addedPrerequisite == null)
+            {
+                return BadRequest("Prerequisite could not be added.");
+            }
+            return CreatedAtAction(nameof(GetCoursePrerequisites), new { courseId = courseId }, addedPrerequisite);
+        }
+
         private CourseModel ConvertToCourseModel(CourseDto courseDto)
         {
             return new CourseModel
@@ -89,7 +110,8 @@ namespace course_microservice.controllers
                 Name = courseDto.Name,
                 Semester = courseDto.Semester,
                 Credits = courseDto.Credits,
-                Year = courseDto.Year
+                Year = courseDto.Year,
+                Hours = courseDto.Hours
             };
         }
     }

@@ -21,5 +21,8 @@ namespace course_microservice.DTOs
 
         [Required]
         public int Year { get; set; }
+
+        [Required]
+        public int Hours { get; set; } 
     }
 }

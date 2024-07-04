@@ -11,6 +11,8 @@ namespace course_microservice.services
         Task<CourseModel> AddCourse(CourseModel course);
         Task<CourseModel> UpdateCourse(int ID, CourseModel course);
         Task<bool> DeleteCourse(int ID);
+        Task<List<CourseModel>> GetCoursePrerequisites(int courseId);
+        Task<CoursePrerequisiteModel> AddCoursePrerequisite(int courseId, int prerequisiteCourseId);
     }
 
     public class CourseService : ICourseService
@@ -45,6 +47,14 @@ namespace course_microservice.services
         public Task<bool> DeleteCourse(int ID)
         {
             return _courseRepository.DeleteCourse(ID);
+        }
+        public Task<List<CourseModel>> GetCoursePrerequisites(int courseId)
+        {
+            return _courseRepository.GetCoursePrerequisites(courseId);
+        }
+        public Task<CoursePrerequisiteModel> AddCoursePrerequisite(int courseId, int prerequisiteCourseId)
+        {
+            return _courseRepository.AddCoursePrerequisite(courseId, prerequisiteCourseId);
         }
     }
 }

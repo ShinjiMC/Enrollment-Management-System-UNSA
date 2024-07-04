@@ -14,7 +14,7 @@ namespace course_microservice.DTOs
 
         public int SchoolID { get; set; }
 
-        public string Group { get; set; }
+        public string Group { get; set; } = string.Empty;
 
         public int Year { get; set; }
 
@@ -23,7 +23,7 @@ namespace course_microservice.DTOs
         public DateTime EndTime { get; set; }
 
         [StringLength(200)]
-        public string TeacherFullName { get; set; }
+        public string TeacherFullName { get; set; } = string.Empty;
 
         public int Capacity { get; set; }
 

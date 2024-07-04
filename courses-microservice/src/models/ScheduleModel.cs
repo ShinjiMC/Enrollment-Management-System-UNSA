@@ -20,7 +20,7 @@ namespace course_microservice.DTOs
 
         [Required]
         [StringLength(2)]
-        public string Group { get; set; }
+        public string Group { get; set; } = string.Empty;
 
         [Required]
         public int Year { get; set; }

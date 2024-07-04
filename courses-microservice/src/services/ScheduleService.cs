@@ -17,21 +17,12 @@ namespace course_microservice.services
     public class ScheduleService : IScheduleService
     {
         private readonly IScheduleRepository _scheduleRepository;
-        private readonly ICourseRepository _courseRepository;
-        private readonly IWeekDayRepository _weekDayRepository;
-        private readonly ISchoolRepository _schoolRepository;
 
 
         public ScheduleService(
-            IScheduleRepository scheduleRepository,
-            ICourseRepository courseRepository,
-            IWeekDayRepository weekDayRepository,
-            ISchoolRepository schoolRepository)
+            IScheduleRepository scheduleRepository)
         {
             _scheduleRepository = scheduleRepository;
-            _courseRepository = courseRepository;
-            _weekDayRepository = weekDayRepository;
-            _schoolRepository = schoolRepository;
         }
 
         public async Task<List<ScheduleModel>> GetAllSchedules()
@@ -49,9 +40,9 @@ namespace course_microservice.services
             return await _scheduleRepository.AddSchedule(schedule);
         }
 
-        public async Task<ScheduleModel> UpdateSchedule(int ID, ScheduleModel schedule)
+        public async Task<ScheduleModel> UpdateSchedule(int ID, ScheduleModel updatedSchedule)
         {
-            return await _scheduleRepository.UpdateSchedule(ID, schedule);
+            return await _scheduleRepository.UpdateSchedule(ID, updatedSchedule);
         }
 
         public async Task<bool> DeleteSchedule(int ID)
