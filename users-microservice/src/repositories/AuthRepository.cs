@@ -3,114 +3,103 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using users_microservice.context;
 using users_microservice.DTOs;
+using users_microservice.models;
 using static users_microservice.DTOs.ServiceResponses;
 
 namespace users_microservice.repositories;
 
 public class AuthRepository : IAuthRepository
 {
-    private readonly UserManager<ApplicationUser> userManager;
+    const string UserNotFoundErrorMessage = "User not found";
+    private readonly UserManager<UserModel> _userManager;
     private readonly RoleManager<IdentityRole> roleManager;
     private readonly IConfiguration config;
 
     // Constructor
-    public AuthRepository(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration config)
+    public AuthRepository(UserManager<UserModel> userManager, RoleManager<IdentityRole> roleManager, IConfiguration config)
     {
-        this.userManager = userManager;
+        this._userManager = userManager;
         this.roleManager = roleManager;
         this.config = config;
     }
     
     // Methods
-    public async Task<GeneralResponse> CreateAccount(UserDto userDto)
+
+    public async Task<IdentityResult> RegisterAdmin(RegisterAdminDto registerAdminDto)
+{
+    var adminUser = new AdminUser()
     {
-        if (userDto is null) return new GeneralResponse(false, "Model is empty");
-        var newUser = new ApplicationUser()
-        {
-            Name = userDto.Name,
-            Email = userDto.Email,
-            PasswordHash = userDto.Password,
-            UserName = userDto.Email
-        };
-        var user = await userManager.FindByEmailAsync(newUser.Email);
-        if (user is not null) return new GeneralResponse(false, "User registered already");
+        UserName = registerAdminDto.UserName,
+        Email = registerAdminDto.Email,
+        FullName = registerAdminDto.FullName,
+        School = registerAdminDto.School,
+        PhoneNumber = registerAdminDto.PhoneNumber,
+        Role = "Admin" // Set the role explicitly for AdminUser
+    };
 
-        var createUser = await userManager.CreateAsync(newUser!, userDto.Password);
-        if (!createUser.Succeeded) return new GeneralResponse(false, "Error occured.. please try again");
-
-        var usersCount = userManager.Users.Count();
-        if (usersCount == 1) // Primer usuario registrado
-        {
-            var adminRoleExists = await roleManager.RoleExistsAsync("Admin");
-            if (!adminRoleExists)
-            {
-                await roleManager.CreateAsync(new IdentityRole() { Name = "Admin" });
-            }
-
-            await userManager.AddToRoleAsync(newUser, "Admin");
-            return new GeneralResponse(true, "Account Created with Admin role");
-        }
-        else
-        {
-            var roleToAssign = string.IsNullOrEmpty(userDto.Role) ? "Student" : userDto.Role;
-            var roleExists = await roleManager.RoleExistsAsync(roleToAssign);
-            if (!roleExists)
-            {
-                await roleManager.CreateAsync(new IdentityRole() { Name = roleToAssign });
-            }
-
-            await userManager.AddToRoleAsync(newUser, roleToAssign);
-            return new GeneralResponse(true, "Account Created");
-        }
-
-        // var roleExists = await roleManager.RoleExistsAsync(userDto.Role);
-        // if (!roleExists)
-        // {
-        //     await roleManager.CreateAsync(new IdentityRole() { Name = userDto.Role });
-        // }
-
-        // await userManager.AddToRoleAsync(newUser, userDto.Role);
-        //     return new GeneralResponse(true, "Account Created");
-
-        //Assign Default Role : Admin to first registrar; rest is user
-        // var checkAdmin = await roleManager.FindByNameAsync("Admin");
-        // if (checkAdmin is null)
-        // {
-        //     await roleManager.CreateAsync(new IdentityRole() { Name = "Admin" });
-        //     await userManager.AddToRoleAsync(newUser, "Admin");
-        //     return new GeneralResponse(true, "Account Created");
-        // }
-        // else
-        // {
-        //     var checkUser = await roleManager.FindByNameAsync("User");
-        //     if (checkUser is null)
-        //         await roleManager.CreateAsync(new IdentityRole() { Name = "User" });
-
-        //     await userManager.AddToRoleAsync(newUser, "User");
-        //     return new GeneralResponse(true, "Account Created");
-        // }
+    var userExists = await _userManager.FindByEmailAsync(registerAdminDto.Email);
+    if (userExists != null)
+    {
+        return IdentityResult.Failed(new IdentityError { Description = "User already exists" });
     }
 
-    public async Task<LoginResponse> LoginAccount(LoginDto loginDto)
+    var result = await _userManager.CreateAsync(adminUser, registerAdminDto.Password);
+    if (!result.Succeeded)
     {
-        if (loginDto == null)
-            return new LoginResponse(false, null!, "Login container is empty");
+        return result;
+    }
 
-        var getUser = await userManager.FindByEmailAsync(loginDto.Email);
-        if (getUser is null)
-            return new LoginResponse(false, null!, "User not found");
+    await EnsureRoleExistsAsync("Admin"); // Ensure the 'Admin' role exists
+    await _userManager.AddToRoleAsync(adminUser, "Admin");
 
-        bool checkUserPasswords = await userManager.CheckPasswordAsync(getUser, loginDto.Password);
-        if (!checkUserPasswords)
-            return new LoginResponse(false, null!, "Invalid email/password");
+    return IdentityResult.Success;
+}
 
-        var getUserRole = await userManager.GetRolesAsync(getUser);
-        var userSession = new UserSession(getUser.Id, getUser.Name, getUser.Email, getUserRole[0]);
+public async Task<IdentityResult> RegisterStudent(RegisterStudentDto registerStudentDto)
+{
+    var studentUser = new StudentUser()
+    {
+        UserName = registerStudentDto.UserName,
+        Email = registerStudentDto.Email,
+        FullName = registerStudentDto.FullName,
+        School = registerStudentDto.School,
+        CUI = registerStudentDto.CUI,
+        Courses = registerStudentDto.Courses,
+        Role = "Student" // Set the role explicitly for StudentUser
+    };
 
-        string token = GenerateToken(userSession);
-        return new LoginResponse(true, token!, "Login completed");
+    var userExists = await _userManager.FindByEmailAsync(registerStudentDto.Email);
+    if (userExists != null)
+    {
+        return IdentityResult.Failed(new IdentityError { Description = "User already exists" });
+    }
+
+    var result = await _userManager.CreateAsync(studentUser, registerStudentDto.Password);
+    if (!result.Succeeded)
+    {
+        return result;
+    }
+
+    await EnsureRoleExistsAsync("Student"); // Ensure the 'Student' role exists
+    await _userManager.AddToRoleAsync(studentUser, "Student");
+
+    return IdentityResult.Success;
+}
+
+private async Task EnsureRoleExistsAsync(string roleName)
+{
+    if (!await roleManager.RoleExistsAsync(roleName))
+    {
+        await roleManager.CreateAsync(new IdentityRole(roleName));
+    }
+}
+
+
+    public async Task<UserModel?> FindByEmailAsync(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        return user;
     }
 
     private string GenerateToken(UserSession user)
@@ -132,5 +121,26 @@ public class AuthRepository : IAuthRepository
             signingCredentials: credentials
             );
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+    
+
+    public async Task<LoginResponse> LoginAccount(LoginDto loginDto)
+    {
+
+        if (loginDto == null)
+            return new LoginResponse(false, null!, "Login container is empty");
+
+        var getUser = await _userManager.FindByEmailAsync(loginDto.Email);
+        if (getUser is null)
+            return new LoginResponse(false, null!, UserNotFoundErrorMessage);
+
+        bool checkUserPasswords = await _userManager.CheckPasswordAsync(getUser, loginDto.Password);
+        if (!checkUserPasswords)
+            return new LoginResponse(false, null!, "Invalid email/password");
+
+        var getUserRole = await _userManager.GetRolesAsync(getUser);
+        var userSession = new UserSession(getUser.Id, getUser.FullName, getUser.Email, getUserRole[0]);
+        string token = GenerateToken(userSession);
+        return new LoginResponse(true, token!, "Login completed");
     }
 }

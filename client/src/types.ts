@@ -22,6 +22,7 @@ export interface LoginFormData {
 }
 
 export interface DataDecoded {
+  token: string;
   id: string;
   username: string;
   email: string;

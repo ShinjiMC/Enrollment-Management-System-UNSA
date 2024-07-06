@@ -1,4 +1,4 @@
-using users_microservice.models;
+/*using users_microservice.models;
 using users_microservice.repositories;
 
 namespace users_microservice.services;
@@ -21,4 +21,4 @@ public class StudentService : IStudentService
         {
             return _studentRepository.GetAllStudents();
         }
-    }
+    }*/

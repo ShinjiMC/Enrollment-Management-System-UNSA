@@ -10,7 +10,6 @@ namespace users_microservice.controllers;
 [ApiController]
 public class AuthController : ControllerBase
 {
-
     private readonly IAuthRepository userAccount;
 
     // Constructor
@@ -19,16 +18,41 @@ public class AuthController : ControllerBase
         this.userAccount = userAccount;
     }
 
-    // Endpoints
-    [HttpPost("register")]
+    [HttpPost("register/admin")]
     [AllowAnonymous]
-    //[Authorize(Roles = "Admin")] // Only Admin can register new users
-    public async Task<IActionResult> Register(UserDto userDTO)
+    public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminDto registerAdminDto)
     {
-        var response = await userAccount.CreateAccount(userDTO);
-        return Ok(response);
-    }
+        var userExists = await userAccount.FindByEmailAsync(registerAdminDto.Email);
+        if (userExists != null)
+        {
+            return BadRequest("User already exists");
+        }
 
+        var result = await userAccount.RegisterAdmin(registerAdminDto);
+        if (!result.Succeeded)
+        {
+            return BadRequest(result.Errors);
+        }
+
+        return Ok("Admin registered successfully");
+    }
+    [HttpPost("register/student")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> RegisterStudent([FromBody] RegisterStudentDto registerStudentDto)
+    {
+        var userExists = await userAccount.FindByEmailAsync(registerStudentDto.Email);
+        if (userExists != null)
+        {
+            return BadRequest("User already exists");
+        }
+        var result = await userAccount.RegisterStudent(registerStudentDto);
+        if (!result.Succeeded)
+        {
+            return BadRequest(result.Errors);
+        }
+        return Ok("Student registered successfully");
+    }
+    
     [HttpPost("login")]
     [AllowAnonymous]
     public async Task<IActionResult> Login(LoginDto loginDTO)
@@ -36,6 +60,5 @@ public class AuthController : ControllerBase
         var response = await userAccount.LoginAccount(loginDTO);
         return Ok(response);
     }
-    
 }
 
