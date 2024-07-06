@@ -47,3 +47,22 @@ Si necesita añadir información inicial a la base de datos, siga estos pasos:
     ```
 
 Siguiendo estos pasos, debería poder iniciar el proyecto, crear las tablas necesarias y añadir información inicial a la base de datos de manera efectiva.
+
+### 6. Realizar test
+
+1. Ingresar a la carpeta test:
+```sh
+cd test
+```
+
+1. Instalar las siguientes dependencias:
+
+```sh
+dotnet add package coverlet.msbuild
+dotnet tool install --global dotnet-reportgenerator-globaltool
+```
+2. Generar test con coverage
+
+```sh
+dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+```

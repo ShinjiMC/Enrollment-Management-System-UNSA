@@ -49,8 +49,6 @@ builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
 
 builder.Services.AddScoped<IScheduleService, ScheduleService>();
 
-
-
 // Build app
 var app = builder.Build();
 

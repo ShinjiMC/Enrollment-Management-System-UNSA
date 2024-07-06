@@ -36,12 +36,6 @@ namespace course_microservice.repositories
 
         public async Task<WeekDayModel> AddWeekDay(WeekDayModel weekDay)
         {
-            var existingWeekDay = await _dbContext.WeekDay.FindAsync(weekDay.ID);
-            if (existingWeekDay != null)
-            {
-                return null;
-            }
-
             _dbContext.WeekDay.Add(weekDay);
             await _dbContext.SaveChangesAsync();
             return weekDay;

@@ -10,8 +10,8 @@ namespace course_microservice.controllers
     {
         Task<IActionResult> GetAllSchedules();
         Task<IActionResult> GetSchedule(int id);
-        Task<IActionResult> AddSchedule(ScheduleDto ScheduleModel);
-        Task<IActionResult> UpdateSchedule(int id, ScheduleDto ScheduleModel);
+        Task<IActionResult> AddSchedule(ScheduleDto ScheduleDto);
+        Task<IActionResult> UpdateSchedule(int id, ScheduleDto ScheduleDto);
         Task<IActionResult> DeleteSchedule(int id);
 
         Task<IActionResult> GetSchedulesByYearSemesterSchool(int year, char semester, int schoolID);
@@ -47,9 +47,9 @@ namespace course_microservice.controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddSchedule(ScheduleDto ScheduleModel)
+        public async Task<IActionResult> AddSchedule(ScheduleDto ScheduleDto)
         {
-            var scheduleModel = ConvertToScheduleModel(ScheduleModel);
+            var scheduleModel = ConvertToScheduleModel(ScheduleDto);
             var addedSchedule = await _scheduleService.AddSchedule(scheduleModel);
             if (addedSchedule == null)
             {
@@ -59,9 +59,9 @@ namespace course_microservice.controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSchedule(int id, ScheduleDto ScheduleModel)
+        public async Task<IActionResult> UpdateSchedule(int id, ScheduleDto ScheduleDto)
         {
-            var scheduleModel = ConvertToScheduleModel(ScheduleModel);
+            var scheduleModel = ConvertToScheduleModel(ScheduleDto);
             var updatedSchedule = await _scheduleService.UpdateSchedule(id, scheduleModel);
             if (updatedSchedule == null)
             {

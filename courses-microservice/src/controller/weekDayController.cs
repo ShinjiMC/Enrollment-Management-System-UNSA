@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using course_microservice.models;
 using course_microservice.services;
+using course_microservice.DTOs;
 
 namespace course_microservice.controllers
 {

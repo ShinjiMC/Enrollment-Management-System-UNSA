@@ -12,12 +12,13 @@ namespace course_microservice.context
         {
             //InitializeDatabase();
         }
+        public MyDbContext() {}
 
-        public DbSet<WeekDayModel> WeekDay { get; set; }
-        public DbSet<CourseModel> Course { get; set; }
-        public DbSet<SchoolModel> School { get; set; }
-        public DbSet<ScheduleModel> Schedule { get; set; }
-        public DbSet<CoursePrerequisiteModel> CoursePrerequisites { get; set; }
+        public virtual DbSet<WeekDayModel> WeekDay { get; set; }
+        public virtual DbSet<CourseModel> Course { get; set; }
+        public virtual DbSet<SchoolModel> School { get; set; }
+        public virtual DbSet<ScheduleModel> Schedule { get; set; }
+        public virtual DbSet<CoursePrerequisiteModel> CoursePrerequisites { get; set; }
 
         // Mover la inicialización de la base de datos a un método separado
         public void InitializeDatabase()

@@ -1,9 +1,6 @@
 using course_microservice.context;
-using course_microservice.DTOs;
 using course_microservice.models;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace course_microservice.repositories
 {
@@ -39,15 +36,6 @@ namespace course_microservice.repositories
 
         public async Task<CourseModel> AddCourse(CourseModel course)
         {
-            // Verificar si ya existe un curso con el mismo ID
-            var existingCourse = await _dbContext.Course.FindAsync(course.ID);
-            if (existingCourse != null)
-            {
-                // Si ya existe un curso con el mismo ID, no lo agregamos y devolvemos null
-                return null;
-            }
-
-            // Si no hay un curso con el mismo ID, lo agregamos a la base de datos
             _dbContext.Course.Add(course);
             await _dbContext.SaveChangesAsync();
             return course;
@@ -101,5 +89,7 @@ namespace course_microservice.repositories
             await _dbContext.SaveChangesAsync();
             return coursePrerequisite;
         }
+
+        
     }
 }

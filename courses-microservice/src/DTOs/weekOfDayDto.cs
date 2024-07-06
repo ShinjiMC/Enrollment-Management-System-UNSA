@@ -1,6 +1,6 @@
-namespace course_microservice.models;
+namespace course_microservice.DTOs;
 
-public class WeekDayModel
+public class WeekDayDto
 {
     public int ID { get; set; }
     public string? Name { get; set; }

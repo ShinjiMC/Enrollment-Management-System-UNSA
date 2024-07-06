@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace course_microservice.DTOs
 {
     public class SchoolDto

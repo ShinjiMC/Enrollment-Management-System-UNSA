@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace course_microservice.models
 {
-    public class WeekDayDto
+    public class WeekDayModel
     {
         [Key]
         public int ID { get; set; }

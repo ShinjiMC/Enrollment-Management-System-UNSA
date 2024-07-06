@@ -1,6 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using course_microservice.DTOs;
 namespace course_microservice.models
 {
     public class CoursePrerequisiteModel

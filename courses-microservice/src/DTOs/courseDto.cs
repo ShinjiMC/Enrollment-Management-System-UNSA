@@ -1,4 +1,4 @@
-namespace course_microservice.models;
+namespace course_microservice.DTOs;
 
 public class CourseDto
 {

@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace course_microservice.DTOs
+namespace course_microservice.models
 {
     public class StudentCourseModel
     {
