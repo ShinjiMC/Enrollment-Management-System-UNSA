@@ -31,8 +31,15 @@ dotnet run --project src.csproj
 Para crear las tablas necesarias en la base de datos, ejecute el siguiente comando:
 
 ```sh
+dotnet ef migrations add Init
+```
+
+Para llevar los cambios a la base de datos:
+
+```sh
 dotnet ef database update
 ```
+
 
 ### 5. Añadir Información Inicial
 
@@ -41,11 +48,10 @@ Si necesita añadir información inicial a la base de datos, siga estos pasos:
 1. Descomente la línea `InitializeDatabase();` en src/context/MySqlDBIdentityContext.cs
 
 2. Ejecute nuevamente el comando para actualizar la base de datos:
-
     ```sh
+    dotnet ef migrations add Init
     dotnet ef database update
     ```
-
 Siguiendo estos pasos, debería poder iniciar el proyecto, crear las tablas necesarias y añadir información inicial a la base de datos de manera efectiva.
 
 ### 6. Realizar test
@@ -65,4 +71,10 @@ dotnet tool install --global dotnet-reportgenerator-globaltool
 
 ```sh
 dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+```
+
+3. Informe HTML
+
+```sh
+reportgenerator "-reports:coverage.opencover.xml" "-targetdir:coverage_report" "-reporttypes:HTML"
 ```

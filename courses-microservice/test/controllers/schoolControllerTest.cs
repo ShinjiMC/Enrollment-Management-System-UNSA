@@ -1,8 +1,5 @@
-using NUnit.Framework;
 using Moq;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using course_microservice.controllers;
 using course_microservice.models;
 using course_microservice.services;

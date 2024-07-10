@@ -12,12 +12,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 // Context
-var connectionString = builder.Configuration.GetConnectionString("MySqlConnection") ??
-    throw new InvalidOperationException("Connection string not found in appsettings.json");
+var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
 
 builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-
 
 // Authentication to swagger settings
 builder.Services.AddSwaggerGen(options =>
@@ -32,24 +30,15 @@ builder.Services.AddSwaggerGen(options =>
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
-
 builder.Services.AddScoped<IWeekDayRepository, WeekDayRepository>();
-
 builder.Services.AddScoped<IWeekDayService, WeekDayService>();
-
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
-
 builder.Services.AddScoped<ICourseService, CourseService>();
-
 builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
-
 builder.Services.AddScoped<ISchoolService, SchoolService>();
-
 builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
-
 builder.Services.AddScoped<IScheduleService, ScheduleService>();
 
-// Build app
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -61,7 +50,8 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
 app.MapGet("/", () => "This is Courses Microservice !!!");
 
 app.Run();
+
+public partial class Program { }

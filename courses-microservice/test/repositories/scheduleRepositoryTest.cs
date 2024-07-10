@@ -130,6 +130,24 @@ namespace course_microservice.test.repositories
         }
 
         [Test]
+        public async Task DeleteSchedule_ShouldReturnFalseWhenScheduleNotFound()
+        {
+            // Arrange
+            int scheduleId = 1;
+            
+            Mock<MyDbContext> mockContext = new Mock<MyDbContext>();
+            mockContext.Setup(c => c.Schedule.FindAsync(scheduleId)).ReturnsAsync((ScheduleModel)null);
+
+            ScheduleRepository repository = new ScheduleRepository(mockContext.Object);
+
+            // Act
+            bool result = await repository.DeleteSchedule(scheduleId);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [Test]
         public async Task GetSchedulesByYearSemesterSchool_ShouldReturnSchedules()
         {
             // Arrange

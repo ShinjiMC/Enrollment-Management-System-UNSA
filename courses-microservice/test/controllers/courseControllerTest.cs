@@ -182,5 +182,21 @@ namespace course_microservice.test.controllers
             Assert.That(result.StatusCode, Is.EqualTo(201));
             Assert.That(result.Value, Is.EqualTo(prerequisite));
         }
+
+        [Test]
+        public async Task AddSchedule_ShouldReturnBadRequestIfDuplicate()
+        {
+            // Arrange
+            var prerequisite = new CoursePrerequisiteModel { ID = 1 };
+            _mockCourseService.Setup(service => service.AddCoursePrerequisite(1 , 2)).ReturnsAsync((CoursePrerequisiteModel)null);
+
+            // Act
+            var result = await _courseController.AddCoursePrerequisite(1 , 2) as BadRequestObjectResult;
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.StatusCode, Is.EqualTo(400));
+            Assert.That(result.Value, Is.EqualTo("Prerequisite could not be added."));
+        }
     }
 }

@@ -140,5 +140,23 @@ namespace course_microservice.test.repositories
             // Assert
             Assert.IsTrue(result);
         }
+
+        [Test]
+        public async Task DeleteWeekDay_ShouldReturnFalseWhenScheduleNotFound()
+        { 
+            // Arrange
+            int weekDayId = 1;
+            
+            Mock<MyDbContext> mockContext = new Mock<MyDbContext>();
+            mockContext.Setup(c => c.WeekDay.FindAsync(weekDayId)).ReturnsAsync((WeekDayModel)null);
+
+            WeekDayRepository repository = new WeekDayRepository(mockContext.Object);
+
+            // Act
+            bool result = await repository.DeleteWeekDay(weekDayId);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
     }
 }

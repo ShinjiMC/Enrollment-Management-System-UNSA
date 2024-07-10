@@ -55,6 +55,7 @@ namespace course_microservice.test.models
             Assert.That(studentCourseModel.CourseID, Is.EqualTo(0));
             Assert.That(studentCourseModel.Semester, Is.EqualTo(default(char)));
             Assert.That(studentCourseModel.Year, Is.EqualTo(0));
+            Assert.That(studentCourseModel.Course, Is.EqualTo(null));
         }
     }
 }

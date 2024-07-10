@@ -129,5 +129,23 @@ namespace course_microservice.test.repositories
             // Assert
             Assert.IsTrue(result);
         }
+
+        [Test]
+        public async Task DeleteSchool_ShouldReturnFalseWhenScheduleNotFound()
+        {
+            // Arrange
+            int schoolId = 1;
+            
+            Mock<MyDbContext> mockContext = new Mock<MyDbContext>();
+            mockContext.Setup(c => c.School.FindAsync(schoolId)).ReturnsAsync((SchoolModel)null);
+
+            SchoolRepository repository = new SchoolRepository(mockContext.Object);
+
+            // Act
+            bool result = await repository.DeleteSchool(schoolId);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
     }
 }

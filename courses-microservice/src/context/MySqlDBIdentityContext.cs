@@ -5,6 +5,7 @@ using System;
 
 namespace course_microservice.context
 {
+    
     public class MyDbContext : DbContext
     {
         public MyDbContext(DbContextOptions<MyDbContext> options)
@@ -20,7 +21,6 @@ namespace course_microservice.context
         public virtual DbSet<ScheduleModel> Schedule { get; set; }
         public virtual DbSet<CoursePrerequisiteModel> CoursePrerequisites { get; set; }
 
-        // Mover la inicialización de la base de datos a un método separado
         public void InitializeDatabase()
         {
             // Añadir días de la semana en inglés
@@ -48,7 +48,6 @@ namespace course_microservice.context
         {
             var course1 = new CourseModel
             {
-                ID = 1,
                 Name = "Ingenieria de Software I",
                 Semester = 'A',
                 Credits = 3,
@@ -58,7 +57,6 @@ namespace course_microservice.context
 
             var course2 = new CourseModel
             {
-                ID = 2,
                 Name = "Ingenieria de Software II",
                 Semester = 'B',
                 Credits = 4,
@@ -68,7 +66,6 @@ namespace course_microservice.context
 
             var course3 = new CourseModel
             {
-                ID = 3,
                 Name = "Ingenieria de Software III",
                 Semester = 'A',
                 Credits = 4,
@@ -76,43 +73,41 @@ namespace course_microservice.context
                 Hours = 8
             };
 
-            if (Course.Find(1) == null) Course.Add(course1);
-            if (Course.Find(2) == null) Course.Add(course2);
-            if (Course.Find(3) == null) Course.Add(course3);
+            Course.Add(course1);
+            Course.Add(course2);
+            Course.Add(course3);
 
         }
         private void AddCoursePrerequisites(){
             var prerequisite1 = new CoursePrerequisiteModel{
-                ID = 1,
                 CourseID = 3,
                 PrerequisiteCourseID = 2
             };
             var prerequisite2 = new CoursePrerequisiteModel{
-                ID = 2,
                 CourseID = 2,
                 PrerequisiteCourseID = 1
             };
 
-            if (CoursePrerequisites.Find(1) == null) CoursePrerequisites.Add(prerequisite1);
-            if (CoursePrerequisites.Find(2) == null) CoursePrerequisites.Add(prerequisite2);
+            CoursePrerequisites.Add(prerequisite1);
+            CoursePrerequisites.Add(prerequisite2);
         }
 
         private void AddWeekDays()
         {
             var weekDays = new[]
             {
-                new WeekDayModel { ID = 1, Name = "Monday" },
-                new WeekDayModel { ID = 2, Name = "Tuesday" },
-                new WeekDayModel { ID = 3, Name = "Wednesday" },
-                new WeekDayModel { ID = 4, Name = "Thursday" },
-                new WeekDayModel { ID = 5, Name = "Friday" },
-                new WeekDayModel { ID = 6, Name = "Saturday" },
-                new WeekDayModel { ID = 7, Name = "Sunday" }
+                new WeekDayModel { Name = "Monday" },
+                new WeekDayModel { Name = "Tuesday" },
+                new WeekDayModel { Name = "Wednesday" },
+                new WeekDayModel { Name = "Thursday" },
+                new WeekDayModel { Name = "Friday" },
+                new WeekDayModel { Name = "Saturday" },
+                new WeekDayModel { Name = "Sunday" }
             };
 
             foreach (var weekDay in weekDays)
             {
-                if (WeekDay.Find(weekDay.ID) == null) WeekDay.Add(weekDay);
+                WeekDay.Add(weekDay);
             }
         }
 
@@ -122,7 +117,6 @@ namespace course_microservice.context
             {
                 new SchoolModel
                 {
-                    ID = 1,
                     Name = "Software Engineering",
                     Faculty = "Engineering",
                     Area = "Software",
@@ -130,7 +124,6 @@ namespace course_microservice.context
                 },
                 new SchoolModel
                 {
-                    ID = 2,
                     Name = "Computer Science",
                     Faculty = "Engineering",
                     Area = "Information Technology",
@@ -138,7 +131,6 @@ namespace course_microservice.context
                 },
                 new SchoolModel
                 {
-                    ID = 3,
                     Name = "Systems Engineering",
                     Faculty = "Engineering",
                     Area = "Systems",
@@ -146,7 +138,6 @@ namespace course_microservice.context
                 },
                 new SchoolModel
                 {
-                    ID = 4,
                     Name = "Art",
                     Faculty = "Humanity",
                     Area = "Humanity",
@@ -157,7 +148,7 @@ namespace course_microservice.context
 
             foreach (var school in schools)
             {
-                if (School.Find(school.ID) == null) School.Add(school);
+                School.Add(school);
             }
         }
 
@@ -165,7 +156,6 @@ namespace course_microservice.context
         {
             var schedule1 = new ScheduleModel
             {
-                ID = 1,
                 CourseID = 1,
                 WeekDayID = 1,
                 SchoolID = 1,
@@ -179,7 +169,6 @@ namespace course_microservice.context
 
             var schedule2 = new ScheduleModel
             {
-                ID = 2,
                 CourseID = 2,
                 WeekDayID = 2,
                 SchoolID = 2,
@@ -190,8 +179,8 @@ namespace course_microservice.context
                 TeacherFullName = "Dr. Jane Smith",
                 Capacity = 25
             };
-            if (Schedule.Find(1) == null) Schedule.Add(schedule1);
-            if (Schedule.Find(2) == null) Schedule.Add(schedule2);
+            Schedule.Add(schedule1);
+            Schedule.Add(schedule2);
         }
     }
 }
