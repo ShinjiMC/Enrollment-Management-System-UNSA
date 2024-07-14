@@ -13,7 +13,7 @@ pipeline {
         stage("Automatic Build") {
             steps {
                 script {
-                    dir(BACKEND_DIR) {
+                    dir(PROJECT_DIR) {
                         sh "dotnet --version"
                         // sh "mvn --version"
                         // sh "mvn clean install" //con tests // funciona
@@ -23,22 +23,26 @@ pipeline {
                 }
             }
         }
+
         stage("SonarCloud Static Analysis") {
             steps {
-                cho "Code Static Analysis with SonarScanner..."
+                echo "Code Static Analysis with SonarScanner..."
                 script {
                     dir(PROJECT_DIR) {
-                        sh "sonar-scanner --version"
-                        sh "sonar-scanner" // Funciona
+                        sh "dotnet --version"
+                        // sh "sonar-scanner --version"
+                        // sh "sonar-scanner" // Funciona
                     }
                 }
             }
         }
+
         stage("Unit Testing") {
             steps {
                 echo "Unit tests with NUnit + Moq ..."
                 script {
-                    dir(BACKEND_DIR) {
+                    dir(PROJECT_DIR) {
+                        sh "dotnet --version"
                         // sh "dotnet test"
                         // sh "gradle test"
                         // sh "mvn test" // funciona
@@ -46,16 +50,18 @@ pipeline {
                 }
             }
         }
+
         stage("API Testing") {
             steps {
                 echo "API tests with Postman ..."
                 script {
-                    dir(BACKEND_DIR) {
+                    dir(PROJECT_DIR) {
                         sh "postman --version"
                     }
                 }
             }
         }
+
         stage("Performance Testing"){
             steps {
                 echo "Performance tests with JMeter ..."
@@ -67,6 +73,7 @@ pipeline {
                 }
             }
         }
+
         stage("Security Testing"){
             steps {
                 script {
