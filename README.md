@@ -1,8 +1,28 @@
+<div style="text-align: center;">
+
 # Enrollment Management System UNSA (By Dexo Corp)
 
-By: Dexo Corp
+</div>
 
-Members:
+<div style="text-align: center;">
+
+![.Net](https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white)
+![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white)
+![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
+![RabbitMQ](https://img.shields.io/badge/Rabbitmq-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+
+</div>
+<div style="text-align: center;">
+
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
+![SASS](https://img.shields.io/badge/SASS-hotpink.svg?style=for-the-badge&logo=SASS&logoColor=white)
+
+</div>
+
+***Dexo Corp Members:***
 
 - Mogollon Caceres Sergio Daniel
 - Davis Coropuna Leon Felipe
@@ -12,7 +32,48 @@ Members:
 - Parizaca Mozo Paul Antony
 - Huaman Coaquira Luciana Julissa
 
-## Create ASP Project With NUnit Test
+## 1. **Descripcion**
+El Sistema de Gestión de Matrículas (SGM) es una aplicación web desarrollada por ***Dexo Corp*** para la ***Universidad Nacional de San Agustín (UNSA)*** con el objetivo de agilizar y optimizar los procesos de inscripción y gestión de matrículas de los estudiantes. El sistema está diseñado para ser escalable, seguro y fácil de usar, y se basa en una arquitectura moderna de microservicios y tecnologías de vanguardia.
+
+El sistema se sustenta en una arquitectura guiada por eventos, orquestada por una cola de mensajes RabbitMQ. Esta arquitectura modular permite una alta escalabilidad y flexibilidad, facilitando la incorporación de nuevas funcionalidades y el mantenimiento del sistema a lo largo del tiempo.
+
+**Tecnologias Usadas**
+- **Backend:**
+  - `.NET`: Framework de desarrollo para la implementación de los microservicios backend.
+  - `C#`: Lenguaje de programación para el desarrollo de los microservicios backend.
+  - `Entity Framework Core`: ORM para el mapeo de objetos a relaciones.
+  - `NUnit`: Framework de pruebas unitarias para las pruebas del código backend.
+- **Frontend:**
+  - `React`: Biblioteca de JavaScript para la creación de interfaces de usuario declarativas.
+  - `Redux`: Librería para la gestión del estado de la aplicación.
+  - `TypeScript`: Lenguaje de programación superconjunto de JavaScript con tipado estático.
+  - `SASS`: Preprocesador de CSS para la creación de estilos CSS más organizados y mantenibles.
+- **Mensajería:**
+  - `RabbitMQ`: Sistema de mensajería asíncrona para la comunicación entre microservicios.
+- **Base de Datos:**
+  - `Mysql`: Sistema de gestión de bases de datos relacionales
+  - `Mongodb`: Base de datos NoSQL de código abierto
+
+## 2. **Requisitos**
+
+### 2.1 **Requisitos Funcionales**
+---
+
+
+### 2.2 **Requisitos No Funcionales**
+---
+
+
+## 3. **Diseño del sistema**
+
+<p align="center">
+  <img src="docs/arquitecturav1.png" alt="Arquitectura" width="720px" />
+</p>
+
+## 4. **Gestion de Proyecto**
+
+
+## 5. **Configuraciones** ***(ASP Project With NUnit Test)***
 
 ### Project Setup
 
