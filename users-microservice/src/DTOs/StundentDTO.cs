@@ -24,5 +24,5 @@ public class StudentDto
     public string Email { get; set; } = string.Empty;
 
     // You can add it if necessary, for example:
-    // public List<int> CourseIds { get; set; } = new List<int>();
+    public List<string> CourseIds { get; set; } = new List<string>();
 }
