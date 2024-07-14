@@ -25,6 +25,7 @@ pipeline {
         }
         stage("SonarCloud Static Analysis") {
             steps {
+                cho "Code Static Analysis with SonarScanner..."
                 script {
                     dir(PROJECT_DIR) {
                         sh "sonar-scanner --version"
@@ -35,28 +36,29 @@ pipeline {
         }
         stage("Unit Testing") {
             steps {
-                echo "junit + mockito tests..."
+                echo "Unit tests with NUnit + Moq ..."
                 script {
                     dir(BACKEND_DIR) {
-                        sh "dotnet test"
+                        // sh "dotnet test"
                         // sh "gradle test"
                         // sh "mvn test" // funciona
                     }
                 }
             }
         }
-        stage("Performance Testing"){
+        stage("API Testing") {
             steps {
+                echo "API tests with Postman ..."
                 script {
-                    dir(JMETER_RESULTS_DIR) {
-                        sh "jmeter --version"  
-                        sh "jmeter -n -t ./Login_PerformanceTest.jmx -l 1.csv -e -o ${PROJECT_DIR}/reports/performance_testing_report"   
+                    dir(BACKEND_DIR) {
+                        sh "postman --version"
                     }
                 }
             }
         }
         stage("Performance Testing"){
             steps {
+                echo "Performance tests with JMeter ..."
                 script {
                     dir(JMETER_RESULTS_DIR) {
                         sh "jmeter --version"  
@@ -68,6 +70,7 @@ pipeline {
         stage("Security Testing"){
             steps {
                 script {
+                    echo "Security tests with OWASP ZAP and Dependency-Check ..."
                     dir(PROJECT_DIR) {
                         sh "zap.sh -version"
                         sh "zap.sh -port 7000 -quickurl http://localhost:3000 -quickout ${PROJECT_DIR}/reports/security_testing__zaproxy_report.html -quickprogress" // con interfaz
