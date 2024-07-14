@@ -18,10 +18,12 @@ namespace course_microservice.services
     {
         private readonly IScheduleRepository _scheduleRepository;
 
-
+        private readonly ICourseRepository _courseRepository;
         public ScheduleService(
+            ICourseRepository courseRepository,
             IScheduleRepository scheduleRepository)
         {
+            _courseRepository = courseRepository;
             _scheduleRepository = scheduleRepository;
         }
 
@@ -37,6 +39,8 @@ namespace course_microservice.services
 
         public async Task<ScheduleModel> AddSchedule(ScheduleModel schedule)
         {
+            var course = await _courseRepository.GetCourse(schedule.CourseID);
+            schedule.Course = course;
             return await _scheduleRepository.AddSchedule(schedule);
         }
 

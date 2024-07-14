@@ -20,8 +20,8 @@ namespace course_microservice.test.repositories
             // Arrange
             IQueryable<ScheduleModel> schedules = new List<ScheduleModel>
             {
-                new ScheduleModel { ID = 1, CourseID = 1, WeekDayID = 1, SchoolID = 1, Group = "Group A", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "John Doe", Capacity = 30 },
-                new ScheduleModel { ID = 2, CourseID = 2, WeekDayID = 2, SchoolID = 1, Group = "Group B", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "Jane Smith", Capacity = 25 }
+                new ScheduleModel { ID = 1, CourseID = 1, WeekDayID = 1, SchoolID = 1, Group = "Group A", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "John Doe", },
+                new ScheduleModel { ID = 2, CourseID = 2, WeekDayID = 2, SchoolID = 1, Group = "Group B", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "Jane Smith",  }
             }.AsQueryable();
 
             var _mockContext = new Mock<MyDbContext>();
@@ -46,7 +46,7 @@ namespace course_microservice.test.repositories
         {
             // Arrange
             int scheduleId = 1;
-            ScheduleModel expectedSchedule = new ScheduleModel { ID = scheduleId, CourseID = 1, WeekDayID = 1, SchoolID = 1, Group = "Group A", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "John Doe", Capacity = 30 };
+            ScheduleModel expectedSchedule = new ScheduleModel { ID = scheduleId, CourseID = 1, WeekDayID = 1, SchoolID = 1, Group = "Group A", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "John Doe" };
 
             Mock<MyDbContext> mockContext = new Mock<MyDbContext>();
             mockContext.Setup(c => c.Schedule.FindAsync(scheduleId)).ReturnsAsync(expectedSchedule);
@@ -66,7 +66,7 @@ namespace course_microservice.test.repositories
         public async Task AddSchedule_ShouldAddSchedule()
         {
             // Arrange
-            ScheduleModel scheduleToAdd = new ScheduleModel { ID = 1, CourseID = 1, WeekDayID = 1, SchoolID = 1, Group = "Group A", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "John Doe", Capacity = 30 };
+            ScheduleModel scheduleToAdd = new ScheduleModel { ID = 1, CourseID = 1, WeekDayID = 1, SchoolID = 1, Group = "Group A", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "John Doe" };
 
             Mock<MyDbContext> mockContext = new Mock<MyDbContext>();
             mockContext.Setup(c => c.Schedule.Add(scheduleToAdd));
@@ -89,8 +89,8 @@ namespace course_microservice.test.repositories
         {
             // Arrange
             int scheduleId = 1;
-            ScheduleModel existingSchedule = new ScheduleModel { ID = scheduleId, CourseID = 1, WeekDayID = 1, SchoolID = 1, Group = "Group A", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "John Doe", Capacity = 30 };
-            ScheduleModel updatedSchedule = new ScheduleModel { ID = scheduleId, CourseID = 2, WeekDayID = 2, SchoolID = 1, Group = "Group B", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "Jane Smith", Capacity = 25 };
+            ScheduleModel existingSchedule = new ScheduleModel { ID = scheduleId, CourseID = 1, WeekDayID = 1, SchoolID = 1, Group = "Group A", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "John Doe" };
+            ScheduleModel updatedSchedule = new ScheduleModel { ID = scheduleId, CourseID = 2, WeekDayID = 2, SchoolID = 1, Group = "Group B", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "Jane Smith" };
 
             Mock<MyDbContext> mockContext = new Mock<MyDbContext>();
             mockContext.Setup(c => c.Schedule.FindAsync(scheduleId)).ReturnsAsync(existingSchedule);
@@ -113,7 +113,7 @@ namespace course_microservice.test.repositories
         {
             // Arrange
             int scheduleId = 1;
-            ScheduleModel existingSchedule = new ScheduleModel { ID = scheduleId, CourseID = 1, WeekDayID = 1, SchoolID = 1, Group = "Group A", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "John Doe", Capacity = 30 };
+            ScheduleModel existingSchedule = new ScheduleModel { ID = scheduleId, CourseID = 1, WeekDayID = 1, SchoolID = 1, Group = "Group A", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "John Doe" };
 
             Mock<MyDbContext> mockContext = new Mock<MyDbContext>();
             mockContext.Setup(c => c.Schedule.FindAsync(scheduleId)).ReturnsAsync(existingSchedule);
@@ -157,8 +157,8 @@ namespace course_microservice.test.repositories
 
             IQueryable<ScheduleModel> schedules = new List<ScheduleModel>
             {
-                new ScheduleModel { ID = 1, CourseID = 1, WeekDayID = 1, SchoolID = 1, Group = "Group A", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "John Doe", Capacity = 30, Course = new CourseModel {Semester = 'A'} },
-                new ScheduleModel { ID = 2, CourseID = 2, WeekDayID = 2, SchoolID = 1, Group = "Group B", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "Jane Smith", Capacity = 25, Course = new CourseModel {Semester = 'A'}}
+                new ScheduleModel { ID = 1, CourseID = 1, WeekDayID = 1, SchoolID = 1, Group = "Group A", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "John Doe", Course = new CourseModel {Semester = 'A'} },
+                new ScheduleModel { ID = 2, CourseID = 2, WeekDayID = 2, SchoolID = 1, Group = "Group B", Year = 2023, StartTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), EndTime = new DateTime(1990, 1, 1, 0, 0, 0, DateTimeKind.Utc), TeacherFullName = "Jane Smith", Course = new CourseModel {Semester = 'A'}}
             }.AsQueryable();
 
 

@@ -34,7 +34,11 @@ namespace course_microservice.repositories
 
         public async Task<ScheduleModel> GetSchedule(int id)
         {
-            return await _dbContext.Schedule.FindAsync(id);
+            return await _dbContext.Schedule
+                .Include(s => s.Course)
+                .Include(s => s.WeekDay)
+                .Include(s => s.School)
+                .FirstOrDefaultAsync(s => s.ID == id);
         }
 
         public async Task<ScheduleModel> AddSchedule(ScheduleModel schedule)
@@ -57,7 +61,6 @@ namespace course_microservice.repositories
                 schedule.StartTime = updatedSchedule.StartTime;
                 schedule.EndTime = updatedSchedule.EndTime;
                 schedule.TeacherFullName = updatedSchedule.TeacherFullName;
-                schedule.Capacity = updatedSchedule.Capacity;
                 await _dbContext.SaveChangesAsync();
             }
             return schedule;

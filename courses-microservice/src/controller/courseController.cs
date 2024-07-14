@@ -111,7 +111,8 @@ namespace course_microservice.controllers
                 Semester = courseDto.Semester,
                 Credits = courseDto.Credits,
                 Year = courseDto.Year,
-                Hours = courseDto.Hours
+                Hours = courseDto.Hours,
+                Capacity = courseDto.Capacity
             };
         }
     }

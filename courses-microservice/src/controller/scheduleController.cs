@@ -101,7 +101,6 @@ namespace course_microservice.controllers
                 StartTime = ScheduleDto.StartTime,
                 EndTime = ScheduleDto.EndTime,
                 TeacherFullName = ScheduleDto.TeacherFullName,
-                Capacity = ScheduleDto.Capacity
             };
         }
     }

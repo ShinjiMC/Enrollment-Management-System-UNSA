@@ -5,21 +5,73 @@ using System;
 
 namespace course_microservice.context
 {
-    
+
     public class MyDbContext : DbContext
     {
         public MyDbContext(DbContextOptions<MyDbContext> options)
             : base(options)
         {
-            InitializeDatabase();
+            //InitializeDatabase();
         }
-        public MyDbContext() {}
+        public MyDbContext() { }
 
         public DbSet<WeekDayModel> WeekDay { get; set; }
         public DbSet<CourseModel> Course { get; set; }
         public DbSet<SchoolModel> School { get; set; }
         public DbSet<ScheduleModel> Schedule { get; set; }
         public DbSet<CoursePrerequisiteModel> CoursePrerequisites { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Configurar claves primarias compuestas
+            modelBuilder.Entity<CoursePrerequisiteModel>()
+                .HasKey(cp => cp.ID);
+
+            // Configurar relaciones en CoursePrerequisiteModel
+            modelBuilder.Entity<CoursePrerequisiteModel>()
+                .HasOne(cp => cp.Course)
+                .WithMany()
+                .HasForeignKey(cp => cp.CourseID)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CoursePrerequisiteModel>()
+                .HasOne(cp => cp.PrerequisiteCourse)
+                .WithMany()
+                .HasForeignKey(cp => cp.PrerequisiteCourseID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Configurar relaciones en ScheduleModel
+            modelBuilder.Entity<ScheduleModel>()
+                .HasOne(s => s.Course)
+                .WithMany()
+                .HasForeignKey(s => s.CourseID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ScheduleModel>()
+                .HasOne(s => s.WeekDay)
+                .WithMany()
+                .HasForeignKey(s => s.WeekDayID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ScheduleModel>()
+                .HasOne(s => s.School)
+                .WithMany()
+                .HasForeignKey(s => s.SchoolID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Configurar relaciones en StudentCourseModel
+            modelBuilder.Entity<StudentCourseModel>()
+                .HasOne(sc => sc.Course)
+                .WithMany()
+                .HasForeignKey(sc => sc.CourseID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Configurar índice único en ScheduleModel
+            modelBuilder.Entity<ScheduleModel>()
+                .HasIndex(s => new { s.Year, s.Group, s.StartTime, s.CourseID })
+                .IsUnique()
+                .HasDatabaseName("IX_Unique_Schedule");
+        }
 
         public void InitializeDatabase()
         {
@@ -78,12 +130,15 @@ namespace course_microservice.context
             Course.Add(course3);
 
         }
-        private void AddCoursePrerequisites(){
-            var prerequisite1 = new CoursePrerequisiteModel{
+        private void AddCoursePrerequisites()
+        {
+            var prerequisite1 = new CoursePrerequisiteModel
+            {
                 CourseID = 3,
                 PrerequisiteCourseID = 2
             };
-            var prerequisite2 = new CoursePrerequisiteModel{
+            var prerequisite2 = new CoursePrerequisiteModel
+            {
                 CourseID = 2,
                 PrerequisiteCourseID = 1
             };
@@ -164,7 +219,6 @@ namespace course_microservice.context
                 StartTime = new DateTime(2024, 6, 17, 9, 0, 0, DateTimeKind.Utc),
                 EndTime = new DateTime(2024, 6, 17, 10, 30, 0, DateTimeKind.Utc),
                 TeacherFullName = "Prof. John Doe",
-                Capacity = 30
             };
 
             var schedule2 = new ScheduleModel
@@ -177,7 +231,6 @@ namespace course_microservice.context
                 StartTime = new DateTime(2024, 6, 18, 11, 0, 0, DateTimeKind.Utc),
                 EndTime = new DateTime(2024, 6, 18, 12, 30, 0, DateTimeKind.Utc),
                 TeacherFullName = "Dr. Jane Smith",
-                Capacity = 25
             };
             Schedule.Add(schedule1);
             Schedule.Add(schedule2);

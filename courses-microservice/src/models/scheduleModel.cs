@@ -31,9 +31,6 @@ namespace course_microservice.models
         [StringLength(200)]
         public string TeacherFullName { get; set; } = string.Empty;
 
-        public int Capacity { get; set; }
-
-
         public CourseModel? Course { get; set; }
 
         public WeekDayModel? WeekDay { get; set; }

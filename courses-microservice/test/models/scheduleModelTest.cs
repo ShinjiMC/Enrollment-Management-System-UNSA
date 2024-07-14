@@ -19,7 +19,6 @@ namespace course_microservice.test.models
             var startTime = new DateTime(2024, 7, 4, 9, 0, 0, DateTimeKind.Utc);
             var endTime = new DateTime(2024, 7, 4, 11, 0, 0, DateTimeKind.Utc);
             var teacherFullName = "John Doe";
-            var capacity = 30;
             var course = new CourseModel { ID = 101, Name = "Math", Semester = 'S', Credits = 3, Year = 2024, Hours = 60 };
             var weekDay = new WeekDayModel { ID = 5, Name = "Friday" };
             var school = new SchoolModel { ID = 20, Name = "Engineering", Faculty = "Science", Area = "Technology", FoundationDate = new DateTime(1990, 1, 1, 11, 0, 0, DateTimeKind.Utc) };
@@ -34,7 +33,6 @@ namespace course_microservice.test.models
             scheduleDto.StartTime = startTime;
             scheduleDto.EndTime = endTime;
             scheduleDto.TeacherFullName = teacherFullName;
-            scheduleDto.Capacity = capacity;
             scheduleDto.Course = course;
             scheduleDto.WeekDay = weekDay;
             scheduleDto.School = school;
@@ -49,7 +47,6 @@ namespace course_microservice.test.models
             Assert.That(scheduleDto.StartTime, Is.EqualTo(startTime));
             Assert.That(scheduleDto.EndTime, Is.EqualTo(endTime));
             Assert.That(scheduleDto.TeacherFullName, Is.EqualTo(teacherFullName));
-            Assert.That(scheduleDto.Capacity, Is.EqualTo(capacity));
             Assert.That(scheduleDto.Course, Is.EqualTo(course));
             Assert.That(scheduleDto.WeekDay, Is.EqualTo(weekDay));
             Assert.That(scheduleDto.School, Is.EqualTo(school));
@@ -71,7 +68,6 @@ namespace course_microservice.test.models
             Assert.That(scheduleDto.StartTime, Is.EqualTo(default(DateTime)));
             Assert.That(scheduleDto.EndTime, Is.EqualTo(default(DateTime)));
             Assert.That(scheduleDto.TeacherFullName, Is.EqualTo(string.Empty));
-            Assert.That(scheduleDto.Capacity, Is.EqualTo(0));
             Assert.That(scheduleDto.Course, Is.Null);
             Assert.That(scheduleDto.WeekDay, Is.Null);
             Assert.That(scheduleDto.School, Is.Null);

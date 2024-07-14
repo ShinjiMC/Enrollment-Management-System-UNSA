@@ -23,8 +23,6 @@ namespace course_microservice.DTOs
         [StringLength(200)]
         public string TeacherFullName { get; set; } = string.Empty;
 
-        public int Capacity { get; set; }
-
         public CourseDto? Course { get; set; }
 
         public WeekDayDto? WeekDay { get; set; }

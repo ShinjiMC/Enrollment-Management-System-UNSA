@@ -23,6 +23,9 @@ namespace course_microservice.models
         public int Year { get; set; }
 
         [Required]
-        public int Hours { get; set; } 
+        public int Hours { get; set; }
+
+        [Required]
+        public int Capacity { get; set; }
     }
 }
