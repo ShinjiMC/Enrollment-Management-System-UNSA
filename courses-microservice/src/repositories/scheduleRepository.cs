@@ -16,7 +16,6 @@ namespace course_microservice.repositories
         Task<bool> DeleteSchedule(int id);
 
         Task<List<ScheduleModel>> GetSchedulesByYearSemesterSchool(int year, char semester, int schoolID);
-
     }
 
     public class ScheduleRepository : IScheduleRepository

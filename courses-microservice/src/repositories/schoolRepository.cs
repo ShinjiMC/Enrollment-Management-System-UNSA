@@ -1,9 +1,6 @@
 using course_microservice.context;
-using course_microservice.DTOs;
 using course_microservice.models;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace course_microservice.repositories
 {

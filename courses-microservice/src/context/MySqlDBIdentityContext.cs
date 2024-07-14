@@ -11,15 +11,15 @@ namespace course_microservice.context
         public MyDbContext(DbContextOptions<MyDbContext> options)
             : base(options)
         {
-            //InitializeDatabase();
+            InitializeDatabase();
         }
         public MyDbContext() {}
 
-        public virtual DbSet<WeekDayModel> WeekDay { get; set; }
-        public virtual DbSet<CourseModel> Course { get; set; }
-        public virtual DbSet<SchoolModel> School { get; set; }
-        public virtual DbSet<ScheduleModel> Schedule { get; set; }
-        public virtual DbSet<CoursePrerequisiteModel> CoursePrerequisites { get; set; }
+        public DbSet<WeekDayModel> WeekDay { get; set; }
+        public DbSet<CourseModel> Course { get; set; }
+        public DbSet<SchoolModel> School { get; set; }
+        public DbSet<ScheduleModel> Schedule { get; set; }
+        public DbSet<CoursePrerequisiteModel> CoursePrerequisites { get; set; }
 
         public void InitializeDatabase()
         {
