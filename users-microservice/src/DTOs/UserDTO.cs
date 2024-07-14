@@ -24,4 +24,7 @@ public class UserDto
     public string ConfirmPassword { get; set; } = string.Empty;
 
     public string Role { get; set; } = string.Empty;
+    
+    public string phoneNumber { get; set; } = string.Empty;
+
 }

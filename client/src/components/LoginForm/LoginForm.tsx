@@ -1,27 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import styles from "./LoginForm.module.scss";
 import { FaUser, FaLock } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { logIn } from "../../actions/AuthActions";
 import { useNavigate } from "react-router-dom";
-
-interface LoginData {
-  email: string;
-  password: string;
-}
+import { LoginFormData, AuthState } from "../../types";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const initialState: LoginData = {
-    email: "",
-    password: "",
-  };
+  const initialState = useMemo<LoginFormData>(
+    () => ({
+      email: "",
+      password: "",
+    }),
+    []
+  );
 
-  const [data, setData] = useState<LoginData>(initialState);
+  const [data, setData] = useState<LoginFormData>(initialState);
 
-  const authData = useSelector((state: any) => state.authReducer.authData);
+  const authData = useSelector(
+    (state: { authReducer: AuthState }) => state.authReducer.authData
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,7 +31,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await dispatch<any>(logIn(data, navigate));
+    dispatch<any>(logIn(data, navigate));
   };
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const LoginForm = () => {
       alert("Invalid credentials");
       setData(initialState);
     }
-  }, [authData]);
+  }, [authData, initialState]);
 
   const handleForgotPassword = () => {
     console.log("Forgot password clicked");
