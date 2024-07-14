@@ -15,6 +15,7 @@ curl -X POST http://localhost:8001/api/auth/register/admin \
     "name": "string",
     "email": "admin@example.com",
     "password": "Admin123!",
+    "confirmPassword": "Admin123!",
     "role": "ADMIN",
     "phoneNumber": "+1234567890"
     
@@ -27,6 +28,7 @@ curl -X POST http://localhost:8001/api/auth/register/student \
   -d '{
     "userName": "studentuser",
     "password": "Studendt123!",
+    "confirmPassword": "Studendt123!",
     "fullName": "Student User",
     "cui": "1234567890",
     "email": "student@example.com",
