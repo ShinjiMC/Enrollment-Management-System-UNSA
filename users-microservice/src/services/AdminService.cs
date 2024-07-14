@@ -24,11 +24,12 @@ public class AdminService: IAdminService
             return new GeneralResponse(false, "Model is empty", 400);
         }
 
-        var newUser = new ApplicationUser
+        var newUser = new Admin
         {
             FullName = userDto.Name,
             Email = userDto.Email,
-            UserName = userDto.Email?.Split('@')[0]
+            UserName = userDto.Email?.Split('@')[0],
+            phoneNumber = userDto.phoneNumber
         };
 
         var userExistsByEmail = await _adminRepository.GetUserByEmail(newUser.Email);

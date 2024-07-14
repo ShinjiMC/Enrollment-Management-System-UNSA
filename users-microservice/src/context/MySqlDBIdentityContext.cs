@@ -9,12 +9,10 @@ public class MySqlIdentityContext : IdentityDbContext<ApplicationUser>
 {
     public MySqlIdentityContext(DbContextOptions<MySqlIdentityContext> options) : base(options) { }
     
-    public DbSet<StudentModel> StudentsModel { get; set; } = null!;
+    public DbSet<Student> StudentsModel { get; set; } // DbSet para Student
+    public DbSet<Admin> AdminModel { get; set; } // DbSet para Student
 
-    // public DbSet<ApplicationUser> ApplicationUsers { get; set; } // DbSet para ApplicationUser
-    public DbSet<Student> Students { get; set; } // DbSet para Student
-
-    public DbSet<StudentCourse> StudentCourses { get; set; }
+    public DbSet<StudentCourse> StudentCourses { get; set; }  // DbSet student id with courser id
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -22,8 +20,10 @@ public class MySqlIdentityContext : IdentityDbContext<ApplicationUser>
 
         // Configuración de herencia TPT
         builder.Entity<ApplicationUser>().ToTable("AspNetUsers"); // Tabla base
-        builder.Entity<Student>().ToTable("Students"); // Tabla para Student
+        builder.Entity<Student>().ToTable("StudentsModel"); // Tabla para Student
+        builder.Entity<Admin>().ToTable("AdminModel"); // Tabla para Admin
 
-        
+        builder.Entity<StudentCourse>().ToTable("StudentCourse"); // Tabla para Admin
+  
     }
 }

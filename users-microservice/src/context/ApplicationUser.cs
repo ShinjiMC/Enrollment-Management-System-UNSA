@@ -14,3 +14,8 @@ public class Student : ApplicationUser
     public string? SchoolIds { get; set; }
     // Otros campos específicos del estudiante
 }
+
+public class Admin : ApplicationUser
+{
+    public string? phoneNumber { get; set; }  
+}
