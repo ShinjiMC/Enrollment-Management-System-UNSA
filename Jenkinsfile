@@ -6,14 +6,18 @@ pipeline {
         PATH = "${SONAR_SCANNER_BIN}:${env.PATH}"
         PROJECT_DIR = "/home/neodev/Documents/projects/Enrollment-Management-System-UNSA"
 
+        AUTH_MCSV_DIR = "${PROJECT_DIR}/auth-microservice"
         USERS_MCSV_DIR = "${PROJECT_DIR}/users-microservice"
         COURSES_MCSV_DIR = "${PROJECT_DIR}/courses-microservice"
-        MATRICULATE_MCSV_DIR = "${PROJECT_DIR}/matriculate-microservice"
+        SCHOOLS_MCSV_DIR = "${PROJECT_DIR}/schools-microservice"
+        ENROLLMENTS_MCSV_DIR = "${PROJECT_DIR}/enrollments-microservice"
+        NOTIFICATIONS_MCSV_DIR = "${PROJECT_DIR}/notifications-microservice"
         PAYMENTS_MCSV_DIR = "${PROJECT_DIR}/payments-microservice"
         
-        API_TESTING_RESULTS = "${PROJECT_DIR}/apiTests"
-        PERFORMANCE_TESTING_RESULTS = "${PROJECT_DIR}/performanceTests"
-        SECURITY_TESTING_RESULTS = "${PROJECT_DIR}/securityTests"
+        API_TESTING_RESULTS = "${PROJECT_DIR}/reports/apiTests"
+        PERFORMANCE_TESTING_RESULTS = "${PROJECT_DIR}/reports/performanceTests"
+        SECURITY_TESTING_RESULTS = "${PROJECT_DIR}/reports/securityTests"
+        UNIT_TESTING_RESULTS = "${PROJECT_DIR}/reports/unitTests"
     }
 
     stages {
