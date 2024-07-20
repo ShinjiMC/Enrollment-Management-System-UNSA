@@ -75,7 +75,7 @@ El sistema se sustenta en una arquitectura guiada por eventos, orquestada por un
 - **Repositorios:** Interfaces para acceder a objetos agregados de un repositorio de datos persistente, proporcionando una abstracción sobre la infraestructura de almacenamiento de datos.
 
 <p align="center">
-  <img src="docs/arquitecturav1.png" alt="Arquitectura" width="720px" />
+  <img src="resources/arquitecturav1.png" alt="Arquitectura" width="720px" />
 </p>
 
 ## **Gestion de Proyecto**
