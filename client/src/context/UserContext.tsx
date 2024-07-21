@@ -28,11 +28,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
           const segments = key.split("/");
           const lastSegment = segments[segments.length - 1];
           switch (lastSegment) {
-            case "nameidentifier":
+            case "id":
               return { ...acc, id: value } as Omit<DataDecoded, "token">;
-            case "name":
+            case "username":
               return { ...acc, username: value } as Omit<DataDecoded, "token">;
-            case "emailaddress":
+            case "email":
               return { ...acc, email: value } as Omit<DataDecoded, "token">;
             case "role":
               return { ...acc, role: value } as Omit<DataDecoded, "token">;

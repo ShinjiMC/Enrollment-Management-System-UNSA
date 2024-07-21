@@ -6,8 +6,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using users_microservice.context;
-using users_microservice.models;
+using users_microservice.DTOs;
 using users_microservice.repositories;
+using users_microservice.services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +25,7 @@ builder.Services.AddDbContext<MySqlIdentityContext>(options =>
 );
 
 // Identity settings
-builder.Services.AddIdentity<UserModel, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<MySqlIdentityContext>()
     .AddSignInManager()
     .AddRoles<IdentityRole>();
@@ -72,8 +73,27 @@ builder.Services.AddCors(options =>
     });
 });
 
+// CORS settings with allow all origins
+// builder.Services.AddCors(options =>
+// {
+//     options.AddDefaultPolicy(builder =>
+//     {
+//         builder.AllowAnyOrigin()
+//             .AllowAnyHeader()
+//             .AllowAnyMethod();
+//     });
+// });
+
+
 // Repositories
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+builder.Services.AddScoped<ICourseRepository, CourseRepositoryImpl>();
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
+
+
 
 // Build app
 var app = builder.Build();
@@ -94,7 +114,7 @@ app.MapGet("/", () => "This is Users Microservice !!!");
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<MySqlIdentityContext>();
-    await dbContext.Database.MigrateAsync();
+    //dbContext.Database.Migrate();
 }
 
-await app.RunAsync();
+app.Run();
