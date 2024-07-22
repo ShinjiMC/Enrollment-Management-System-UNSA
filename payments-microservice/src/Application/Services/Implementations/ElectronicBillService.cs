@@ -1,101 +1,86 @@
-using PaymentsMicroservice.Application.Dtos;
-using PaymentsMicroservice.Application.Services.Interfaces;
-using PaymentsMicroservice.Domain.Entities;
-using PaymentsMicroservice.Domain.Repositories;
-using PaymentsMicroservice.Domain.Services.Implementations;
-using PaymentsMicroservice.Domain.ValueObjects;
-
 namespace PaymentsMicroservice.Application.Services.Implementations
 {
+    using PaymentsMicroservice.Application.Services.Interfaces;
+    using PaymentsMicroservice.Domain.Services.Interfaces;
+    using PaymentsMicroservice.Application.Dtos;
+    using PaymentsMicroservice.Domain.Entities;
+    using PaymentsMicroservice.Domain.ValueObjects;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class ElectronicBillService : IElectronicBillService
     {
-        private readonly IElectronicBillRepository _electronicBillRepository;
-        private readonly ElectronicBillManagementService _electronicBillManagementService;
+        private readonly IElectronicBillDomainService _electronicBillDomainService;
 
-        public ElectronicBillService(IElectronicBillRepository electronicBillRepository, ElectronicBillManagementService electronicBillManagementService)
+        public ElectronicBillService(IElectronicBillDomainService electronicBillDomainService)
         {
-            _electronicBillRepository = electronicBillRepository;
-            _electronicBillManagementService = electronicBillManagementService;
+            _electronicBillDomainService = electronicBillDomainService;
         }
 
-        public ElectronicBillDto CreateElectronicBill(string studentId, List<ElectronicBillItemDto> items)
+        public ElectronicBillDto CreateElectronicBill(string studentId, List<ElectronicBillItemDto> electronicBillItems)
         {
-            var billItems = items.ConvertAll(item => new ElectronicBillItem(
-                item.ElectronicBillItemId,
-                item.CourseId,
-                item.Description,
-                new Money(item.Amount, "USD") // Asumir USD para simplicidad
-            ));
+            var domainItems = electronicBillItems.Select(item => new ElectronicBillItem
+            {
+                ElectronicBillItemId = item.ElectronicBillItemId,
+                CourseId = item.CourseId,
+                Description = item.Description,
+                Amount = new Money(item.Amount, "USD")
+            }).ToList();
 
-            var electronicBill = _electronicBillManagementService.CreateElectronicBill(studentId, billItems);
+            var electronicBill = _electronicBillDomainService.CreateElectronicBill(studentId, domainItems);
+
             return new ElectronicBillDto
             {
                 ElectronicBillId = electronicBill.ElectronicBillId,
                 StudentId = electronicBill.StudentId,
                 TotalAmount = electronicBill.TotalAmount.Amount,
-                Currency = electronicBill.TotalAmount.Currency,
                 DueDate = electronicBill.DueDate,
                 CreatedDate = electronicBill.CreatedDate,
                 Status = electronicBill.Status.Status,
-                Items = electronicBill.Items.ConvertAll(item => new ElectronicBillItemDto
+                Items = electronicBill.Items.Select(i => new ElectronicBillItemDto
                 {
-                    ElectronicBillItemId = item.ElectronicBillItemId,
-                    CourseId = item.CourseId,
-                    Description = item.Description,
-                    Amount = item.Amount.Amount
-                })
+                    ElectronicBillItemId = i.ElectronicBillItemId,
+                    CourseId = i.CourseId,
+                    Description = i.Description,
+                    Amount = i.Amount.Amount
+                }).ToList()
             };
         }
 
-        public ElectronicBillDto GetElectronicBillById(string electronicBillId)
+        public ElectronicBillDto UpdateElectronicBill(string electronicBillId, List<ElectronicBillItemDto> electronicBillItems)
         {
-            var electronicBill = _electronicBillRepository.GetElectronicBillById(electronicBillId);
+            var domainItems = electronicBillItems.Select(item => new ElectronicBillItem
+            {
+                ElectronicBillItemId = item.ElectronicBillItemId,
+                CourseId = item.CourseId,
+                Description = item.Description,
+                Amount = new Money(item.Amount, "USD")
+            }).ToList();
+
+            var electronicBill = _electronicBillDomainService.UpdateElectronicBill(electronicBillId, domainItems);
+
             return new ElectronicBillDto
             {
                 ElectronicBillId = electronicBill.ElectronicBillId,
                 StudentId = electronicBill.StudentId,
                 TotalAmount = electronicBill.TotalAmount.Amount,
-                Currency = electronicBill.TotalAmount.Currency,
                 DueDate = electronicBill.DueDate,
                 CreatedDate = electronicBill.CreatedDate,
                 Status = electronicBill.Status.Status,
-                Items = electronicBill.Items.ConvertAll(item => new ElectronicBillItemDto
+                Items = electronicBill.Items.Select(i => new ElectronicBillItemDto
                 {
-                    ElectronicBillItemId = item.ElectronicBillItemId,
-                    CourseId = item.CourseId,
-                    Description = item.Description,
-                    Amount = item.Amount.Amount
-                })
+                    ElectronicBillItemId = i.ElectronicBillItemId,
+                    CourseId = i.CourseId,
+                    Description = i.Description,
+                    Amount = i.Amount.Amount
+                }).ToList()
             };
         }
 
-        public ElectronicBillDto UpdateElectronicBill(string electronicBillId, List<ElectronicBillItemDto> items)
+        public string CheckElectronicBillStatus(string electronicBillId)
         {
-            var billItems = items.ConvertAll(item => new ElectronicBillItem(
-                item.ElectronicBillItemId,
-                item.CourseId,
-                item.Description,
-                new Money(item.Amount, "USD")
-            ));
-
-            var electronicBill = _electronicBillManagementService.UpdateElectronicBill(electronicBillId, billItems);
-            return new ElectronicBillDto
-            {
-                ElectronicBillId = electronicBill.ElectronicBillId,
-                StudentId = electronicBill.StudentId,
-                TotalAmount = electronicBill.TotalAmount.Amount,
-                Currency = electronicBill.TotalAmount.Currency,
-                DueDate = electronicBill.DueDate,
-                CreatedDate = electronicBill.CreatedDate,
-                Status = electronicBill.Status.Status,
-                Items = electronicBill.Items.ConvertAll(item => new ElectronicBillItemDto
-                {
-                    ElectronicBillItemId = item.ElectronicBillItemId,
-                    CourseId = item.CourseId,
-                    Description = item.Description,
-                    Amount = item.Amount.Amount
-                })
-            };
+            var status = _electronicBillDomainService.CheckElectronicBillStatus(electronicBillId);
+            return status.Status;
         }
     }
 }

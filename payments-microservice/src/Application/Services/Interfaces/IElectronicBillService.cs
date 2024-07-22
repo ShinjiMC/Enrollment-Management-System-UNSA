@@ -1,11 +1,12 @@
-using PaymentsMicroservice.Application.Dtos;
-
 namespace PaymentsMicroservice.Application.Services.Interfaces
 {
+    using PaymentsMicroservice.Application.Dtos;
+    using System.Collections.Generic;
+
     public interface IElectronicBillService
     {
-        ElectronicBillDto CreateElectronicBill(string studentId, List<ElectronicBillItemDto> items);
-        ElectronicBillDto GetElectronicBillById(string electronicBillId);
-        ElectronicBillDto UpdateElectronicBill(string electronicBillId, List<ElectronicBillItemDto> items);
+        ElectronicBillDto CreateElectronicBill(string studentId, List<ElectronicBillItemDto> electronicBillItems);
+        ElectronicBillDto UpdateElectronicBill(string electronicBillId, List<ElectronicBillItemDto> electronicBillItems);
+        string CheckElectronicBillStatus(string electronicBillId);
     }
 }

@@ -1,14 +1,13 @@
-using System;
-using System.Collections.Generic;
-
 namespace PaymentsMicroservice.Application.Dtos
 {
+    using System;
+    using System.Collections.Generic;
+
     public class ElectronicBillDto
     {
         public string ElectronicBillId { get; set; }
         public string StudentId { get; set; }
         public decimal TotalAmount { get; set; }
-        public string Currency { get; set; }
         public DateTime DueDate { get; set; }
         public DateTime CreatedDate { get; set; }
         public string Status { get; set; }
