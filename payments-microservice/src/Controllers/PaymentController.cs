@@ -1,50 +1,42 @@
-namespace PaymentsMicroservice.Controllers
-{
-    using Microsoft.AspNetCore.Mvc;
-    using PaymentsMicroservice.Services.Interfaces;
-    using PaymentsMicroservice.Application.Dtos;
-    using System;
-    using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using PaymentsMicroservice.Application.Dtos;
+using PaymentsMicroservice.Application.Services.Interfaces;
 
+namespace PaymentsMicroservice.Api.Controllers
+{
     [ApiController]
-    [Route("api/[controller]")] // Route: api/payment
-    public class PaymentController : ControllerBase
+    [Route("api/[controller]")]
+    public class PaymentsController : ControllerBase
     {
         private readonly IPaymentService _paymentService;
 
-        public PaymentController(IPaymentService paymentService)
+        public PaymentsController(IPaymentService paymentService)
         {
             _paymentService = paymentService;
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetPaymentById(string id)
+        {
+            var paymentDto = _paymentService.GetPaymentById(id);
+            if (paymentDto == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(paymentDto);
+        }
+
         [HttpPost]
-        public async Task<IActionResult> CreatePayment([FromBody] CreatePaymentDto createPaymentDto)
+        public IActionResult ProcessPayment([FromBody] PaymentDto paymentDto)
         {
-            if (createPaymentDto == null)
-                return BadRequest("Invalid payment data");
+            if (paymentDto == null)
+            {
+                return BadRequest("Invalid payment data.");
+            }
 
-            var payment = await _paymentService.CreatePaymentAsync(createPaymentDto);
-            return Ok(payment);
-        }
-
-        [HttpPost("{paymentId}/confirm")]
-        public async Task<IActionResult> ConfirmPayment(Guid paymentId)
-        {
-            var payment = await _paymentService.ConfirmPaymentAsync(paymentId);
-            if (payment == null)
-                return NotFound("Payment not found");
-
-            return Ok(payment);
-        }
-
-        [HttpGet("{paymentId}")] // Route: api/payment/{paymentId}
-        public async Task<IActionResult> GetPaymentById(Guid paymentId)
-        {
-            var payment = await _paymentService.GetPaymentByIdAsync(paymentId);
-            if (payment == null)
-                return NotFound("Payment not found");
-
-            return Ok(payment);
+            _paymentService.ProcessPayment(paymentDto);
+            return Ok("Payment processed successfully.");
         }
     }
 }

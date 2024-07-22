@@ -1,10 +1,10 @@
 namespace PaymentsMicroservice.Domain.ValueObjects
 {
-    public class PaymentStatus
+    public class ElectronicBillStatus
     {
         public string Status { get; }
 
-        public PaymentStatus(string status)
+        public ElectronicBillStatus(string status)
         {
             Status = status;
         }

@@ -4,25 +4,25 @@ namespace PaymentsMicroservice.Domain.Entities
 {
     public class PaymentCode
     {
-        public string Code { get; private set; }
-        public DateTime ExpirationDate { get; private set; }
-        public Amount Amount { get; private set; }
-        public PaymentStatus Status { get; private set; }
-        public DateTime GeneratedAt { get; private set; }
+        public string PaymentCodeId { get; set; }
+        public string Code { get; set; }
+        public string StudentId { get; set; }
+        public string ElectronicBillId { get; set; }
+        public bool IsUsed { get; set; }
 
-        public PaymentCode(Amount amount, DateTime expirationDate)
+        public PaymentCode(string paymentCodeId, string code, string studentId, string electronicBillId, bool isUsed)
         {
-            Code = GenerateCode();
-            Amount = amount;
-            ExpirationDate = expirationDate;
-            Status = PaymentStatus.Pending;
-            GeneratedAt = DateTime.UtcNow;
+            PaymentCodeId = paymentCodeId;
+            Code = code;
+            StudentId = studentId;
+            ElectronicBillId = electronicBillId;
+            IsUsed = isUsed;
         }
 
-        private string GenerateCode()
+        public void MarkAsUsed()
         {
-            return Guid.NewGuid().ToString("N");
+            IsUsed = true;
         }
     }
-
 }
+

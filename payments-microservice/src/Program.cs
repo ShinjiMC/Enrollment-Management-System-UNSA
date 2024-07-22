@@ -1,30 +1,28 @@
-// Builder
+using PaymentsMicroservice.Application.Services.Implementations;
+using PaymentsMicroservice.Application.Services.Interfaces;
 using PaymentsMicroservice.Domain.Repositories;
+using PaymentsMicroservice.Domain.Services.Implementations;
+using PaymentsMicroservice.Domain.Services.Interfaces;
 using PaymentsMicroservice.Infrastructure.Repositories;
-using PaymentsMicroservice.Services.Implementations;
-using PaymentsMicroservice.Services.Interfaces;
+// Builder
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+// Register Domain Services
+builder.Services.AddScoped<IPaymentProcessingService, PaymentProcessingService>();
+
 // Register application services
 builder.Services.AddScoped<IPaymentService, PaymentService>();
-// builder.Services.AddScoped<IInvoiceService, InvoiceService>(); // Asegúrate de tener IInvoiceService y su implementación
-// builder.Services.AddScoped<IPaymentCodeService, PaymentCodeService>(); // Asegúrate de tener IPaymentCodeService y su implementación
 
-// Register domain repositories
+// Register repositories
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
-builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+builder.Services.AddScoped<IElectronicBillRepository, ElectronicBillRepository>();
 builder.Services.AddScoped<IPaymentCodeRepository, PaymentCodeRepository>();
 
 // App
 var app = builder.Build();
-// if (app.Environment.IsDevelopment())
-// {
-//     app.UseSwagger();
-//     app.UseSwaggerUI();
-// }
 
 app.MapControllers();
 app.MapGet("/", () => "This is Payments Microservice !!!");
