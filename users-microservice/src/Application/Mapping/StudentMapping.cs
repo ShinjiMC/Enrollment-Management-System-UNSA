@@ -1,0 +1,37 @@
+using users_microservice.Domain.Entities;
+using users_microservice.Application.Dtos;
+using users_microservice.Domain.ValueObjects;
+
+namespace users_microservice.Application.Mapping
+{
+    public static class StudentMapping
+    {
+        public static StudentDto ToDto(this StudentModel student)
+        {
+            return new StudentDto
+            {
+                 FullName = student.FullName ?? string.Empty, // Maneja posibles valores null
+        Email = student.Email ?? string.Empty, // Maneja posibles valores null
+        Cui = student.StudentData?.Cui ?? string.Empty, // Maneja posibles valores null en StudentData
+                AcademicPerformance = student.AcademicPerformance,
+                Credit = student.Credit,
+                SchoolId = student.StudentData?.SchoolId
+
+                // Mapea otros campos según sea necesario
+            };
+        }
+        public static StudentModel ToModel(StudentDto studentDto)
+        {
+            var valueObjectStudenInfo = new StudentInfo(studentDto.Cui, studentDto.SchoolId);
+
+            return new StudentModel
+            {
+                FullName = studentDto.FullName,
+                Email = studentDto.Email,
+                StudentData =  valueObjectStudenInfo,
+                AcademicPerformance = studentDto.AcademicPerformance,
+                Credit = studentDto.Credit,
+            };
+        }
+    }
+}
