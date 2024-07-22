@@ -11,12 +11,14 @@ namespace users_microservice.services;
 public class StudentService : IStudentService
 {
         private readonly IAdminRepository _adminRepository;
+    private readonly ICourseRepository _courseRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public StudentService(IAdminRepository adminRepository, IHttpContextAccessor httpContextAccessor)
+    public StudentService(ICourseRepository courseRepository, IAdminRepository adminRepository, IHttpContextAccessor httpContextAccessor)
     {
         _adminRepository = adminRepository;
         _httpContextAccessor = httpContextAccessor;
+        _courseRepository = courseRepository;
     }
 
     public async Task<GeneralResponse> CreateStudentAccount(StudentDto studentDto)
@@ -33,7 +35,6 @@ public class StudentService : IStudentService
             UserName = studentDto.Email?.Split('@')[0],
             Cui = studentDto.CUI
         };
-
 
         var userExistsByEmail = await _adminRepository.GetUserByEmail(newStudentUser.Email);
         if (userExistsByEmail != null)
@@ -59,6 +60,18 @@ public class StudentService : IStudentService
         if (!addToRoleResult.Flag)
         {
             return addToRoleResult;
+        }
+
+        // Crear una entrada en la tabla StudentCourse
+        foreach (var courseId in studentDto.CourseIds)
+        {
+            var studentCourse = new StudentCourse
+            {
+                StudentId = newStudentUser.Id,
+                CourseId = courseId
+            };
+
+            await _courseRepository.AddCourseToStudent(studentCourse);
         }
 
         return new GeneralResponse(true, "Account created", 201);

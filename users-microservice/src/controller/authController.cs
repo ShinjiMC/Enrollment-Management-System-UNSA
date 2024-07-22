@@ -22,12 +22,9 @@ public class AuthController : ControllerBase
     }
 
     // Endpoints
-    //[Authorize(Roles = "Admin")] // Only Admin can register new users
-    [HttpPost("register")]
-<<<<<<< HEAD
-=======
+    [HttpPost("register/admin")]
     // [Authorize(Roles = "ADMIN")] // Only Admin can register new users
->>>>>>> develop
+
     public async Task<IActionResult> Register(UserDto userDTO)
     {
         var response = await _adminService.CreateAdminAccount(userDTO);
@@ -42,7 +39,7 @@ public class AuthController : ControllerBase
         return StatusCode(response.StatusCode, response);
     }
 
-    [HttpPost("new-student")]
+    [HttpPost("register/student")]
     [Authorize(Roles = "ADMIN")] // Only Admin can register new students
     public async Task<IActionResult> RegisterNewStudent(StudentDto studentDTO)
     {
