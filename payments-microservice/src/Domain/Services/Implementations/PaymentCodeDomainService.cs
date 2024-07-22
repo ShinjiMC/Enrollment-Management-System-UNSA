@@ -2,17 +2,17 @@ using PaymentsMicroservice.Domain.Entities;
 
 namespace PaymentsMicroservice.Domain.Services.Implementations
 {
-    public class PaymentCodeService
+    public class PaymentCodeDomainService
     {
         public PaymentCode GeneratePaymentCode(string studentId)
         {
             // Lógica para generar un nuevo código de pago
-            return new PaymentCode(
-                "newId", // Generar un ID único
-                "uniqueCode", // Generar un código único
-                studentId,
-                false
-            );
+            return new PaymentCode
+            {
+                // random guui
+                Code = System.Guid.NewGuid().ToString(),
+                StudentId = studentId
+            };
         }
 
         public bool ValidatePaymentCode(string code)

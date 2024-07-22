@@ -1,54 +1,43 @@
-using PaymentsMicroservice.Domain.Entities;
-using PaymentsMicroservice.Domain.ValueObjects;
-
 namespace PaymentsMicroservice.Domain.Services.Implementations
 {
-    public class ElectronicBillManagementService
+    using PaymentsMicroservice.Domain.Entities;
+    using PaymentsMicroservice.Domain.ValueObjects;
+    using PaymentsMicroservice.Domain.Services.Interfaces;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    public class ElectronicBillDomainService : IElectronicBillDomainService
     {
         public ElectronicBill CreateElectronicBill(string studentId, List<ElectronicBillItem> electronicBillItems)
         {
-            // Lógica para crear una boleta electrónica
-            var totalAmount = CalculateTotalAmount(electronicBillItems);
-            return new ElectronicBill(
-                "newId", // Generar un ID único
-                studentId,
-                totalAmount,
-                DateTime.Now.AddDays(30), // Fecha de vencimiento
-                DateTime.Now,
-                new ElectronicBillStatus("unpaid"),
-                electronicBillItems
-            );
+            return new ElectronicBill
+            {
+                ElectronicBillId = Guid.NewGuid().ToString(),
+                StudentId = studentId,
+                Items = electronicBillItems,
+                TotalAmount = new Money(electronicBillItems.Sum(item => item.Amount.Amount), "USD"),
+                DueDate = DateTime.Now.AddMonths(1),
+                CreatedDate = DateTime.Now,
+                Status = new ElectronicBillStatus("Unpaid")
+            };
         }
 
         public ElectronicBill UpdateElectronicBill(string electronicBillId, List<ElectronicBillItem> electronicBillItems)
         {
-            // Lógica para actualizar una boleta electrónica
-            var totalAmount = CalculateTotalAmount(electronicBillItems);
-            return new ElectronicBill(
-                electronicBillId,
-                "studentId",
-                totalAmount,
-                DateTime.Now.AddDays(30),
-                DateTime.Now,
-                new ElectronicBillStatus("unpaid"),
-                electronicBillItems
-            );
+            return new ElectronicBill
+            {
+                ElectronicBillId = electronicBillId,
+                Items = electronicBillItems,
+                TotalAmount = new Money(electronicBillItems.Sum(item => item.Amount.Amount), "USD"),
+                Status = new ElectronicBillStatus("Unpaid") // Assuming update resets status
+            };
         }
 
         public ElectronicBillStatus CheckElectronicBillStatus(string electronicBillId)
         {
-            // Lógica para verificar el estado de una boleta electrónica
-            return new ElectronicBillStatus("paid");
-        }
-
-        private Money CalculateTotalAmount(List<ElectronicBillItem> items)
-        {
-            decimal totalAmount = 0;
-            foreach (var item in items)
-            {
-                totalAmount += item.Amount.Amount;
-            }
-            return new Money(totalAmount, "USD"); // Asumir USD para simplicidad
+            // Logic for checking status of electronic bill
+            return new ElectronicBillStatus("Unpaid");
         }
     }
 }

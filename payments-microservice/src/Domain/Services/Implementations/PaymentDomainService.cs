@@ -1,29 +1,22 @@
-using PaymentsMicroservice.Domain.Entities;
-using PaymentsMicroservice.Domain.Repositories;
-using PaymentsMicroservice.Domain.ValueObjects;
-
 namespace PaymentsMicroservice.Domain.Services.Implementations
 {
-    public class PaymentProcessingService
+    using PaymentsMicroservice.Domain.Entities;
+    using PaymentsMicroservice.Domain.ValueObjects;
+    using PaymentsMicroservice.Domain.Services.Interfaces;
+
+    public class PaymentDomainService : IPaymentDomainService
     {
-        private readonly IPaymentRepository _paymentRepository;
-
-        public PaymentProcessingService(IPaymentRepository paymentRepository)
-        {
-            _paymentRepository = paymentRepository;
-        }
-
         public PaymentStatus ProcessPayment(Payment payment)
         {
-            // Process payment
-            return new PaymentStatus("processing");
+            // Logic for processing payment
+            // Call external payment gateway API, etc.
+            return new PaymentStatus("Completed");
         }
 
         public bool VerifyPayment(Payment payment)
         {
-            // Verify payment
-            return true;
+            // Logic for verifying payment
+            return payment.Status.Status == "Completed";
         }
-
     }
 }
