@@ -1,4 +1,3 @@
-// Models/School.cs
 public class School
 {
     public int Id { get; set; }
