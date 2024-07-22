@@ -1,70 +1,43 @@
-using Microsoft.AspNetCore.Mvc;
-using PaymentsMicroservice.Application.Dtos;
-using PaymentsMicroservice.Application.Services.Interfaces;
-
-namespace PaymentsMicroservice.Api.Controllers
+namespace PaymentsMicroservice.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    using PaymentsMicroservice.Application.Services.Interfaces;
+    using PaymentsMicroservice.Application.Dtos;
+    using System.Collections.Generic;
+
     [ApiController]
     [Route("api/[controller]")]
-    public class ElectronicBillsController : ControllerBase
+    public class ElectronicBillController : ControllerBase
     {
         private readonly IElectronicBillService _electronicBillService;
 
-        public ElectronicBillsController(IElectronicBillService electronicBillService)
+        public ElectronicBillController(IElectronicBillService electronicBillService)
         {
             _electronicBillService = electronicBillService;
         }
 
         [HttpPost]
-        public IActionResult CreateElectronicBill([FromBody] CreateElectronicBillRequest request)
+        [Route("create")]
+        public ActionResult<ElectronicBillDto> CreateElectronicBill(string studentId, [FromBody] List<ElectronicBillItemDto> electronicBillItems)
         {
-            if (request == null || request.Items == null)
-            {
-                return BadRequest("Invalid electronic bill data.");
-            }
-
-            var electronicBillDto = _electronicBillService.CreateElectronicBill(request.StudentId, request.Items);
-            return Ok(electronicBillDto);
+            var result = _electronicBillService.CreateElectronicBill(studentId, electronicBillItems);
+            return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetElectronicBillById(string id)
+        [HttpPut]
+        [Route("update/{electronicBillId}")]
+        public ActionResult<ElectronicBillDto> UpdateElectronicBill(string electronicBillId, [FromBody] List<ElectronicBillItemDto> electronicBillItems)
         {
-            var electronicBillDto = _electronicBillService.GetElectronicBillById(id);
-            if (electronicBillDto == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(electronicBillDto);
+            var result = _electronicBillService.UpdateElectronicBill(electronicBillId, electronicBillItems);
+            return Ok(result);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateElectronicBill(string id, [FromBody] UpdateElectronicBillRequest request)
+        [HttpGet]
+        [Route("status/{electronicBillId}")] // Route: api/electronicbill/status/{electronicBillId}
+        public ActionResult<string> CheckElectronicBillStatus(string electronicBillId)
         {
-            if (request == null || request.Items == null)
-            {
-                return BadRequest("Invalid electronic bill data.");
-            }
-
-            var electronicBillDto = _electronicBillService.UpdateElectronicBill(id, request.Items);
-            if (electronicBillDto == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(electronicBillDto);
+            var result = _electronicBillService.CheckElectronicBillStatus(electronicBillId);
+            return Ok(result);
         }
-    }
-
-    public class CreateElectronicBillRequest
-    {
-        public string StudentId { get; set; }
-        public List<ElectronicBillItemDto> Items { get; set; }
-    }
-
-    public class UpdateElectronicBillRequest
-    {
-        public List<ElectronicBillItemDto> Items { get; set; }
     }
 }
