@@ -4,13 +4,13 @@ namespace PaymentsMicroservice.Domain.Entities
 {
     public class Payment
     {
-        public string PaymentId { get; private set; }
-        public Money Amount { get; private set; }
-        public DateTime PaymentDate { get; private set; }
-        public PaymentMethod PaymentMethod { get; private set; }
-        public string StudentId { get; private set; }
-        public string ElectronicBillId { get; private set; }
-        public PaymentStatus Status { get; private set; }
+        public string PaymentId { get; set; }
+        public Money Amount { get; set; }
+        public DateTime PaymentDate { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
+        public string StudentId { get; set; }
+        public string ElectronicBillId { get; set; }
+        public PaymentStatus Status { get; set; }
 
         public Payment(string paymentId, Money amount, DateTime paymentDate, PaymentMethod paymentMethod, string studentId, string electronicBillId, PaymentStatus status)
         {

@@ -4,17 +4,9 @@ namespace PaymentsMicroservice.Domain.Entities
 {
     public class ElectronicBillItem
     {
-        public string ElectronicBillItemId { get; private set; }
-        public string CourseId { get; private set; }
-        public string Description { get; private set; }
-        public Money Amount { get; private set; }
-
-        public ElectronicBillItem(string electronicBillItemId, string courseId, string description, Money amount)
-        {
-            ElectronicBillItemId = electronicBillItemId;
-            CourseId = courseId;
-            Description = description;
-            Amount = amount;
-        }
+        public string ElectronicBillItemId { get; set; }
+        public string CourseId { get; set; }
+        public string Description { get; set; }
+        public Money Amount { get; set; }
     }
 }
