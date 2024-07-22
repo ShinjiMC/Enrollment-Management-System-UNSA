@@ -10,9 +10,14 @@ namespace users_microservice.Application.Mapping
         {
             return new StudentDto
             {
-                 FullName = student.FullName ?? string.Empty, // Maneja posibles valores null
-        Email = student.Email ?? string.Empty, // Maneja posibles valores null
-        Cui = student.StudentData?.Cui ?? string.Empty, // Maneja posibles valores null en StudentData
+                FullName = student.FullName ?? string.Empty, // Maneja posibles valores null
+                Email = student.Email ?? string.Empty, // Maneja posibles valores null
+                Cui = student.StudentData?.Cui ?? string.Empty, // Maneja posibles valores null en StudentData
+                        CourseIds = student.StudentCourses
+                                    .Where(sc => sc.CourseData != null) 
+                                    .Select(sc => sc.CourseData.CourseId)
+                                    .Where(id => id != null) 
+                                    .ToList(),
                 AcademicPerformance = student.AcademicPerformance,
                 Credit = student.Credit,
                 SchoolId = student.StudentData?.SchoolId

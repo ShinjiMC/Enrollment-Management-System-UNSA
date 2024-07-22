@@ -38,6 +38,7 @@ namespace users_microservice.Repository.Mysql
         public async Task<IEnumerable<CourseInfo>> GetCoursesByStudentId(int studentId)
         {
             var courses = await _context.Courses
+                .AsNoTracking()
                 .Where(c => c.StudentId == studentId)
                 .Select(c => c.CourseData)
                 .ToListAsync();
@@ -49,6 +50,7 @@ namespace users_microservice.Repository.Mysql
         {
             // Buscar el curso por courseId y StudentId
             var courseToRemove = await _context.Courses
+             .AsNoTracking() // Evita problemas de seguimiento de entidades
                 .Where(c => c.StudentId == studentId && c.CourseData != null && c.CourseData.CourseId == courseId)
                 .SingleOrDefaultAsync();
 

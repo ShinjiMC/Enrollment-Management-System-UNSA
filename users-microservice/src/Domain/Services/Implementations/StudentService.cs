@@ -87,7 +87,7 @@ namespace users_microservice.Domain.Services.Implementations
         public async Task<StudentModel> GetCoursesByStudentId(int id)
         {
             var courses = (await _courseRepository.GetCoursesByStudentId(id)).ToList();
-
+            
             var newStudent = await _adminRepository.GetStudentById(id);
             if (newStudent == null)
             {
@@ -97,6 +97,7 @@ namespace users_microservice.Domain.Services.Implementations
             var ad = new StudentCoursesFactory(); // O la forma en que lo inicialices apropiadamente
 
             var studentCourses = ad.CreateStudentCourses(newStudent, courses);
+            
             return studentCourses;
         }
 

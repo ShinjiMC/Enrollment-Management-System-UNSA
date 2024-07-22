@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using users_microservice.Domain.Entities;
-using users_microservice.Domain.ValueObjects;
 
 namespace users_microservice.Repository.Data
 {
@@ -43,11 +42,9 @@ namespace users_microservice.Repository.Data
             modelBuilder.Entity<StudentModel>()
                 .HasMany(s => s.StudentCourses)
                 .WithOne() // Assuming CourseInfo is not an entity but a value object
-                .HasForeignKey("StudentId"); // Ensure this matches the actual foreign key in the Course table
+                .HasForeignKey("StudentId");
+                //.OnDelete(DeleteBehavior.Cascade); // Ensure this matches the actual foreign key in the Course table
 
-            // Ensure CourseInfo and StudentInfo are not registered as separate entities
-            // modelBuilder.Ignore<CourseInfo>();
-            // modelBuilder.Ignore<StudentInfo>();
         }
     }
 }

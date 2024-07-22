@@ -143,8 +143,25 @@ public class AdminServiceDomainImpl: IAdminServiceDomain
 
     public async Task<StudentModel?> GetStudent(int id)
     {
+        // Obtener el estudiante primero
         var student = await _adminRepository.GetStudentById(id);
-        return student;
+        
+        // Si el estudiante no existe, devolver null o una instancia vacía según lo requieras
+        if (student == null)
+        {
+            return null; // O puedes devolver una nueva instancia de StudentModel si así lo prefieres
+        }
+
+        // Obtener los cursos del estudiante
+        // Obtener los cursos del estudiante
+    var courses = (await _courseRepository.GetCoursesByStudentId(id)).ToList();
+
+        // Crear un modelo que combine el estudiante con sus cursos
+        var ad = new StudentCoursesFactory(); // Asegúrate de inicializar correctamente esta instancia
+
+        var studentWithCourses = ad.CreateStudentCourses(student, courses);
+
+        return studentWithCourses;
     }
 
     public async Task<StudentModel> GetCoursesByStudentId(int id)
