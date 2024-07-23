@@ -1,9 +1,8 @@
 using PaymentsMicroservice.Domain.Entities;
 using PaymentsMicroservice.Domain.Repositories;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace PaymentsMicroservice.Infrastructure.Repositories
+
+namespace PaymentsMicroservice.Repositories.Implementations
 {
     public class PaymentRepository : IPaymentRepository
     {
