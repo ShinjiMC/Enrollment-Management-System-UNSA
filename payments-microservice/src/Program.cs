@@ -1,3 +1,4 @@
+using Microsoft.OpenApi.Models;
 using PaymentsMicroservice.Application.Services.Implementations;
 using PaymentsMicroservice.Application.Services.Interfaces;
 using PaymentsMicroservice.Domain.Repositories;
@@ -5,6 +6,7 @@ using PaymentsMicroservice.Domain.Services.Implementations;
 using PaymentsMicroservice.Domain.Services.Interfaces;
 using PaymentsMicroservice.Repositories.Data;
 using PaymentsMicroservice.Repositories.Implementations;
+using Swashbuckle.AspNetCore.Filters;
 
 // Builder
 var builder = WebApplication.CreateBuilder(args);
@@ -28,10 +30,47 @@ builder.Services.AddScoped<IElectronicBillRepository, ElectronicBillRepository>(
 builder.Services.AddScoped<IPaymentCodeRepository, PaymentCodeRepository>();
 builder.Services.AddScoped<IPayerRepository, PayerRepository>();
 
+// Enable Swagger
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Payments API", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+
 // App
 var app = builder.Build();
+
+// Configure the HTTP request pipeline
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.MapControllers();
 app.MapGet("/", () => "This is Payments Microservice !!!");
 
-app.Run();
+// Run
+await app.RunAsync();
