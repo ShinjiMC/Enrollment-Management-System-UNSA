@@ -34,13 +34,10 @@ public class EnrollRepository : IEnrollRepository
         return await _context.EnrollModel.Find(x => x.Id == id).FirstOrDefaultAsync();
     }
 
-    public async Task<EnrollModel> GetEnrollByUserId(int userId)
+    public async Task<List<EnrollModel>> GetEnrollsByUserId(int userId)
     {
-        var filter = Builders<EnrollModel>.Filter.And(
-            Builders<EnrollModel>.Filter.Exists("Student"),
-            Builders<EnrollModel>.Filter.Eq("Student.StudentID", userId)
-        );
-        return await _context.EnrollModel.Find(filter).FirstOrDefaultAsync();
+        var filter = Builders<EnrollModel>.Filter.Eq(enroll => enroll.Student.StudentID, userId);
+        return await _context.EnrollModel.Find(filter).ToListAsync();
     }
 
     public async Task<EnrollModel> GetEnrollByUserIdAndSchoolId(int userId, int schoolId)

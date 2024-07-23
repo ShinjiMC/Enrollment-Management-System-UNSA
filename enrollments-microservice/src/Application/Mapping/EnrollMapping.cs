@@ -32,7 +32,7 @@ public static class EnrollMapping
         var ValueObjectStudentData = new StudentData(
             studentId: int.TryParse(enrollment.StudentId, out var studentId) ? studentId : 0,
             fullName: enrollment.FullName == null ? string.Empty : enrollment.FullName,
-            academicPerformance: enrollment.AcademicPerformance,
+            academicPerformance: enrollment.AcademicPerformance ?? enrollment.AcademicPerformance.GetValueOrDefault(),
             credits: enrollment.Credits
         );
 

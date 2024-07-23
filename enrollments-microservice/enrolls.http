@@ -2,8 +2,6 @@
 POST http://localhost:5258/api/Enrollments/enroll/{userId}/{schoolId}
 http://localhost:5258/api/Enrollments/enroll/1/1
 {
-  "fullName": "Shinji Ikari",
-  "academicPerformance": 0,
   "credits": 28,
   "courses": [
     {
@@ -14,8 +12,7 @@ http://localhost:5258/api/Enrollments/enroll/1/1
       "id": "3",
       "group": "B"
     }
-  ],
-  "schoolName": "Evangelion"
+  ]
 }
 
 # Obtener todas las Matriculas Regitradas
@@ -43,7 +40,22 @@ http://localhost:5258/api/Enrollments/enroll/0
   "schoolName": "Evangelion"
 }
 
-#Eliminar una Matricula Registrada
+# Eliminar una Matricula Registrada
 DELETE http://localhost:5258/api/Enrollments/enroll/{enrollId}
 http://localhost:5258/api/Enrollments/enroll/2
 
+# Obtener las matriculas de un Usuario
+GET http://localhost:5258/api/Enrollments/user/{userId}
+http://localhost:5258/api/Enrollments/user/1
+
+# Obtener los cursos disponibles para matricular de un Usuario
+GET http://localhost:5258/api/Enrollments/available/{userId}/{schoolId}
+http://localhost:5258/api/Enrollments/available/1/1
+
+# Obtener la Matricula por su id
+GET http://localhost:5258/api/Enrollments/{enrollId}
+http://localhost:5258/api/Enrollments/1
+
+# Obtener las Matriculas de una Escuela por su id
+GET http://localhost:5258/api/Enrollments/school/{schoolId}
+http://localhost:5258/api/Enrollments/school/1

@@ -4,6 +4,7 @@ using enrollments_microservice.Domain.Repositories;
 using enrollments_microservice.Domain.Services.Implementations;
 using enrollments_microservice.Domain.Services.Interfaces;
 using enrollments_microservice.Repositories.Data;
+using enrollments_microservice.Repositories.ExternalServices;
 using enrollments_microservice.Repositories.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSingleton<MongoDbContext>();
+
+builder.Services.AddHttpClient<IUserExternalService, UserExternalService>();
+
+builder.Services.AddHttpClient<ISchoolExternalService, SchoolExternalService>();
+
+builder.Services.AddHttpClient<ICoursesExternalService, CoursesExternalService>();
 
 builder.Services.AddScoped<IEnrollService, EnrollService>();
 

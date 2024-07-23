@@ -6,17 +6,24 @@ using enrollments_microservice.Domain.Services.Interfaces;
 using enrollments_microservice.Application.Services.Interfaces;
 using static enrollments_microservice.Application.Dtos.ServiceResponses;
 using enrollments_microservice.Application.Mapping;
+using enrollments_microservice.Repositories.ExternalServices;
 
 namespace enrollments_microservice.Application.Services.Implementations;
 public class EnrollService : IEnrollService
 {
     private readonly IEnrollRepository _enrollRepository;
     private readonly IEnrollServiceDomain _enrollServiceDomain;
+    private readonly IUserExternalService _userExternalService;
+    private readonly ISchoolExternalService _schoolExternalService;
+    private readonly ICoursesExternalService _coursesExternalService;
 
-    public EnrollService(IEnrollRepository enrollRepository, IEnrollServiceDomain enrollServiceDomain)
+    public EnrollService(IEnrollRepository enrollRepository, IEnrollServiceDomain enrollServiceDomain, IUserExternalService userExternalService, ISchoolExternalService schoolExternalService, ICoursesExternalService coursesExternalService)
     {
         _enrollRepository = enrollRepository;
         _enrollServiceDomain = enrollServiceDomain;
+        _userExternalService = userExternalService;
+        _schoolExternalService = schoolExternalService;
+        _coursesExternalService = coursesExternalService;
     }
 
     public async Task<IEnumerable<EnrollmentDto>?> GetEnrollments()
@@ -32,6 +39,17 @@ public class EnrollService : IEnrollService
     {
         enrollmentDto.SchoolId = schoolId;
         enrollmentDto.StudentId = userId;
+        var user = await _userExternalService.GetDataByUserIdAsync(userId);
+        if (user == null)
+            return new GeneralResponse(false, "User not found", 404);
+        if (user.Credits < enrollmentDto.Credits)
+            return new GeneralResponse(false, "Insufficient credits", 400);
+        enrollmentDto.FullName = user.FullName;
+        enrollmentDto.AcademicPerformance = user.AcademicPerformance;
+        var schoolName = await _schoolExternalService.GetNameBySchoolIdAsync(schoolId);
+        if (schoolName == null)
+            return new GeneralResponse(false, "School not found", 404);
+        enrollmentDto.SchoolName = schoolName;
         var enrollModel = EnrollMapping.ToModel(enrollmentDto);
         var result = await _enrollServiceDomain.CreateEnroll(enrollModel);
         if (!result.Flag)
@@ -63,13 +81,13 @@ public class EnrollService : IEnrollService
         return enrollmentDto;
     }
 
-    public async Task<EnrollmentDto> GetEnrollmentByUserId(string userId)
+    public async Task<IEnumerable<EnrollmentDto>?> GetEnrollmentsByUserId(string userId)
     {
-        var enroll = await _enrollServiceDomain.GetEnrollByUserId(int.Parse(userId));
+        var enroll = await _enrollServiceDomain.GetEnrollsByUserId(int.Parse(userId));
         if (enroll == null)
-            return new EnrollmentDto();
-        var enrollmentDto = EnrollMapping.ToDto(enroll);
-        return enrollmentDto;
+            return null;
+        var enrollmentsDto = enroll.Select(EnrollMapping.ToDto);
+        return enrollmentsDto;
     }
 
     public async Task<EnrollmentDto> GetEnrollmentByUserIdAndSchoolId(string userId, string schoolId)
@@ -90,14 +108,37 @@ public class EnrollService : IEnrollService
         return enrollmentDtos;
     }
 
-    public async Task<IEnumerable<CourseDto>?> GetAvailableCourses(string userId, string schoolId)
+    public async Task<IEnumerable<CourseExternalDto>?> GetAvailableCourses(string userId, string schoolId)
     {
-        var enroll = await _enrollServiceDomain.GetEnrollByUserIdAndSchoolId(int.Parse(userId), int.Parse(schoolId));
-        if (enroll == null)
+        var user = await _userExternalService.GetDataByUserIdAsync(userId);
+        if (user == null)
             return null;
-        if (enroll.Courses == null)
+        var school = await _schoolExternalService.GetCurriculumByIdAsync(schoolId);
+        if (school == null || school.Curriculum == null)
             return null;
-        var courseDtos = enroll.Courses.Select(CourseMapping.ToDto);
+        var completedCourses = user.Courses ?? new List<string>();
+        var completedCoursesSet = new HashSet<string>(completedCourses);
+        var availableCourseIds = school.Curriculum
+            .Where(c => (c.PreRequeriments ?? new List<string>()).All(preReq => completedCoursesSet.Contains(preReq)))
+            .Select(c => c.Id)
+            .ToList();
+        if (availableCourseIds.Count == 0)
+            return null;
+        var availableCourseIdsFiltered = availableCourseIds
+            .Where(courseId => !completedCoursesSet.Contains(courseId))
+            .ToList();
+        if (availableCourseIdsFiltered.Count == 0)
+            return null;
+        var courseDtos = new List<CourseExternalDto>();
+        foreach (var courseId in availableCourseIdsFiltered)
+        {
+            if (courseId != null)
+            {
+                var course = await _coursesExternalService.GetScheduleOfCourseByIdAsync(courseId);
+                if (course != null)
+                    courseDtos.Add(course);
+            }
+        }
         return courseDtos;
     }
 }

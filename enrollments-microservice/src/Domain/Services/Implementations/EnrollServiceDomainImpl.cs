@@ -38,9 +38,9 @@ public class EnrollServiceDomain : IEnrollServiceDomain
         return enroll;
     }
 
-    public async Task<EnrollModel?> GetEnrollByUserId(int userId)
+    public async Task<List<EnrollModel>?> GetEnrollsByUserId(int userId)
     {
-        var enroll = await _enrollRepository.GetEnrollByUserId(userId);
+        var enroll = await _enrollRepository.GetEnrollsByUserId(userId);
         if (enroll == null)
             return null;
         return enroll;

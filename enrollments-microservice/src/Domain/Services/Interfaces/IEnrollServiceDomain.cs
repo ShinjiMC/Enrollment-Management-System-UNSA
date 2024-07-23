@@ -7,7 +7,7 @@ public interface IEnrollServiceDomain
 {
     Task<GeneralResponse> CreateEnroll(EnrollModel enrollModel);
     Task<EnrollModel?> GetEnrollById(int id);
-    Task<EnrollModel?> GetEnrollByUserId(int userId);
+    Task<List<EnrollModel>?> GetEnrollsByUserId(int userId);
     Task<EnrollModel?> GetEnrollByUserIdAndSchoolId(int userId, int schoolId);
     Task<List<EnrollModel>?> GetEnrollsBySchoolId(int schoolId);
     Task<List<EnrollModel>?> GetEnrolls();

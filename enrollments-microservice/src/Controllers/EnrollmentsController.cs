@@ -7,7 +7,7 @@ namespace enrollments_microservice.Controllers;
 public interface IEnrollmentsController
 {
     Task<IActionResult> GetAvailableCourses(string userId, string schoolId);
-    Task<IActionResult> GetEnrollmentByUserId(string userId);
+    Task<IActionResult> GetEnrollmentsByUserId(string userId);
     Task<IActionResult> GetEnrollmentsBySchoolId(string schoolId);
     Task<IActionResult> GetEnrollmentByUserIdAndSchoolId(string userId, string schoolId);
     Task<IActionResult> GetEnrollmentById(string enrollId);
@@ -44,9 +44,9 @@ public class EnrollmentsController : ControllerBase, IEnrollmentsController
     }
 
     [HttpGet("user/{userId}")]
-    public async Task<IActionResult> GetEnrollmentByUserId(string userId)
+    public async Task<IActionResult> GetEnrollmentsByUserId(string userId)
     {
-        var result = await _enrollService.GetEnrollmentByUserId(userId);
+        var result = await _enrollService.GetEnrollmentsByUserId(userId);
         if (result == null) return NotFound();
         return Ok(result);
     }
