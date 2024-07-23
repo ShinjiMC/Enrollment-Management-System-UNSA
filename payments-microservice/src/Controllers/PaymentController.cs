@@ -29,7 +29,7 @@ namespace PaymentsMicroservice.Controllers
         }
 
         [HttpPost] // Route: api/payment
-        public ActionResult SavePayment(PaymentDto paymentDto)
+        public ActionResult<string> SavePayment(PaymentDto paymentDto)
         {
             // comprobamos que el pago no sea nulo
             if (paymentDto == null)

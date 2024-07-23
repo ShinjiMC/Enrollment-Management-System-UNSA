@@ -1,27 +1,49 @@
+using MongoDB.Driver;
 using PaymentsMicroservice.Domain.Entities;
 using PaymentsMicroservice.Domain.Repositories;
-using System.Collections.Generic;
-using System.Linq;
+using PaymentsMicroservice.Repositories.Data;
+
 
 namespace PaymentsMicroservice.Repositories.Implementations
 {
     public class PaymentCodeRepository : IPaymentCodeRepository
     {
-        private readonly List<PaymentCode> _paymentCodes = new List<PaymentCode>();
+        private readonly MongoDbContext _context;
+
+        public PaymentCodeRepository(MongoDbContext context)
+        {
+            _context = context;
+        }
 
         public async Task<PaymentCode> GetPaymentCodeById(string paymentCodeId)
         {
-            return _paymentCodes.SingleOrDefault(p => p.PaymentCodeId == paymentCodeId);
+            Console.WriteLine("GetPaymentCodeById: " + paymentCodeId);
+            return await _context.PaymentCodes.Find(p => p.PaymentCodeId == paymentCodeId).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<PaymentCode>> GetPaymentCodes()
+        {
+            return await _context.PaymentCodes.Find(p => true).ToListAsync();
         }
 
         public async Task SavePaymentCode(PaymentCode paymentCode)
         {
-            var existingCode = _paymentCodes.SingleOrDefault(p => p.PaymentCodeId == paymentCode.PaymentCodeId);
-            if (existingCode != null)
+            var existingCode = await GetPaymentCodeById(paymentCode.PaymentCodeId);
+            if (existingCode == null)
             {
-                _paymentCodes.Remove(existingCode);
+                await _context.PaymentCodes.InsertOneAsync(paymentCode);
             }
-            _paymentCodes.Add(paymentCode);
+            else
+            {
+                var filter = Builders<PaymentCode>.Filter.Eq(p => p.PaymentCodeId, paymentCode.PaymentCodeId);
+                var update = Builders<PaymentCode>.Update
+                    .Set(p => p.Code, paymentCode.Code)
+                    .Set(p => p.StudentId, paymentCode.StudentId)
+                    .Set(p => p.ElectronicBillId, paymentCode.ElectronicBillId)
+                    .Set(p => p.IsUsed, paymentCode.IsUsed);
+
+                await _context.PaymentCodes.UpdateOneAsync(filter, update);
+            }
         }
     }
 }

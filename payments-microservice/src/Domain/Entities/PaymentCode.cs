@@ -10,7 +10,7 @@ namespace PaymentsMicroservice.Domain.Entities
         [BsonElement("_id"), BsonRepresentation(BsonType.ObjectId)]
         public string? PaymentCodeId { get; set; }
 
-        [BsonElement("code")]
+        [BsonElement("code"), BsonRepresentation(BsonType.String)]
         public string Code { get; set; }
 
         [BsonElement("studentId")]
