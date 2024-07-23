@@ -1,6 +1,7 @@
 using Domain.Courses;
 using Domain.DomainErrors;
 using Domain.Primitives;
+using Domain.Schedules;
 using Domain.ValueObjects;
 using ErrorOr;
 using MediatR;
@@ -19,7 +20,7 @@ internal sealed class UpdateCourseCommandHandler : IRequestHandler<UpdateCourseC
     public async Task<ErrorOr<Unit>> Handle(UpdateCourseCommand command, CancellationToken cancellationToken)
     {
         // Validar semestre
-        if (Semester.Create(command.Semester) is not Semester semester)
+        if (SemesterFactory.Create(command.Semester) is not Semester semester)
         {
             return Errors.Course.InvalidSemester;
         }

@@ -4,6 +4,7 @@ using Domain.ValueObjects;
 using Domain.DomainErrors;
 using MediatR;
 using ErrorOr;
+using Domain.Schedules;
 
 namespace Application.Courses.Create
 {
@@ -25,7 +26,7 @@ namespace Application.Courses.Create
             try
             {
                 // Validar semestre
-                if (Semester.Create(command.Semester) is not Semester semester)
+                if (SemesterFactory.Create(command.Semester) is not Semester semester)
                 {
                     return Errors.Course.InvalidSemester;
                 }

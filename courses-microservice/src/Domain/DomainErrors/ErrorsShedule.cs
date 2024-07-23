@@ -10,8 +10,7 @@ public static partial class Errors
         public static Error InvalidScheduleDetails => 
             Error.Validation("Schedule.Details", "Details has not valid format.");
 
-
-        public static Error AddressWithBadFormat => 
-            Error.Validation("Customer.Address", "Address is not valid.");
+        public static Error InvalidScheduleHours => 
+            Error.Validation("Schedule.Address", "Hours are not valid.");
     }
 }

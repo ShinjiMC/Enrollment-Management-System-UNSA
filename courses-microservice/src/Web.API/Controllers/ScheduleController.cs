@@ -22,9 +22,9 @@ public class Schedules : ApiController
     public async Task<IActionResult> Create([FromBody] CreateScheduleCommand command)
     {
         var createResult = await _mediator.Send(command);
-        
+
         return createResult.Match(
-            customerId => Ok(customerId),
+            scheduleId => CreatedAtAction(nameof(GetById), new { id = scheduleId }, scheduleId),
             errors => Problem(errors)
         );
     }
@@ -33,7 +33,7 @@ public class Schedules : ApiController
     public async Task<IActionResult> GetAll()
     {
         var createResult = await _mediator.Send(new GetAllScheduleQuery());
-        
+
         return createResult.Match(
             customerId => Ok(customerId),
             errors => Problem(errors)
@@ -72,14 +72,14 @@ public class Schedules : ApiController
     }
 
     [HttpGet("search")]
-        public async Task<IActionResult> Search([FromQuery] int year, [FromQuery] string semester , [FromQuery] string schoolId)
-        {
-            var query = new GetByYearSemesterSchool(year, semester, schoolId);
-            var searchResult = await _mediator.Send(query);
+    public async Task<IActionResult> Search([FromQuery] int year, [FromQuery] string semester, [FromQuery] string schoolId)
+    {
+        var query = new GetByYearSemesterSchool(year, semester, schoolId);
+        var searchResult = await _mediator.Send(query);
 
-            return searchResult.Match(
-                schedules => Ok(schedules),
-                errors => Problem(errors)
-            );
-        }
+        return searchResult.Match(
+            schedules => Ok(schedules),
+            errors => Problem(errors)
+        );
+    }
 }

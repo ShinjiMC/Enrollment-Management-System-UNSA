@@ -1,3 +1,4 @@
+using Domain.Schedules;
 using Domain.ValueObjects;
 
 namespace Domain.Courses;
