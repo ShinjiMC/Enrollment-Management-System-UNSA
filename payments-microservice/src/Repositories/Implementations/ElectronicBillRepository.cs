@@ -21,6 +21,7 @@ namespace PaymentsMicroservice.Repositories.Implementations
 
         public async Task SaveElectronicBill(ElectronicBill electronicBill)
         {
+            Console.WriteLine("Repository: " + electronicBill.ElectronicBillId);
             var existingBill = await _context.ElectronicBills.Find(e => e.ElectronicBillId == electronicBill.ElectronicBillId).FirstOrDefaultAsync();
             if (existingBill == null)
             {

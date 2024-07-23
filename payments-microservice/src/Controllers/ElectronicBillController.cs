@@ -45,9 +45,9 @@ namespace PaymentsMicroservice.Controllers
         }
 
         [HttpPut("{electronicBillId}/status")] // Route: api/electronicbill/{electronicBillId}/status
-        public async Task<IActionResult> UpdateElectronicBillStatus(string electronicBillId, [FromBody] string status)
+        public async Task<IActionResult> UpdateElectronicBillStatus(string electronicBillId, [FromBody] UpdateStatusRequest request)
         {
-            var updated = await _electronicBillService.UpdateElectronicBillStatus(electronicBillId, status);
+            var updated = await _electronicBillService.UpdateElectronicBillStatus(electronicBillId, request.Status);
             if (!updated)
             {
                 return NotFound("Cannot update electronic bill status");

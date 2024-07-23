@@ -18,7 +18,6 @@ namespace PaymentsMicroservice.Domain.Services.Implementations
         {
             var electronicBill = new ElectronicBill
             {
-                ElectronicBillId = Guid.NewGuid().ToString(), // Or use a different ID generation strategy
                 StudentId = studentId,
                 TotalAmount = totalAmount,
                 DueDate = dueDate,
