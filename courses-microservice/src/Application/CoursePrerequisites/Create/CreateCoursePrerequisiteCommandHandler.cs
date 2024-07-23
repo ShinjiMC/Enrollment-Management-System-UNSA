@@ -25,8 +25,8 @@ namespace Application.CoursesPrerequisite.Create
             try
             {
                 var course = new CoursePrerequisite(
-                    new CourseId(new Guid(command.CourseId)),
-                    new CourseId(new Guid(command.CoursePrerequisiteId))
+                    new Guid(command.CourseId),
+                    new Guid(command.CoursePrerequisiteId)
                 );
                 _courseRepository.Add(course);
                 await _unitOfWork.SaveChangesAsync(cancellationToken);

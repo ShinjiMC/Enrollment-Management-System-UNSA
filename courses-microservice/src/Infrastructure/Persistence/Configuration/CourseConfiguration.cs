@@ -14,11 +14,7 @@ namespace Infrastructure.Persistence.Configuration
             builder.HasKey(c => c.CourseId);
 
             // Configura la conversión para CourseId
-            builder.Property(c => c.CourseId)
-                .HasConversion(
-                    courseId => courseId.Value,
-                    value => new CourseId(value)
-                );
+            builder.Property(c => c.CourseId).IsRequired();
 
             // Configura propiedades adicionales
             builder.Property(c => c.Name).HasMaxLength(100).IsRequired();

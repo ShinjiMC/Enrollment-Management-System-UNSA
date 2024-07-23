@@ -27,7 +27,7 @@ namespace Application.Schedules.Update
 
         public async Task<ErrorOr<Unit>> Handle(UpdateScheduleCommand command, CancellationToken cancellationToken)
         {
-            var scheduleId = new ScheduleId(command.ScheduleId);
+            var scheduleId = command.ScheduleId;
             var existingSchedule = await _scheduleRepository.GetByIdAsync(scheduleId);
 
             if (existingSchedule is null)
@@ -52,7 +52,7 @@ namespace Application.Schedules.Update
             }
 
             existingSchedule.Update(
-                new CourseId(command.CourseId),
+                command.CourseId,
                 command.Year,
                 command.SchoolId,
                 scheduleDetails,

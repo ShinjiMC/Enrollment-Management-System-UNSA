@@ -14,17 +14,8 @@ namespace Infrastructure.Persistence.Configuration
             builder.HasKey(cp => new { cp.CourseId, cp.PrerequisiteCourseId });
 
             // Configura la conversión para CourseId
-            builder.Property(cp => cp.CourseId)
-                .HasConversion(
-                    courseId => courseId.Value,
-                    value => new CourseId(value)
-                );
-            builder.Property(cp => cp.PrerequisiteCourseId)
-                .HasConversion(
-                    courseId => courseId.Value,
-                    value => new CourseId(value)
-                );
-
+            builder.Property(cp => cp.CourseId).IsRequired();
+            builder.Property(cp => cp.PrerequisiteCourseId).IsRequired();
             // Configura la relación entre Course y CoursePrerequisite
             builder.HasOne(cp => cp.Course)
                 .WithMany()  // Ajusta esta relación según tu diseño

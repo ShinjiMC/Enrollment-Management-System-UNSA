@@ -16,7 +16,7 @@ internal sealed class GetAllCoursesQueryHandler : IRequestHandler<GetAllCoursesQ
         IReadOnlyList<Course> Courses = await _CourseRepository.GetAll();
 
         return Courses.Select(Course => new CourseResponse(
-                Course.CourseId.Value,
+                Course.CourseId,
                 Course.Name,
                 Course.Credits,
                 Course.Hours,

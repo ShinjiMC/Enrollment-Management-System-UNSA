@@ -16,7 +16,7 @@ internal sealed class DeleteCourseCommandHandler : IRequestHandler<DeleteCourseC
     }
     public async Task<ErrorOr<Unit>> Handle(DeleteCourseCommand command, CancellationToken cancellationToken)
     {
-        if (await _courseRepository.GetByIdAsync(new CourseId(command.Id)) is not Course course)
+        if (await _courseRepository.GetByIdAsync(command.Id) is not Course course)
         {
             return Error.NotFound("Course.NotFound", "The course with the provide Id was not found.");
         }

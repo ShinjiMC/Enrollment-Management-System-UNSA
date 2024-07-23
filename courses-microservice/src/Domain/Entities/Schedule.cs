@@ -5,25 +5,25 @@ namespace Domain.Schedules
 {
     public class Schedule
     {
-        public ScheduleId ScheduleId { get; private set; } // Identificador único para el horario
+        public Guid ScheduleId { get; private set; } // Identificador único para el horario
         public int Year { get; private set; } // Año en que se dicta el curso
         public string SchoolId { get; private set; }
-        public CourseId CourseId { get; private set; }
+        public Guid CourseId { get; private set; }
         public List<ScheduleEntry> Entries { get; private set; } // Horario detallado
         public ScheduleDetails ScheduleDetails { get; private set; } // Información del curso y profesor
-        public Course Course {get; private set; }
-        public Schedule(){}
+        public Course Course {get; set; }
+        private Schedule(){}
         // Constructor para inicializar todos los campos
         public Schedule(
-            ScheduleId scheduleId,
+            Guid scheduleId,
             int year,
             string schoolId,
-            CourseId courseId,
+            Guid courseId,
             List<ScheduleEntry> entries,
             ScheduleDetails scheduleDetails)
         {
             ScheduleId = scheduleId;
-            Year = year;
+            Year = year;    
             SchoolId = schoolId;
             CourseId = courseId;
             Entries = entries;
@@ -31,7 +31,7 @@ namespace Domain.Schedules
         }
 
         public void Update(
-            CourseId courseId,
+            Guid courseId,
             int year,
             string schoolId,
             ScheduleDetails scheduleDetails,

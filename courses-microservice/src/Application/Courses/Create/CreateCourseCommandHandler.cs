@@ -32,7 +32,7 @@ namespace Application.Courses.Create
                 }
 
                 var course = new Course(
-                    new CourseId(Guid.NewGuid()),  // Generar un nuevo ID para el curso
+                    Guid.NewGuid(),  // Generar un nuevo ID para el curso
                     command.Name,
                     command.Credits,
                     command.Hours,

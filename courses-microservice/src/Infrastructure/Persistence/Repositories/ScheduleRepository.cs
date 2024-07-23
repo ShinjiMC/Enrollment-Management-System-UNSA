@@ -16,7 +16,7 @@ namespace Infrastructure.Persistence.Repositories
 
         public void Add(Schedule schedule) => _context.Schedules.Add(schedule);
 
-        public async Task<Schedule> GetByIdAsync(ScheduleId id)
+        public async Task<Schedule?> GetByIdAsync(Guid id)
         {
             return await _context.Schedules
                 .Include(s => s.Course) // Asegúrate de incluir la información del curso
@@ -32,7 +32,7 @@ namespace Infrastructure.Persistence.Repositories
 
         public void Delete(Schedule schedule) => _context.Schedules.Remove(schedule);
 
-        public async Task<IReadOnlyList<Schedule>> GetByCourseIdAsync(CourseId courseId)
+        public async Task<IReadOnlyList<Schedule>> GetByCourseIdAsync(Guid courseId)
         {
             return await _context.Schedules
                 .Where(s => s.CourseId == courseId)

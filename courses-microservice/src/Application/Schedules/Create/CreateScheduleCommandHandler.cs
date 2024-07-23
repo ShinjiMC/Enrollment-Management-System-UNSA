@@ -55,7 +55,7 @@ namespace Application.Schedules.Create
                 }
 
                 // Obtener el curso asociado
-                var courseId = new CourseId(new Guid(command.CourseId));
+                var courseId = new Guid(command.CourseId);
                 var course = await _courseRepository.GetByIdAsync(courseId);
                 if (course is null)
                 {
@@ -70,7 +70,7 @@ namespace Application.Schedules.Create
                 }
 
                 var schedule = new Schedule(
-                    new ScheduleId(Guid.NewGuid()), // O usa el ScheduleId proporcionado si es necesario
+                    Guid.NewGuid(), // O usa el ScheduleId proporcionado si es necesario
                     command.Year,
                     command.SchoolId,
                     courseId,

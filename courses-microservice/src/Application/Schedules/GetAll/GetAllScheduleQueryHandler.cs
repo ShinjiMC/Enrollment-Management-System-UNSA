@@ -19,8 +19,8 @@ internal sealed class GetAllScheduleQueryHandler : IRequestHandler<GetAllSchedul
         List<Schedule> schedules = await _scheduleRepository.GetAllAsync();
 
         var response = schedules.Select(schedule => new ScheduleResponse(
-                schedule.ScheduleId.Value.ToString(),
-                schedule.CourseId.Value.ToString(),
+                schedule.ScheduleId.ToString(),
+                schedule.CourseId.ToString(),
                 schedule.SchoolId,
                 schedule.Year,
                 new ScheduleDetailsDto(schedule.ScheduleDetails.Group, schedule.ScheduleDetails.ProfessorId),

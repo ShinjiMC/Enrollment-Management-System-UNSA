@@ -19,8 +19,8 @@ namespace Application.Schedules.GetByYearSemesterSchool
             List<Schedule> schedules = await _scheduleRepository.GetBySemesterYearAndSchoolAsync(request.Year, request.Semester, request.SchoolId);
 
             var scheduleDtos = schedules.Select(schedule => new ScheduleResponse(
-            schedule.ScheduleId.Value.ToString(),
-            schedule.CourseId.Value.ToString(),
+            schedule.ScheduleId.ToString(),
+            schedule.CourseId.ToString(),
             schedule.SchoolId,
             schedule.Year,
             new ScheduleDetailsDto(schedule.ScheduleDetails.Group, schedule.ScheduleDetails.ProfessorId),

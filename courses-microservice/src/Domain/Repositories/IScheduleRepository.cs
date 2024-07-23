@@ -11,7 +11,7 @@ namespace Domain.Schedules
         void Add(Schedule schedule);
 
         // Obtener un horario por su identificador
-        Task<Schedule> GetByIdAsync(ScheduleId id);
+        Task<Schedule?> GetByIdAsync(Guid id);
 
         // Obtener todos los horarios
         Task<List<Schedule>> GetAllAsync();
@@ -23,7 +23,7 @@ namespace Domain.Schedules
         void Delete(Schedule schedule);
 
         // Obtener horarios por ID del curso
-        Task<IReadOnlyList<Schedule>> GetByCourseIdAsync(CourseId courseId);
+        Task<IReadOnlyList<Schedule>> GetByCourseIdAsync(Guid courseId);
 
         // Obtener horarios por ID del profesor
         Task<IReadOnlyList<Schedule>> GetByProfessorIdAsync(string professorId);

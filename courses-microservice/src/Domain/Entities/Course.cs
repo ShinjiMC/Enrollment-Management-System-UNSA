@@ -6,7 +6,7 @@ namespace Domain.Courses;
 public sealed class Course : AggregateRoot
 {
 
-    public CourseId CourseId { get; private set; }
+    public Guid CourseId { get; private set; }
     public string Name { get; private set; }
     public int Credits { get; private set; }
     public int Hours { get; private set; }
@@ -15,7 +15,7 @@ public sealed class Course : AggregateRoot
     public int SchoolId { get; private set; }
     private Course(){}
     public Course(
-            CourseId courseId,
+            Guid courseId,
             string name,
             int credits,
             int hours,
@@ -39,7 +39,7 @@ public sealed class Course : AggregateRoot
             Semester semester,
             int schoolId)
     {
-        return new Course(new CourseId(id), name, credits, hours,active, semester, schoolId);
+        return new Course(id, name, credits, hours,active, semester, schoolId);
     }
 
 }

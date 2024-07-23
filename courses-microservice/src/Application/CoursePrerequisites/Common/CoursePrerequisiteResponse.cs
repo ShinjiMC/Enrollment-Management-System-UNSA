@@ -3,8 +3,8 @@ using Domain.Courses;
 namespace CoursesPrerequisite.Common;
 
 public record CoursesPrerequisiteResponse(
-    CourseId CourseId,
-    CourseId CoursePrerequisiteId
+    Guid CourseId,
+    Guid CoursePrerequisiteId
 );
 
 public record CoursesPrerequisiteResponseGetAll(

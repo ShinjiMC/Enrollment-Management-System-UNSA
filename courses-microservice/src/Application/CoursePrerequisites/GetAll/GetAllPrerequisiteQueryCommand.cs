@@ -19,11 +19,11 @@ internal sealed class GetAllCustomersQueryHandler : IRequestHandler<GetAllCourse
 
     public async Task<ErrorOr<IReadOnlyList<CoursesPrerequisiteResponseGetAll>>> Handle(GetAllCoursesPrerequisiteQuery query, CancellationToken cancellationToken)
     {
-        IReadOnlyList<CoursePrerequisite> courses = await _customerRepository.GetPrerequisitesByCourseIdAsync(new CourseId(new Guid(query.Id)));
+        IReadOnlyList<CoursePrerequisite> courses = await _customerRepository.GetPrerequisitesByCourseIdAsync(new Guid(query.Id));
 
         return courses.Select(courses => new CoursesPrerequisiteResponseGetAll(
-                courses.CourseId.Value.ToString(),
-                courses.PrerequisiteCourseId.Value.ToString()
+                courses.CourseId.ToString(),
+                courses.PrerequisiteCourseId.ToString()
             )).ToList();
     }
 }

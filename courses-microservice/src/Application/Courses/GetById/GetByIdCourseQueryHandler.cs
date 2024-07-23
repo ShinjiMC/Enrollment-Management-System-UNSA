@@ -17,13 +17,13 @@ internal sealed class GetCourseByIdQueryHandler : IRequestHandler<GetByIdCourses
 
     public async Task<ErrorOr<CourseResponse>> Handle(GetByIdCoursesQuery query, CancellationToken cancellationToken)
     {
-        if (await _CourseRepository.GetByIdAsync(new CourseId(query.Id)) is not Course course)
+        if (await _CourseRepository.GetByIdAsync(query.Id) is not Course course)
         {
             return Error.NotFound("Course.NotFound", "The Course with the provide Id was not found.");
         }
 
         return new CourseResponse(
-            course.CourseId.Value, 
+            course.CourseId, 
             course.Name, 
             course.Credits, 
             course.Hours,

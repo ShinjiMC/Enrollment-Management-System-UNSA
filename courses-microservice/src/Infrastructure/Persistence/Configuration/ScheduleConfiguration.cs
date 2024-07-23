@@ -13,12 +13,7 @@ namespace Infrastructure.Persistence.Configuration
 
             builder.HasKey(s => s.ScheduleId);
 
-            builder.Property(s => s.ScheduleId)
-                .ValueGeneratedNever()
-                .HasConversion(
-                    id => id.Value,
-                    value => new ScheduleId(value)
-                );
+            builder.Property(s => s.ScheduleId).IsRequired();
 
             builder.Property(s => s.Year).IsRequired();
             builder.Property(s => s.SchoolId).IsRequired();

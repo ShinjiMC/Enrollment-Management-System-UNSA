@@ -16,7 +16,7 @@ internal sealed class DeleteCustomerCommandHandler : IRequestHandler<DeleteCusto
     }
     public async Task<ErrorOr<Unit>> Handle(DeleteCustomerCommand command, CancellationToken cancellationToken)
     {
-        if (await _customerRepository.GetByIdAsync(new CustomerId(command.Id)) is not Customer customer)
+        if (await _customerRepository.GetByIdAsync(command.Id) is not Customer customer)
         {
             return Error.NotFound("Customer.NotFound", "The customer with the provide Id was not found.");
         }

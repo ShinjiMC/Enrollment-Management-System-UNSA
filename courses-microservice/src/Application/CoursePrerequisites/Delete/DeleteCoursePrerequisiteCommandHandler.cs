@@ -17,7 +17,7 @@ internal sealed class DeleteCoursePrerequisiteCommandHandler : IRequestHandler<D
     }
     public async Task<ErrorOr<Unit>> Handle(DeleteCoursePrerequisiteCommand command, CancellationToken cancellationToken)
     {
-        if (await _courseRepository.GetByIdAsync(new CourseId(command.Id)) is not CoursePrerequisite course)
+        if (await _courseRepository.GetByIdAsync(command.Id) is not CoursePrerequisite course)
         {
             return Error.NotFound("Course.NotFound", "The course with the provide Id was not found.");
         }

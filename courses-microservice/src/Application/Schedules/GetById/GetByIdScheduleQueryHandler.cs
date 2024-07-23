@@ -16,14 +16,14 @@ internal sealed class GetScheduleByIdQueryHandler : IRequestHandler<GetByIdSched
 
     public async Task<ErrorOr<ScheduleResponse>> Handle(GetByIdScheduleQuery query, CancellationToken cancellationToken)
     {
-        if (await _scheduleRepository.GetByIdAsync(new ScheduleId(query.Id)) is not Schedule schedule)
+        if (await _scheduleRepository.GetByIdAsync(query.Id) is not Schedule schedule)
         {
             return Error.NotFound("Schedule.NotFound", "The Schedule with the provided Id was not found.");
         }
 
         var scheduleResponse = new ScheduleResponse(
-            schedule.ScheduleId.Value.ToString(),
-            schedule.CourseId.Value.ToString(),
+            schedule.ScheduleId.ToString(),
+            schedule.CourseId.ToString(),
             schedule.SchoolId,
             schedule.Year,
             new ScheduleDetailsDto(

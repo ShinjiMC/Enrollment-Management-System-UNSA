@@ -25,7 +25,7 @@ internal sealed class CreateCustomerCommandHandler : IRequestHandler<CreateCusto
                 return Errors.Customer.AddressWithBadFormat;
             }
             var customer = new Customer(
-                new CustomerId(Guid.NewGuid()),
+                Guid.NewGuid(),
                 command.Name,
                 command.LastName,
                 command.Email,

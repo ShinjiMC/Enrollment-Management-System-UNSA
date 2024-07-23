@@ -14,12 +14,7 @@ namespace Infrastructure.Persistence.Configuration
             builder.HasKey(c => c.Id);
 
             // Configura la conversión para Id
-            builder.Property(c => c.Id)
-                .HasConversion(
-                    customerId => customerId.Value,
-                    value => new CustomerId(value)
-                );
-
+            builder.Property(c => c.Id).IsRequired();
             // Configura propiedades adicionales
             builder.Property(c => c.Name).HasMaxLength(50);
             builder.Property(c => c.LastName).HasMaxLength(50);

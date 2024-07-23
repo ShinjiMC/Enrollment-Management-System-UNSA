@@ -11,14 +11,14 @@ public class CoursePrerequisiteRepository : ICoursePrerequisiteRepository
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
-    public async Task<List<CoursePrerequisite>> GetPrerequisitesByCourseIdAsync(CourseId courseId)
+    public async Task<List<CoursePrerequisite>> GetPrerequisitesByCourseIdAsync(Guid courseId)
     {
         return await _context.CoursePrerequisites
             .Where(cp => cp.CourseId == courseId)
             .ToListAsync();
     }
-    public void Add(CoursePrerequisite prerequisite) =>_context.CoursePrerequisites.Add(prerequisite);
-    public void Update(CoursePrerequisite prerequisite) =>_context.CoursePrerequisites.Update(prerequisite);
-    public void Delete(CoursePrerequisite prerequisite) =>_context.CoursePrerequisites.Remove(prerequisite);
-    public async Task<CoursePrerequisite?> GetByIdAsync(CourseId courseId) => await _context.CoursePrerequisites.SingleOrDefaultAsync(c => c.CourseId == courseId);
+    public void Add(CoursePrerequisite course) =>_context.CoursePrerequisites.Add(course);
+    public void Update(CoursePrerequisite course) =>_context.CoursePrerequisites.Update(course);
+    public void Delete(CoursePrerequisite course) =>_context.CoursePrerequisites.Remove(course);
+    public async Task<CoursePrerequisite?> GetByIdAsync(Guid courseId) => await _context.CoursePrerequisites.SingleOrDefaultAsync(c => c.CourseId == courseId);
 }
