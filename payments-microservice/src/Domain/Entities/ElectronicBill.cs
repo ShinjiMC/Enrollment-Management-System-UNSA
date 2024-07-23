@@ -1,20 +1,43 @@
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using PaymentsMicroservice.Domain.ValueObjects;
 
 namespace PaymentsMicroservice.Domain.Entities
 {
     public class ElectronicBill
     {
-        public string ElectronicBillId { get; set; }
-        public string StudentId { get; set; }
-        public Money TotalAmount { get; set; }
-        public DateTime DueDate { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public ElectronicBillStatus Status { get; set; }
-        public List<ElectronicBillItem> Items { get; set; }
+        [BsonId]
+        [BsonElement("_id"), BsonRepresentation(BsonType.ObjectId)]
+        public string? ElectronicBillId { get; set; }
 
-        public void UpdateStatus(ElectronicBillStatus newStatus)
-        {
-            Status = newStatus;
-        }
+        [BsonElement("studentId")]
+        public required string StudentId { get; set; }
+
+        [BsonElement("totalAmount")]
+        public required Money TotalAmount { get; set; }
+
+        [BsonElement("dueDate")]
+        public DateTime DueDate { get; set; }
+
+        [BsonElement("createdDate")]
+        public DateTime CreatedDate { get; set; }
+
+        [BsonElement("status")]
+        public required string Status { get; set; }
+
+        [BsonElement("items")]
+        public required List<ElectronicBillItem> Items { get; set; }
+    }
+
+    public class ElectronicBillItem
+    {
+        [BsonElement("electronicBillItemId")]
+        public string? ElectronicBillItemId { get; set; }
+
+        [BsonElement("description")]
+        public string? Description { get; set; }
+
+        [BsonElement("amount")]
+        public required Money Amount { get; set; }
     }
 }

@@ -1,43 +1,62 @@
+using PaymentsMicroservice.Domain.Entities;
+using PaymentsMicroservice.Domain.Repositories;
+using PaymentsMicroservice.Domain.Services.Interfaces;
+using PaymentsMicroservice.Domain.ValueObjects;
+
 namespace PaymentsMicroservice.Domain.Services.Implementations
 {
-    using PaymentsMicroservice.Domain.Entities;
-    using PaymentsMicroservice.Domain.ValueObjects;
-    using PaymentsMicroservice.Domain.Services.Interfaces;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     public class ElectronicBillDomainService : IElectronicBillDomainService
     {
-        public ElectronicBill CreateElectronicBill(string studentId, List<ElectronicBillItem> electronicBillItems)
+        private readonly IElectronicBillRepository _electronicBillRepository;
+
+        public ElectronicBillDomainService(IElectronicBillRepository electronicBillRepository)
         {
-            return new ElectronicBill
+            _electronicBillRepository = electronicBillRepository;
+        }
+
+        public async Task<ElectronicBill> CreateElectronicBill(string studentId, Money totalAmount, DateTime dueDate, List<ElectronicBillItem> items)
+        {
+            var electronicBill = new ElectronicBill
             {
-                ElectronicBillId = Guid.NewGuid().ToString(),
+                ElectronicBillId = Guid.NewGuid().ToString(), // Or use a different ID generation strategy
                 StudentId = studentId,
-                Items = electronicBillItems,
-                TotalAmount = new Money(electronicBillItems.Sum(item => item.Amount.Amount), "USD"),
-                DueDate = DateTime.Now.AddMonths(1),
-                CreatedDate = DateTime.Now,
-                Status = new ElectronicBillStatus("Unpaid")
+                TotalAmount = totalAmount,
+                DueDate = dueDate,
+                CreatedDate = DateTime.UtcNow,
+                Status = ElectronicBillStatus.Pending.ToString(), // Example default status
+                Items = items
             };
+
+            await _electronicBillRepository.SaveElectronicBill(electronicBill);
+            return electronicBill;
         }
 
-        public ElectronicBill UpdateElectronicBill(string electronicBillId, List<ElectronicBillItem> electronicBillItems)
+        public async Task<ElectronicBill> GetElectronicBillById(string electronicBillId)
         {
-            return new ElectronicBill
+            return await _electronicBillRepository.GetElectronicBillById(electronicBillId);
+        }
+
+        public async Task<List<ElectronicBill>> GetElectronicBills()
+        {
+            var electronicBills = await _electronicBillRepository.GetElectronicBills();
+            if (electronicBills == null)
             {
-                ElectronicBillId = electronicBillId,
-                Items = electronicBillItems,
-                TotalAmount = new Money(electronicBillItems.Sum(item => item.Amount.Amount), "USD"),
-                Status = new ElectronicBillStatus("Unpaid") // Assuming update resets status
-            };
+                return new List<ElectronicBill>();
+            }
+            return electronicBills;
         }
 
-        public ElectronicBillStatus CheckElectronicBillStatus(string electronicBillId)
+        public async Task<bool> UpdateElectronicBillStatus(string electronicBillId, ElectronicBillStatus status)
         {
-            // Logic for checking status of electronic bill
-            return new ElectronicBillStatus("Unpaid");
+            var electronicBill = await _electronicBillRepository.GetElectronicBillById(electronicBillId);
+            if (electronicBill == null)
+            {
+                return false;
+            }
+
+            electronicBill.Status = status.ToString();
+            await _electronicBillRepository.SaveElectronicBill(electronicBill);
+            return true;
         }
     }
 }

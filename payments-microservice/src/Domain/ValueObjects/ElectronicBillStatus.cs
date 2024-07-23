@@ -1,12 +1,10 @@
 namespace PaymentsMicroservice.Domain.ValueObjects
-{
-    public class ElectronicBillStatus
     {
-        public string Status { get; }
-
-        public ElectronicBillStatus(string status)
+        public enum ElectronicBillStatus
         {
-            Status = status;
+            Pending,
+            Paid,
+            Overdue,
+            Cancelled
         }
     }
-}

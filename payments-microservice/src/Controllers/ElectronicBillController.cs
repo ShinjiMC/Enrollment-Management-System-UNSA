@@ -1,12 +1,11 @@
+using Microsoft.AspNetCore.Mvc;
+using PaymentsMicroservice.Application.Dtos;
+using PaymentsMicroservice.Application.Services.Interfaces;
+
 namespace PaymentsMicroservice.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-    using PaymentsMicroservice.Application.Services.Interfaces;
-    using PaymentsMicroservice.Application.Dtos;
-    using System.Collections.Generic;
-
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class ElectronicBillController : ControllerBase
     {
         private readonly IElectronicBillService _electronicBillService;
@@ -16,28 +15,44 @@ namespace PaymentsMicroservice.Controllers
             _electronicBillService = electronicBillService;
         }
 
-        [HttpPost]
-        [Route("create")]
-        public ActionResult<ElectronicBillDto> CreateElectronicBill(string studentId, [FromBody] List<ElectronicBillItemDto> electronicBillItems)
+        [HttpGet("{electronicBillId}")] // Route: api/electronicbill/{electronicBillId}
+        public async Task<ActionResult<ElectronicBillDto>> GetElectronicBillById(string electronicBillId)
         {
-            var result = _electronicBillService.CreateElectronicBill(studentId, electronicBillItems);
-            return Ok(result);
+            var electronicBill = await _electronicBillService.GetElectronicBillById(electronicBillId);
+            if (electronicBill == null)
+            {
+                return NotFound("Electronic bill not found");
+            }
+            return Ok(electronicBill);
         }
 
-        [HttpPut]
-        [Route("update/{electronicBillId}")]
-        public ActionResult<ElectronicBillDto> UpdateElectronicBill(string electronicBillId, [FromBody] List<ElectronicBillItemDto> electronicBillItems)
+        [HttpPost] // Route: api/electronicbill
+        public async Task<ActionResult<ElectronicBillDto>> CreateElectronicBill(ElectronicBillDto electronicBillDto)
         {
-            var result = _electronicBillService.UpdateElectronicBill(electronicBillId, electronicBillItems);
-            return Ok(result);
+            var createdElectronicBill = await _electronicBillService.CreateElectronicBill(electronicBillDto);
+            return CreatedAtAction(nameof(GetElectronicBillById), new { electronicBillId = createdElectronicBill.ElectronicBillId }, createdElectronicBill);
         }
 
-        [HttpGet]
-        [Route("status/{electronicBillId}")] // Route: api/electronicbill/status/{electronicBillId}
-        public ActionResult<string> CheckElectronicBillStatus(string electronicBillId)
+        [HttpGet] // Route: api/electronicbill
+        public async Task<ActionResult<List<ElectronicBillDto>>> GetElectronicBills()
         {
-            var result = _electronicBillService.CheckElectronicBillStatus(electronicBillId);
-            return Ok(result);
+            var electronicBills = await _electronicBillService.GetElectronicBills();
+            if (electronicBills == null)
+            {
+                return NotFound("No electronic bills found");
+            }
+            return Ok(electronicBills);
+        }
+
+        [HttpPut("{electronicBillId}/status")] // Route: api/electronicbill/{electronicBillId}/status
+        public async Task<IActionResult> UpdateElectronicBillStatus(string electronicBillId, [FromBody] string status)
+        {
+            var updated = await _electronicBillService.UpdateElectronicBillStatus(electronicBillId, status);
+            if (!updated)
+            {
+                return NotFound("Cannot update electronic bill status");
+            }
+            return Ok("Electronic bill status updated");
         }
     }
 }

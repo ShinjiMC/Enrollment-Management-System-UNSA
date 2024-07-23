@@ -5,20 +5,19 @@ namespace PaymentsMicroservice.Application.Dtos
 
     public class ElectronicBillDto
     {
-        public string ElectronicBillId { get; set; }
-        public string StudentId { get; set; }
-        public decimal TotalAmount { get; set; }
+        public string? ElectronicBillId { get; set; }
+        public required string StudentId { get; set; }
+        public required MoneyDto TotalAmount { get; set; }
         public DateTime DueDate { get; set; }
         public DateTime CreatedDate { get; set; }
-        public string Status { get; set; }
-        public List<ElectronicBillItemDto> Items { get; set; }
+        public required string Status { get; set; }
+        public required List<ElectronicBillItemDto> Items { get; set; }
     }
 
     public class ElectronicBillItemDto
     {
-        public string ElectronicBillItemId { get; set; }
-        public string CourseId { get; set; }
-        public string Description { get; set; }
-        public decimal Amount { get; set; }
+        public required string ElectronicBillItemId { get; set; }
+        public required string Description { get; set; }
+        public required MoneyDto Amount { get; set; }
     }
 }

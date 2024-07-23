@@ -1,25 +1,40 @@
+using MongoDB.Driver;
 using PaymentsMicroservice.Domain.Entities;
 using PaymentsMicroservice.Domain.Repositories;
+using PaymentsMicroservice.Repositories.Data;
 
 namespace PaymentsMicroservice.Repositories.Implementations
 {
     public class ElectronicBillRepository : IElectronicBillRepository
     {
-        private readonly List<ElectronicBill> _electronicBills = new List<ElectronicBill>();
+        private readonly MongoDbContext _context;
 
-        public ElectronicBill GetElectronicBillById(string electronicBillId)
+        public ElectronicBillRepository(MongoDbContext context)
         {
-            return _electronicBills.SingleOrDefault(e => e.ElectronicBillId == electronicBillId);
+            _context = context;
         }
 
-        public void SaveElectronicBill(ElectronicBill electronicBill)
+        public async Task<ElectronicBill> GetElectronicBillById(string electronicBillId)
         {
-            var existingBill = _electronicBills.SingleOrDefault(e => e.ElectronicBillId == electronicBill.ElectronicBillId);
-            if (existingBill != null)
+            return await _context.ElectronicBills.Find(e => e.ElectronicBillId == electronicBillId).FirstOrDefaultAsync();
+        }
+
+        public async Task SaveElectronicBill(ElectronicBill electronicBill)
+        {
+            var existingBill = await _context.ElectronicBills.Find(e => e.ElectronicBillId == electronicBill.ElectronicBillId).FirstOrDefaultAsync();
+            if (existingBill == null)
             {
-                _electronicBills.Remove(existingBill);
+                await _context.ElectronicBills.InsertOneAsync(electronicBill);
             }
-            _electronicBills.Add(electronicBill);
+            else
+            {
+                await _context.ElectronicBills.ReplaceOneAsync(e => e.ElectronicBillId == electronicBill.ElectronicBillId, electronicBill);
+            }
+        }
+
+        public Task<List<ElectronicBill>> GetElectronicBills()
+        {
+            return _context.ElectronicBills.Find(e => true).ToListAsync();
         }
     }
 }
