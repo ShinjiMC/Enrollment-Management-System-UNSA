@@ -5,16 +5,19 @@ import "./sass/index.scss";
 import { Provider } from "react-redux";
 import store from "./store/ReduxStore.ts";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { UserProvider } from "./context/UserContext";
 
 const Main = () => {
   return (
     <React.StrictMode>
       <Provider store={store}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="*" element={<App />} />
-          </Routes>
-        </BrowserRouter>
+        <UserProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="*" element={<App />} />
+            </Routes>
+          </BrowserRouter>
+        </UserProvider>
       </Provider>
     </React.StrictMode>
   );
