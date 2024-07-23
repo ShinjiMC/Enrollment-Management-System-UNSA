@@ -13,16 +13,30 @@ namespace users_microservice.Application.Mapping
                 FullName = student.FullName ?? string.Empty, // Maneja posibles valores null
                 Email = student.Email ?? string.Empty, // Maneja posibles valores null
                 Cui = student.StudentData?.Cui ?? string.Empty, // Maneja posibles valores null en StudentData
-                        CourseIds = student.StudentCourses
-                                    .Where(sc => sc.CourseData != null) 
-                                    .Select(sc => sc.CourseData.CourseId)
-                                    .Where(id => id != null) 
-                                    .ToList(),
+                CourseIds = (student.StudentCourses ?? new List<CourseModel>())
+                            .Where(sc => sc.CourseData != null) 
+                            .Select(sc => sc.CourseData!.CourseId)
+                            .Where(id => id != null) 
+                            .ToList(),
                 AcademicPerformance = student.AcademicPerformance,
                 Credit = student.Credit,
                 SchoolId = student.StudentData?.SchoolId
 
                 // Mapea otros campos según sea necesario
+            };
+        }
+        public static ExtStudentCourseDto ToExtDto(this StudentModel student)
+        {
+            return new ExtStudentCourseDto
+            {
+                FullName = student.FullName ?? string.Empty, // Maneja posibles valores null
+                AcademicPerformance = student.AcademicPerformance,
+                Credit = student.Credit,
+                CourseIds = (student.StudentCourses ?? new List<CourseModel>())
+                            .Where(sc => sc.CourseData != null) 
+                            .Select(sc => sc.CourseData!.CourseId)
+                            .Where(id => id != null) 
+                            .ToList()
             };
         }
         public static StudentModel ToModel(StudentDto studentDto)

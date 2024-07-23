@@ -12,6 +12,7 @@ public interface IStudentController
     // Task<IActionResult> GetStudentByCui(string cui);
     // Task<IActionResult> GetCoursesByStudentCui(string cui);
     Task<IActionResult> GetAllStudents();
+   
 }
 
 
@@ -20,6 +21,7 @@ public interface IStudentController
 public class StudentController : ControllerBase, IStudentController
 {
     private readonly IStudentService _studentService;
+    
 
     public StudentController(IStudentService studentService)
     {
@@ -27,7 +29,7 @@ public class StudentController : ControllerBase, IStudentController
     }
 
     
-    [HttpGet("student/{id}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetStudentById(string id)
     {
         var student = await _studentService.GetStudentAsync(id);
@@ -37,26 +39,14 @@ public class StudentController : ControllerBase, IStudentController
         return Ok(student);
     }
 
-    [HttpGet("student/{id}/courses")]
+    [HttpGet("{id}/courses")]
     public async Task<IActionResult> GetCoursesByStudentId(string id)
     {
         var courses = await _studentService.GetCoursesByStudentIdAsync(id);
         return Ok(courses);
     }
 
-    // [HttpGet("student/{cui}")]
-    // public Task<IActionResult> GetStudentByCui(string cui)
-    // {
-    //     throw new NotImplementedException();
-    // }
-
-
-    // public Task<IActionResult> GetCoursesByStudentCui(string cui)
-    // {
-    //     throw new NotImplementedException();
-    // }
-
-    [HttpGet("student")]
+    [HttpGet("all")]
     public async Task<IActionResult> GetAllStudents() 
     {
         var users = await _studentService.GetAllStudents();
