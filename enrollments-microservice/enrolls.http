@@ -1,0 +1,49 @@
+# Registrar Matricula
+POST http://localhost:5258/api/Enrollments/enroll/{userId}/{schoolId}
+http://localhost:5258/api/Enrollments/enroll/1/1
+{
+  "fullName": "Shinji Ikari",
+  "academicPerformance": 0,
+  "credits": 28,
+  "courses": [
+    {
+      "id": "1",
+      "group": "A"
+    },
+    {
+      "id": "3",
+      "group": "B"
+    }
+  ],
+  "schoolName": "Evangelion"
+}
+
+# Obtener todas las Matriculas Regitradas
+GET http://localhost:5258/api/Enrollments/all
+
+# Actualizar datos de Matricula
+PUT http://localhost:5258/api/Enrollments/enroll/{enrollId}
+http://localhost:5258/api/Enrollments/enroll/0
+{
+  "studentId": "1",
+  "schoolId": "1",
+  "fullName": "Shinji Ikari",
+  "academicPerformance": 0,
+  "credits": 28,
+  "courses": [
+    {
+      "id": "1",
+      "group": "A"
+    },
+    {
+      "id": "3",
+      "group": "C"
+    }
+  ],
+  "schoolName": "Evangelion"
+}
+
+#Eliminar una Matricula Registrada
+DELETE http://localhost:5258/api/Enrollments/enroll/{enrollId}
+http://localhost:5258/api/Enrollments/enroll/2
+

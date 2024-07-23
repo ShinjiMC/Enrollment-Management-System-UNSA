@@ -1,10 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace enrollments_microservice.Application.Dtos;
 
 public class CourseDto
 {
-    public int CourseID { get; set; }
-    public string Name { get; set; }
-    public string Semester { get; set; }
-    public int Credits { get; set; }
-    public List<ScheduleDto> Schedules { get; set; }
+    [Required]
+    public string? Id { get; set; } = string.Empty;
+    [Required]
+    public string? Group { get; set; } = string.Empty;
 }
