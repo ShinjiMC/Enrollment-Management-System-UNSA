@@ -1,71 +1,63 @@
 ## Configuración del Proyecto
 
-Sigue estos pasos para configurar y construir tu proyecto desde la línea de comandos.
+#### Inicializar el Proyecto
 
-### 1. Crear la Solución y Directorio Principal
+1. **Crear una nueva solución**:
+    ```bash
+    dotnet new sln -o courses-microservice
+    cd courses-microservice
+    ```
 
-```bash
-dotnet new sln -o courses-microservice
-cd courses-microservice
-```
+2. **Crear proyectos**:
 
-### 2. Crear los Proyectos de Biblioteca
+    - **Crear librerías de clases**:
+      ```bash
+      dotnet new classlib -o src/Domain
+      dotnet new classlib -o src/Application
+      dotnet new classlib -o src/Infrastructure
+      ```
 
-```bash
-dotnet new classlib -o Domain
-dotnet new classlib -o Application
-dotnet new classlib -o Infrastructure
-```
+    - **Crear API Web**:
+      ```bash
+      dotnet new webapi -o src/Web.API
+      ```
 
-### 3. Crear el Proyecto Web API
+3. **Construir la solución**:
+    ```bash
+    dotnet build
+    ```
 
-```bash
-dotnet new webapi -o Web.API
-```
+4. **Agregar referencias entre proyectos**:
+    ```bash
+    dotnet add src/Application/Application.csproj reference src/Domain/Domain.csproj
+    dotnet add src/Infrastructure/Infrastructure.csproj reference src/Application/Application.csproj
+    dotnet add src/Web.API/Web.API.csproj reference src/Application/Application.csproj src/Infrastructure/Infrastructure.csproj
+    ```
 
-### 4. Construir la Solución
+5. **Agregar proyectos a la solución**:
+    ```bash
+    dotnet sln add src/Web.API/Web.API.csproj
+    dotnet sln add src/Application/Application.csproj
+    dotnet sln add src/Infrastructure/Infrastructure.csproj
+    dotnet sln add src/Domain/Domain.csproj
+    ```
 
-```bash
-dotnet build
-```
+6. **Crear carpeta para pruebas**:
 
-### 5. Agregar Referencias entre Proyectos
+    - **Crear carpeta `test` y mover el proyecto de pruebas**:
+      ```bash
+      mkdir test
+      ```
 
-```bash
-dotnet add Application/Application.csproj reference Domain/Domain.csproj
-dotnet add Infrastructure/Infrastructure.csproj reference Application/Application.csproj
-dotnet add Web.API/Web.API.csproj reference Application/Application.csproj Infrastructure/Infrastructure.csproj
-```
+7. **Construir y ejecutar la API**:
+    ```bash
+    cd src
+    dotnet build
+    dotnet run -p Web.API/
+    ```
 
-### 6. Agregar Proyectos a la Solución
-
-```bash
-dotnet sln add Web.API/Web.API.csproj
-dotnet sln add Application/Application.csproj
-dotnet sln add Infrastructure/Infrastructure.csproj
-dotnet sln add Domain/Domain.csproj
-```
-
-### 7. Construir y Ejecutar la Aplicación
-
-```bash
-cd src
-dotnet build
-dotnet run -p Web.API/
-```
-
-### 8. Migraciones de Entity Framework Core
-
-```bash
-dotnet ef migrations add InitialMigration -p Infrastructure -s Web.API -o Persistence/Migrations --verbose
-dotnet ef database update -p Infrastructure/ -s Web.API/
-```
-
-<!--
-### 9. Crear Proyectos de Prueba (opcional)
-
-```bash
-cd test
-dotnet new xunit -o Application.Customers.UnitTests
-```
--->
+8. **Agregar migraciones de Entity Framework**:
+    ```bash
+    dotnet ef migrations add InitialMigration -p src/Infrastructure -s src/Web.API -o Persistence/Migrations --verbose
+    dotnet ef database update -p src/Infrastructure -s src/Web.API/
+    ```
