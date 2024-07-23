@@ -16,10 +16,11 @@ builder.Services.AddSingleton<MongoDbContext>();
 
 // Register application services
 builder.Services.AddScoped<IElectronicBillService, ElectronicBillService>();
-
+builder.Services.AddScoped<IPaymentCodeService, PaymentCodeService>();
 
 // Register domain services
 builder.Services.AddScoped<IElectronicBillDomainService, ElectronicBillDomainService>();
+builder.Services.AddScoped<IPaymentCodeDomainService, PaymentCodeDomainService>();
 
 // Register repositories
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
