@@ -17,19 +17,20 @@ namespace PaymentsMicroservice.Repositories.Implementations
 
         public async Task<Payment> GetPaymentById(string paymentId)
         {
-            // print por consola:
             Console.WriteLine("GetPaymentById: " + paymentId);
             return await _context.Payments.Find(p => p.PaymentId == paymentId).FirstOrDefaultAsync();
         }
 
-        public async Task SavePayment(Payment payment)
+        public async Task<Payment> SavePayment(Payment payment)
         {
             var existingPayment = await GetPaymentById(payment.PaymentId);
-            if (existingPayment == null)// insert one async if not exists
+            if (existingPayment == null)
             {
                 await _context.Payments.InsertOneAsync(payment);
+                // Después de insertar, recuperamos el objeto insertado desde la base de datos para asegurarnos de tener los valores actualizados
+                return await GetPaymentById(payment.PaymentId);
             }
-            else // update one async if exists
+            else
             {
                 var filter = Builders<Payment>.Filter.Eq(p => p.PaymentId, payment.PaymentId);
                 var update = Builders<Payment>.Update
@@ -40,8 +41,15 @@ namespace PaymentsMicroservice.Repositories.Implementations
                     .Set(p => p.ElectronicBillId, payment.ElectronicBillId)
                     .Set(p => p.Status, payment.Status);
 
-                await _context.Payments.UpdateOneAsync(filter, update);
+                // Actualizar y devolver el objeto actualizado
+                var updatedPayment = await _context.Payments.FindOneAndUpdateAsync(filter, update, new FindOneAndUpdateOptions<Payment>
+                {
+                    ReturnDocument = ReturnDocument.After
+                });
+
+                return updatedPayment;
             }
         }
+
     }
 }

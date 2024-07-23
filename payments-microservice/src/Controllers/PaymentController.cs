@@ -1,44 +1,48 @@
-namespace PaymentsMicroservice.Controllers
-{
-    using Microsoft.AspNetCore.Mvc;
-    using PaymentsMicroservice.Application.Dtos;
-    using PaymentsMicroservice.Application.Mapping;
-    using PaymentsMicroservice.Domain.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using PaymentsMicroservice.Application.Dtos;
+using PaymentsMicroservice.Application.Services.Interfaces;
 
-    [Route("api/[controller]")]
+namespace PaymentsMicroservice.API.Controllers
+{
     [ApiController]
+    [Route("api/[controller]")]
     public class PaymentController : ControllerBase
     {
-        private readonly IPaymentRepository _paymentRepository;
+        private readonly IPaymentService _paymentService;
 
-        public PaymentController(IPaymentRepository paymentRepository)
+        public PaymentController(IPaymentService paymentService)
         {
-            _paymentRepository = paymentRepository;
+            _paymentService = paymentService;
         }
 
-        [HttpGet("{paymentId}")] // Route: api/payment/{paymentId}
-        public ActionResult<PaymentDto> GetPaymentById(string paymentId)
+        [HttpPost] // Route: POST api/payment
+        public async Task<ActionResult<PaymentDto>> CreatePayment(PaymentDto paymentDto)
         {
-            var payment = _paymentRepository.GetPaymentById(paymentId).Result;
+            var createdPayment = await _paymentService.CreatePayment(paymentDto);
+            return Ok(createdPayment);
+             
+        }
+
+        [HttpGet("{paymentId}")] // Route: GET api/payment/{paymentId}
+        public async Task<ActionResult<PaymentDto>> GetPaymentById(string paymentId)
+        {
+            var payment = await _paymentService.GetPaymentById(paymentId);
             if (payment == null)
             {
-                return NotFound();
+                return NotFound("Payment not found");
             }
-            var paymentDto = PaymentMapper.ToDto(payment);
-            return Ok(paymentDto);
+            return Ok(payment);
         }
 
-        [HttpPost] // Route: api/payment
-        public ActionResult<string> SavePayment(PaymentDto paymentDto)
+        [HttpPut("{paymentId}/status")] // Route: PUT api/payment/{paymentId}/status
+        public async Task<IActionResult> UpdatePaymentStatus(string paymentId, [FromBody] string status)
         {
-            // comprobamos que el pago no sea nulo
-            if (paymentDto == null)
+            var updated = await _paymentService.UpdatePaymentStatus(paymentId, status);
+            if (!updated)
             {
-                return BadRequest("Payment is null");
+                return NotFound("Cannot update payment status");
             }
-            var payment = PaymentMapper.ToEntity(paymentDto);
-            _paymentRepository.SavePayment(payment);
-            return Ok("Payment saved successfully");
+            return Ok("Payment status updated");
         }
     }
 }

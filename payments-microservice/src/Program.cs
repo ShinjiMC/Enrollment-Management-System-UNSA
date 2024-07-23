@@ -6,7 +6,6 @@ using PaymentsMicroservice.Domain.Services.Implementations;
 using PaymentsMicroservice.Domain.Services.Interfaces;
 using PaymentsMicroservice.Repositories.Data;
 using PaymentsMicroservice.Repositories.Implementations;
-using Swashbuckle.AspNetCore.Filters;
 
 // Builder
 var builder = WebApplication.CreateBuilder(args);
@@ -19,10 +18,12 @@ builder.Services.AddSingleton<MongoDbContext>();
 // Register application services
 builder.Services.AddScoped<IElectronicBillService, ElectronicBillService>();
 builder.Services.AddScoped<IPaymentCodeService, PaymentCodeService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 // Register domain services
 builder.Services.AddScoped<IElectronicBillDomainService, ElectronicBillDomainService>();
 builder.Services.AddScoped<IPaymentCodeDomainService, PaymentCodeDomainService>();
+builder.Services.AddScoped<IPaymentDomainService, PaymentDomainService>();
 
 // Register repositories
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
@@ -58,6 +59,13 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
+// CORS Configuration
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
+
 
 // App
 var app = builder.Build();

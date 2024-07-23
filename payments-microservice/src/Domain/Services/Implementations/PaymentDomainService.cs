@@ -1,22 +1,52 @@
+using PaymentsMicroservice.Domain.Entities;
+using PaymentsMicroservice.Domain.Repositories;
+using PaymentsMicroservice.Domain.Services.Interfaces;
+using PaymentsMicroservice.Domain.ValueObjects;
+
 namespace PaymentsMicroservice.Domain.Services.Implementations
 {
-    using PaymentsMicroservice.Domain.Entities;
-    using PaymentsMicroservice.Domain.ValueObjects;
-    using PaymentsMicroservice.Domain.Services.Interfaces;
 
     public class PaymentDomainService : IPaymentDomainService
     {
-        public PaymentStatus ProcessPayment(Payment payment)
+        private readonly IPaymentRepository _paymentRepository;
+
+        public PaymentDomainService(IPaymentRepository paymentRepository)
         {
-            // Logic for processing payment
-            // Call external payment gateway API, etc.
-            return new PaymentStatus("Completed");
+            _paymentRepository = paymentRepository;
         }
 
-        public bool VerifyPayment(Payment payment)
+        public async Task<Payment> CreatePayment(Money amount, DateTime paymentDate, PaymentMethod paymentMethod, string studentId, string electronicBillId)
         {
-            // Logic for verifying payment
-            return payment.Status.Status == "Completed";
+            var payment = new Payment
+            {
+                Amount = amount,
+                PaymentDate = paymentDate,
+                PaymentMethod = paymentMethod,
+                StudentId = studentId,
+                ElectronicBillId = electronicBillId,
+                Status = new PaymentStatus("Pending")
+            };
+            var savedPayment = await _paymentRepository.SavePayment(payment);
+            Console.WriteLine("Payment created from Domain Service: " + savedPayment.PaymentId); 
+            return savedPayment;
+        }
+
+        public async Task<bool> UpdatePaymentStatus(string paymentId, PaymentStatus status)
+        {
+            var payment = await _paymentRepository.GetPaymentById(paymentId);
+            if (payment == null)
+            {
+                return false;
+            }
+
+            payment.Status = status;
+            await _paymentRepository.SavePayment(payment);
+            return true;
+        }
+
+        public async Task<Payment> GetPaymentById(string paymentId)
+        {
+            return await _paymentRepository.GetPaymentById(paymentId);
         }
     }
 }

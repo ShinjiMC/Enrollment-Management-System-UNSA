@@ -5,7 +5,8 @@ namespace PaymentsMicroservice.Domain.Services.Interfaces
 
     public interface IPaymentDomainService
     {
-        PaymentStatus ProcessPayment(Payment payment);
-        bool VerifyPayment(Payment payment);
+        Task<Payment> CreatePayment(Money amount, DateTime paymentDate, PaymentMethod paymentMethod, string studentId, string electronicBillId);
+        Task<bool> UpdatePaymentStatus(string paymentId, PaymentStatus status);
+        Task<Payment> GetPaymentById(string paymentId);
     }
 }
