@@ -10,7 +10,7 @@ namespace PaymentsMicroservice.Domain.Services.Implementations
             return new PaymentCode
             {
                 // random guui
-                Code = System.Guid.NewGuid().ToString(),
+                Code = Guid.NewGuid().ToString(),
                 StudentId = studentId
             };
         }

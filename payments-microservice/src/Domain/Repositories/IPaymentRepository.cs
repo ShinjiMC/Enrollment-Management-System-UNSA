@@ -4,7 +4,7 @@ namespace PaymentsMicroservice.Domain.Repositories
 {
     public interface IPaymentRepository
     {
-        Payment GetPaymentById(string paymentId);
-        void SavePayment(Payment payment);
+        Task<Payment> GetPaymentById(string paymentId);
+        Task SavePayment(Payment payment);
     }
 }

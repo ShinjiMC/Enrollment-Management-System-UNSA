@@ -9,12 +9,12 @@ namespace PaymentsMicroservice.Repositories.Implementations
     {
         private readonly List<PaymentCode> _paymentCodes = new List<PaymentCode>();
 
-        public PaymentCode GetPaymentCodeById(string paymentCodeId)
+        public async Task<PaymentCode> GetPaymentCodeById(string paymentCodeId)
         {
             return _paymentCodes.SingleOrDefault(p => p.PaymentCodeId == paymentCodeId);
         }
 
-        public void SavePaymentCode(PaymentCode paymentCode)
+        public async Task SavePaymentCode(PaymentCode paymentCode)
         {
             var existingCode = _paymentCodes.SingleOrDefault(p => p.PaymentCodeId == paymentCode.PaymentCodeId);
             if (existingCode != null)

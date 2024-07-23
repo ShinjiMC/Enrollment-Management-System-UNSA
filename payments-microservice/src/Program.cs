@@ -3,7 +3,6 @@ using PaymentsMicroservice.Application.Services.Interfaces;
 using PaymentsMicroservice.Domain.Repositories;
 using PaymentsMicroservice.Domain.Services.Implementations;
 using PaymentsMicroservice.Domain.Services.Interfaces;
-using PaymentsMicroservice.Infrastructure.Repositories.Data;
 using PaymentsMicroservice.Repositories.Data;
 using PaymentsMicroservice.Repositories.Implementations;
 
