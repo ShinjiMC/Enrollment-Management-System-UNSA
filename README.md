@@ -214,11 +214,6 @@ mkdir src && cd src && dotnet new web
 ```bash
 mkdir test && cd test && dotnet new nunit
 ```
-
-- Install Moq Dependency `(Mocks)`:
-  ```bash
-  dotnet add package Moq
-  ```
 - Link Test Project with Source Project
   ```bash
   dotnet add reference ../src/src.csproj
@@ -237,31 +232,38 @@ mkdir test && cd test && dotnet new nunit
   dotnet sln add test/test.csproj
   ```
 
-#### **5. Install Dependencies in /src**
+#### **5. Install Dependencies**
 
-```bash
-cd src/
-```
+In `src/`
 
-- For EntityFramework Core CLI:
-
+- `EntityFramework Core` for run dotnet ef commands in CLI:
   ```bash
   dotnet tool install --global dotnet-ef
   ```
-
-- For EntityFrameworkCore.Design for migrations:
-
+- `EntityFrameworkCore.Design` for migrations:
   ```bash
   dotnet add package Microsoft.EntityFrameworkCore.Design --version 9.0.0-preview.1.24081.2
   ```
-
-- For Pomelo.EntityFrameworkCore.MySql dependency:
+- `Pomelo.EntityFrameworkCore.MySql` dependency for MySql:
   ```bash
   dotnet add package Pomelo.EntityFrameworkCore.MySql --version 9.0.0-preview.1
   ```
-- For Microsoft.AspNetCore.Authentication.JwtBearer dependency:
+- `MongoDB.Driver` dependency for MongoDB:
+  ```bash
+  dotnet add package MongoDB.Driver --version 2.28.0
+  ```
+- `Microsoft.AspNetCore.Authentication.JwtBearer` dependency for JWT Tokenization:
   ```bash
   dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 8.0.5
+  ```
+In `test/`
+- `coverlet.collector` for Cover Reports:
+  ```bash
+  dotnet add package coverlet.collector --version 6.0.2
+  ```
+- `Moq` dependency for mocking:
+  ```bash
+  dotnet add package Moq --version 4.20.70
   ```
 
 #### **6. Add Migrations**
@@ -301,4 +303,14 @@ dotnet build src/src.csproj --configuration Release
 ```bash
 dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=../../coverage # no func
 dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --output coverage # si func pero warning
+```
+
+#### **10. SonarScanner Analysis**
+```bash
+dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+          echo "SONAR SCANNER BEGIN ---------------"
+          ../.sonar/scanner/dotnet-sonarscanner begin /k:"i-am-sergio_enrollapp" /o:"i-am-sergio" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/test/coverage.opencover.xml"
+          dotnet build
+          echo "SONAR SCANNER END ---------------"
+          ../.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 ```
