@@ -1,11 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using auth_microservice.Application.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using users_microservice.context;
-using users_microservice.DTOs;
-using static users_microservice.DTOs.ServiceResponses;
+using static auth_microservice.Application.DTOs.ServiceResponses;
 
 namespace users_microservice.repositories;
 

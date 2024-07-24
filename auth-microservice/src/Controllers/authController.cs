@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using users_microservice.DTOs;
-using users_microservice.repositories;
+namespace auth_microservice.Application.DTOs;
 
-namespace users_microservice.controllers;
 
 
 [Route("api/[controller]")]

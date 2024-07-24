@@ -1,3 +1,5 @@
+using authmicroservice.domain.entities;
+
 namespace users_microservice.models;
 public class AdminModel
 {

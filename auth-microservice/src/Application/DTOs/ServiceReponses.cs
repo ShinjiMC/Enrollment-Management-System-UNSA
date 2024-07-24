@@ -1,4 +1,4 @@
-namespace users_microservice.DTOs;
+namespace auth_microservice.Application.DTOs;
 
 public class ServiceResponses
 {

@@ -1,7 +1,6 @@
-using users_microservice.DTOs;
-using static users_microservice.DTOs.ServiceResponses;
 
-namespace users_microservice.repositories;
+using auth_microservice.Application.DTOs;
+using static auth_microservice.Application.DTOs.ServiceResponses;
 
 public interface IAuthRepository
 {

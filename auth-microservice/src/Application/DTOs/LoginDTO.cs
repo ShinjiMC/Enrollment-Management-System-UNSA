@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-namespace users_microservice.DTOs;
+namespace auth_microservice.Application.DTOs;
 
 public class LoginDto
 {

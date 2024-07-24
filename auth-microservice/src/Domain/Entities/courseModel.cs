@@ -1,4 +1,4 @@
-namespace users_microservice.models;
+namespace authmicroservice.domain.entities;
 
 public class CourseModel
 {

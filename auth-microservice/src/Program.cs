@@ -7,7 +7,6 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using users_microservice.context;
 using users_microservice.repositories;
-using users_microservice.services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,9 +60,6 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-
-builder.Services.AddScoped<IStudentService, StudentService>();
 
 
 // Build app
