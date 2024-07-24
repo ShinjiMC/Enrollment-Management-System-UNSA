@@ -1,0 +1,22 @@
+create schedule
+{
+  "courseId": "course-123",
+  "year": 2023,
+  "schoolId": "school-456",
+  "details": {
+    "group": "A",
+    "professorId": "prof-789"
+  },
+  "entries": [
+    {
+      "dayOfWeek": 1,
+      "startTime": "09:00:00",
+      "endTime": "10:30:00"
+    },
+    {
+      "dayOfWeek": 3,
+      "startTime": "11:00:00",
+      "endTime": "12:30:00"
+    }
+  ]
+}
