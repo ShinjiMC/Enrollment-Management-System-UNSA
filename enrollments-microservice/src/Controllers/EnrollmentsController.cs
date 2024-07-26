@@ -17,7 +17,7 @@ public interface IEnrollmentsController
 }
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 public class EnrollmentsController : ControllerBase, IEnrollmentsController
 {
     private readonly IEnrollService _enrollService;
