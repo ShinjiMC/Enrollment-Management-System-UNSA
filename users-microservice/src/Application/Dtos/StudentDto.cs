@@ -9,6 +9,10 @@ public class StudentDto
 
     [Required]
     public string FullName { get; set; } = string.Empty;
+    
+    [Required]
+    public UserDto? UserData { get; set; }
+
 
     [Required]
     public string Cui { get; set; } = string.Empty;

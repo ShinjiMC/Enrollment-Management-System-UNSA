@@ -7,6 +7,7 @@ using Swashbuckle.AspNetCore.Filters;
 using users_microservice.Repository.Data;
 using users_microservice.Domain.Repository;
 using users_microservice.Repository.Mysql;
+using users_microservice.Repository.ExternalService;
 using users_microservice.Application.Service.Interface;
 using users_microservice.Application.Service.Implementations;
 using users_microservice.Domain.Services.Interfaces;
@@ -16,6 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+// Register HttpClient
+builder.Services.AddHttpClient();
 
 // Context
 var connectionString = builder.Configuration.GetConnectionString("MySqlConnection") ??
@@ -103,7 +106,7 @@ app.MapGet("/", () => "This is Users Microservice !!!");
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<MySqlIdentityContext>();
-    dbContext.Database.Migrate();
+    // dbContext.Database.Migrate();
 }
 
 app.Run();

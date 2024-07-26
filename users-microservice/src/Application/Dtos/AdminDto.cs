@@ -9,6 +9,10 @@ public class AdminDto
     [Required]
     public string FullName { get; set; } = string.Empty;
 
+   
+    [Required]
+    public UserDto? UserData { get; set; }
+
     [Required]
     [EmailAddress]
     [DataType(DataType.EmailAddress)]

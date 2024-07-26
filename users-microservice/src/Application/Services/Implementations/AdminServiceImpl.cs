@@ -13,11 +13,13 @@ namespace users_microservice.Application.Service.Implementations
     {
         private readonly IAdminRepository _adminRepository;
         private readonly IAdminServiceDomain _adminServiceDomain;
+         private readonly IExternalService _externalService;
 
-        public AdminService(IAdminRepository adminRepository, IAdminServiceDomain adminServiceDomain)
+        public AdminService(IAdminRepository adminRepository, IAdminServiceDomain adminServiceDomain, IExternalService externalService)
         {
             _adminRepository = adminRepository;
             _adminServiceDomain = adminServiceDomain;
+            _externalService = externalService;
         }
 
         public async Task<GeneralResponse> CreateAdminAccountAsync(AdminDto adminDto)
@@ -25,6 +27,15 @@ namespace users_microservice.Application.Service.Implementations
             var adminModel = AdminMapping.ToModel(adminDto);
             
             var result = await _adminServiceDomain.CreateAdminAccount(adminModel);
+
+            var newUserDto = UserMapping.ToUserDto(adminDto);
+
+            var authCreationResult = await _externalService.RegisterUserAsync(newUserDto);
+
+            if (!authCreationResult) {
+                // Si la creación de cursos falla, devuelve el resultado de error
+                return new GeneralResponse(false, "Auth failed to created", 404);
+            }
 
             return result;
         }
@@ -92,6 +103,15 @@ namespace users_microservice.Application.Service.Implementations
             if (!courseCreationResult.Flag) {
                 // Si la creación de cursos falla, devuelve el resultado de error
                 return courseCreationResult;
+            }
+
+            var newUserDto = UserMapping.ToUserDto(studentDto);
+
+            var authCreationResult = await _externalService.RegisterUserAsync(newUserDto);
+
+            if (!authCreationResult) {
+                // Si la creación de cursos falla, devuelve el resultado de error
+                return new GeneralResponse(false, "Auth failed to created", 404);
             }
 
             // Devolver el resultado exitoso incluyendo los datos del estudiante y los cursos

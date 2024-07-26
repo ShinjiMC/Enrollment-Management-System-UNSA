@@ -11,11 +11,13 @@ namespace users_microservice.Application.Service.Implementations
     {
         private readonly IAdminRepository _adminRepository;
         private readonly IStudentServiceDomain _studentServiceDomain;
+        private readonly IExternalService _externalService;
         
-        public StudentService(IAdminRepository adminRepository, IStudentServiceDomain studentServiceDomain)
+        public StudentService(IAdminRepository adminRepository, IStudentServiceDomain studentServiceDomain, IExternalService externalService)
         {
             _adminRepository = adminRepository;
             _studentServiceDomain = studentServiceDomain;
+            _externalService = externalService;
         }
 
         public async Task<GeneralResponse> CreateStudentAccount(StudentDto studentDto)
@@ -40,6 +42,15 @@ namespace users_microservice.Application.Service.Implementations
             if (!courseCreationResult.Flag) {
                 // Si la creación de cursos falla, devuelve el resultado de error
                 return courseCreationResult;
+            }
+
+            var newUserDto = UserMapping.ToUserDto(studentDto);
+
+            var authCreationResult = await _externalService.RegisterUserAsync(newUserDto);
+
+            if (!authCreationResult) {
+                // Si la creación de cursos falla, devuelve el resultado de error
+                return new GeneralResponse(false, "Auth failed to created", 404);
             }
 
             // Devolver el resultado exitoso incluyendo los datos del estudiante y los cursos
