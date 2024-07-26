@@ -1,4 +1,5 @@
 using MongoDB.Driver;
+using MongoDB.Bson;
 using NotificationsMicroservice.Domain.Entities;
 
 namespace NotificationsMicroservice.Repositories.Data
@@ -23,6 +24,7 @@ namespace NotificationsMicroservice.Repositories.Data
         _database = client.GetDatabase(databaseName);
     }
 
+        public IMongoCollection<BsonDocument> Counters => _database.GetCollection<BsonDocument>("counters");
 
         public IMongoCollection<User> Users =>
             _database.GetCollection<User>("Users");

@@ -28,6 +28,7 @@ namespace NotificationsMicroservice.Domain.Services.Implementations
 
         public async Task<Notification> CreateNotificationAsync(Notification notification)
         {
+            notification.Id = await _notificationRepository.GetNextIdAsync();
             return await _notificationRepository.CreateAsync(notification);
         }
 

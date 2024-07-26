@@ -8,6 +8,7 @@ namespace NotificationsMicroservice.Domain.Repositories
     {
         Task<IEnumerable<Notification>> GetAllAsync();
         Task<Notification> GetByIdAsync(int id);
+        Task<int> GetNextIdAsync();
         Task<Notification> CreateAsync(Notification notification);
         Task UpdateAsync(Notification notification);
         Task DeleteAsync(int id);

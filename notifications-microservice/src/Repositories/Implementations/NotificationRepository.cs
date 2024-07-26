@@ -2,8 +2,7 @@ using NotificationsMicroservice.Domain.Entities;
 using NotificationsMicroservice.Domain.Repositories;
 using NotificationsMicroservice.Repositories.Data;
 using MongoDB.Driver;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using MongoDB.Bson;
 
 namespace NotificationsMicroservice.Repositories.Implementations
 {
@@ -40,6 +39,19 @@ namespace NotificationsMicroservice.Repositories.Implementations
         public async Task DeleteAsync(int id)
         {
             await _context.Notifications.DeleteOneAsync(notification => notification.Id == id);
+        }
+        public async Task<int> GetNextIdAsync()
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", "notification_id");
+            var update = Builders<BsonDocument>.Update.Inc("seq", 1);
+            var options = new FindOneAndUpdateOptions<BsonDocument>
+            {
+                ReturnDocument = ReturnDocument.After,
+                IsUpsert = true
+            };
+    
+            var result = await _context.Counters.FindOneAndUpdateAsync(filter, update, options);
+            return result["seq"].AsInt32;
         }
     }
 }
