@@ -38,7 +38,7 @@ public class CoursesExternalService : ICoursesExternalService
 
         return id switch
         {
-            "3" => new CourseExternalDto
+            "course3" => new CourseExternalDto
             {
                 Name = "Russian",
                 Semester = "A",
@@ -83,7 +83,7 @@ public class CoursesExternalService : ICoursesExternalService
                 }
 
             },
-            "4" => new CourseExternalDto
+            "course4" => new CourseExternalDto
             {
                 Name = "Evangelion",
                 Semester = "C",

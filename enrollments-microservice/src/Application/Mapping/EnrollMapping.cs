@@ -17,7 +17,7 @@ public static class EnrollMapping
             Credits = enrollment.Student?.Credits ?? 0,
             Courses = enrollment.Courses?.Select(c => new CourseDto
             {
-                Id = c.CourseId.ToString() ?? string.Empty,
+                Id = c.CourseId.ToString(),
                 Group = c.Group ?? string.Empty
             }).ToList() ?? [],
             SchoolId = enrollment.School?.SchoolID.ToString() ?? string.Empty,
@@ -46,7 +46,7 @@ public static class EnrollMapping
             Student = ValueObjectStudentData,
             Courses = enrollment.Courses?.Select(static c => new CourseModel
             {
-                CourseId = int.TryParse(c.Id, out var courseId) ? courseId : 0,
+                CourseId = c.Id,
                 Group = c.Group
             }).ToList() ?? new List<CourseModel>(),
         };

@@ -23,20 +23,22 @@ namespace enrollments_microservice.Repositories.ExternalServices
 
         public async Task<UserExternalDto?> GetDataByUserIdAsync(string id)
         {
-            /*var response = await _httpClient.GetAsync($"api/user/{id}");
+            var response = await _httpClient.GetAsync($"ExternalService/student/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
                 var user = JsonSerializer.Deserialize<UserExternalDto>(content);
-                return user ?? new UserExternalDto();
-            }*/
+                return user ?? null;
+            }
+            return null;
+            /*
             return new UserExternalDto
             {
                 FullName = "Shinji Ikari",
-                Courses = ["1", "2"],
+                Courses = ["course1", "course2"],
                 AcademicPerformance = 1,
                 Credits = 30
-            };
+            };*/
         }
     }
 }

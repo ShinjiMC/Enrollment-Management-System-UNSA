@@ -50,25 +50,25 @@ public class SchoolExternalService : ISchoolExternalService
                 {
                     new PreCoursesExternalDto
                     {
-                        Id = "1",
+                        Id = "course1",
                         PreRequeriments = new List<string>()
                     },
                     new PreCoursesExternalDto
                     {
-                        Id = "2",
+                        Id = "course2",
                         PreRequeriments = new List<string>()
                     },
                     new PreCoursesExternalDto
                     {
-                        Id = "3",
+                        Id = "course3",
                         PreRequeriments = new List<string>{
-                            "1",
-                            "2"
+                            "course1",
+                            "course2"
                         }
                     },
                     new PreCoursesExternalDto
                     {
-                        Id = "4",
+                        Id = "course4",
                         PreRequeriments = new List<string>()
                     }
                 }
