@@ -84,6 +84,7 @@ builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IAdminServiceDomain, AdminServiceDomainImpl>();
 builder.Services.AddScoped<IStudentServiceDomain, StudentServiceDomainImpl>();
 builder.Services.AddScoped<IExternalService, ExternalServiceImpl>();
+builder.Services.AddScoped<IExternalServiceAuth, ExternalServiceAuthImpl>();
 
 
 
