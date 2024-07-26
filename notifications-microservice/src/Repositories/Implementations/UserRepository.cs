@@ -2,8 +2,6 @@ using NotificationsMicroservice.Domain.Entities;
 using NotificationsMicroservice.Domain.Repositories;
 using NotificationsMicroservice.Repositories.Data;
 using MongoDB.Driver;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace NotificationsMicroservice.Repositories.Implementations
 {

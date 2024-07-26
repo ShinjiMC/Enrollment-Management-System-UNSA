@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NotificationsMicroservice.Application.Dtos;
 using NotificationsMicroservice.Application.Services.Interfaces;
-using System.Threading.Tasks;
 
 namespace NotificationsMicroservice.Controllers
 {

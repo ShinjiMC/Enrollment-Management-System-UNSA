@@ -1,8 +1,6 @@
 using NotificationsMicroservice.Domain.Entities;
 using NotificationsMicroservice.Domain.Repositories;
 using NotificationsMicroservice.Domain.Services.Interfaces;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace NotificationsMicroservice.Domain.Services.Implementations
 {

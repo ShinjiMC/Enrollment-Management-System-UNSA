@@ -3,9 +3,6 @@ using NotificationsMicroservice.Application.Dtos;
 using NotificationsMicroservice.Application.Services.Interfaces;
 using NotificationsMicroservice.Domain.Entities; // Asegúrate de que esta línea esté incluida
 using NotificationsMicroservice.Domain.Services.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace NotificationsMicroservice.Application.Services.Implementations
 {
@@ -48,6 +45,7 @@ namespace NotificationsMicroservice.Application.Services.Implementations
         {
             var user = new User
             {
+                Id = userDto.Id,
                 Name = userDto.Name,
                 Preference = userDto.Preference,
                 ContactInfo = userDto.ContactInfo,
