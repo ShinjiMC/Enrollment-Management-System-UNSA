@@ -5,8 +5,9 @@ namespace users_microservice.Application.Service.Interface
 {
     public interface IExternalService
     {
+        
         // Métodos para manejar administradores
-        Task<bool> RegisterUserAsync(UserDto userDto);
+        Task<ExtStudentCourseDto> GetStudentCourseData(string id);
         
     }
 }
