@@ -3,6 +3,7 @@ using users_microservice.Application.Mapping;
 using users_microservice.Application.Service.Interface;
 using users_microservice.Domain.Repository;
 using users_microservice.Domain.Services.Interfaces;
+using users_microservice.Repository.ExternalService;
 using static users_microservice.Application.Dtos.ServiceResponses;
 
 namespace users_microservice.Application.Service.Implementations
@@ -11,9 +12,9 @@ namespace users_microservice.Application.Service.Implementations
     {
         private readonly IAdminRepository _adminRepository;
         private readonly IStudentServiceDomain _studentServiceDomain;
-        private readonly IExternalService _externalService;
+        private readonly IExternalServiceAuth _externalService;
         
-        public StudentService(IAdminRepository adminRepository, IStudentServiceDomain studentServiceDomain, IExternalService externalService)
+        public StudentService(IAdminRepository adminRepository, IStudentServiceDomain studentServiceDomain, IExternalServiceAuth externalService)
         {
             _adminRepository = adminRepository;
             _studentServiceDomain = studentServiceDomain;

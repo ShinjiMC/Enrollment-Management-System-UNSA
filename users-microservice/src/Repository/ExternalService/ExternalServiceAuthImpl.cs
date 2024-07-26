@@ -1,15 +1,14 @@
 
 using users_microservice.Application.Dtos;
-using users_microservice.Application.Service.Interface;
 
 
 namespace users_microservice.Repository.ExternalService
 {
-    public class ExternalServiceImpl : IExternalService
+    public class ExternalServiceAuthImpl : IExternalServiceAuth
     {
         private readonly HttpClient _httpClient;
 
-        public ExternalServiceImpl(HttpClient httpClient)
+        public ExternalServiceAuthImpl(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
