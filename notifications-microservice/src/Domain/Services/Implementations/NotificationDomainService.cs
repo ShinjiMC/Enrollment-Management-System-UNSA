@@ -1,9 +1,6 @@
-
 using NotificationsMicroservice.Domain.Entities;
 using NotificationsMicroservice.Domain.Repositories;
 using NotificationsMicroservice.Domain.Services.Interfaces;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace NotificationsMicroservice.Domain.Services.Implementations
 {
@@ -24,6 +21,11 @@ namespace NotificationsMicroservice.Domain.Services.Implementations
         public async Task<Notification> GetNotificationByIdAsync(int id)
         {
             return await _notificationRepository.GetByIdAsync(id);
+        }
+
+        public async Task<List<Notification>> GetByRecipientIdAsync(int recipientId)
+        {
+            return (await _notificationRepository.GetAllAsync()).Where(notification => notification.RecipientId == recipientId).ToList();
         }
 
         public async Task<Notification> CreateNotificationAsync(Notification notification)

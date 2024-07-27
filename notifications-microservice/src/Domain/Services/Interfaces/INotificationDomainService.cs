@@ -1,6 +1,4 @@
 using NotificationsMicroservice.Domain.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace NotificationsMicroservice.Domain.Services.Interfaces
 {
@@ -8,6 +6,7 @@ namespace NotificationsMicroservice.Domain.Services.Interfaces
     {
         Task<IEnumerable<Notification>> GetAllNotificationsAsync();
         Task<Notification> GetNotificationByIdAsync(int id);
+        Task<List<Notification>> GetByRecipientIdAsync(int recipientId);
         Task<Notification> CreateNotificationAsync(Notification notification);
         Task UpdateNotificationAsync(Notification notification);
         Task DeleteNotificationAsync(int id);

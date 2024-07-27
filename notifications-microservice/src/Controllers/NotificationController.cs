@@ -1,19 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
 using NotificationsMicroservice.Application.Dtos;
 using NotificationsMicroservice.Application.Services.Interfaces;
-using System.Threading.Tasks;
 
 namespace NotificationsMicroservice.Controllers
 {
     [ApiController]
-    [Route("api/notifications")]
+    [Route("api/v1/notifications")]
     public class NotificationController : ControllerBase
     {
         private readonly INotificationService _notificationService;
+        private readonly IUserService _userService;
 
-        public NotificationController(INotificationService notificationService)
+        public NotificationController(INotificationService notificationService, IUserService userService)
         {
             _notificationService = notificationService;
+            _userService = userService; // Inicializa el servicio en el constructor
         }
 
         [HttpGet]
@@ -33,9 +34,23 @@ namespace NotificationsMicroservice.Controllers
             return Ok(notification);
         }
 
+        [HttpGet("recipient/{recipientId}")]
+        public async Task<IActionResult> GetByRecipientId(int recipientId)
+        {
+            var notifications = await _notificationService.GetByRecipientIdAsync(recipientId);
+            return Ok(notifications);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateNotification([FromBody] NotificationDto notificationDto)
         {
+            var userDto = await _userService.GetUserByIdAsync(notificationDto.RecipientId);
+            if (userDto == null)
+                return BadRequest("User does not have configured notifications");
+        
+            if (!userDto.IsActive)
+                return BadRequest("User does not have notifications activated");
+        
             var createdNotification = await _notificationService.CreateNotificationAsync(notificationDto);
             return CreatedAtAction(nameof(GetNotificationById), new { id = createdNotification.Id }, createdNotification);
         }

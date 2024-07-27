@@ -1,7 +1,4 @@
-
 using NotificationsMicroservice.Application.Dtos;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace NotificationsMicroservice.Application.Services.Interfaces
 {
@@ -9,6 +6,7 @@ namespace NotificationsMicroservice.Application.Services.Interfaces
     {
         Task<List<NotificationDto>> GetAllNotificationsAsync();
         Task<NotificationDto> GetNotificationByIdAsync(int id);
+        Task<List<NotificationDto>> GetByRecipientIdAsync(int recipientId);
         Task<NotificationDto> CreateNotificationAsync(NotificationDto notificationDto);
         Task UpdateNotificationAsync(NotificationDto notificationDto);
         Task DeleteNotificationAsync(int id);

@@ -25,6 +25,13 @@ namespace NotificationsMicroservice.Repositories.Implementations
             return await _context.Notifications.Find(notification => notification.Id == id).FirstOrDefaultAsync();
         }
 
+        public async Task<List<Notification>> GetByRecipientIdAsync(int recipientId)
+        {
+            return await _context.Notifications
+                                 .Find(notification => notification.RecipientId == recipientId)
+                                 .ToListAsync();
+        }
+
         public async Task<Notification> CreateAsync(Notification notification)
         {
             await _context.Notifications.InsertOneAsync(notification);

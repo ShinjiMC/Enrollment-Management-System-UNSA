@@ -1,6 +1,4 @@
 using NotificationsMicroservice.Domain.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace NotificationsMicroservice.Domain.Repositories
 {
@@ -8,6 +6,7 @@ namespace NotificationsMicroservice.Domain.Repositories
     {
         Task<IEnumerable<Notification>> GetAllAsync();
         Task<Notification> GetByIdAsync(int id);
+        Task<List<Notification>> GetByRecipientIdAsync(int recipientId);
         Task<int> GetNextIdAsync();
         Task<Notification> CreateAsync(Notification notification);
         Task UpdateAsync(Notification notification);
