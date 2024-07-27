@@ -1,66 +1,212 @@
-Como parte de un sistema de gestion de matricula de una universidad, tengo que implementar un microservicio con DDD.
-El subdominio correspondiente se presenta a continuacion:
-Payments Microservice
-Subdominio: Gestión de Pagos
+# Arquitectura DDD y Pruebas del Microservicio de Pagos
 
-El sistema genera un codigo de pago correspondiente a la matricula.
-El sistema enviar el codigo generado al estudiante.
-El estudiante realiza el pago.
-El sistema confirma que se realizó el pago.
-El sistema habilita habilita la selección de cursos para que el estudiante haga su matricula, segun el dia correspondiente que se indique.
+## 1. Introducción
+- Pequeña descripcion de lo que hace
+- Contexto Delimitado: Gestión de Pagos
 
+## 2. Arquitectura DDD
 
-El subdominio de Gestión de Pagos se encarga de todo el proceso financiero relacionado con las matrículas. Incluye la recepción y procesamiento de pagos, la actualización de saldos, la emisión de comprobantes de pago y la generación de códigos de pago. Además, envía el código de pago a los estudiantes y confirma los pagos recibidos, habilitando la selección de cursos. Este subdominio es esencial para asegurar que las transacciones financieras se realicen de manera segura y eficiente. 
+### 2.1. Capas de la Arquitectura
 
-Servicios de Dominio
-PaymentService
-Métodos:
-generatePaymentCode(studentId, amount): Genera un código de pago para que el estudiante realice el pago.
-sendPaymentCode(paymentCode, studentEmail): Envía el código de pago al estudiante.
-receivePayment(paymentCode): Recibe el pago y actualiza el estado del mismo.
-confirmPayment(paymentId): Confirma el pago y habilita la selección de cursos.
-issueReceipt(paymentId): Emite un comprobante de pago electrónico.
+<details open>
+  <summary><b><i>2.1.1. Capa de Aplicación</b></i></summary>
+  <ul>
+    <li>Servicios de aplicación</li>
+    <li>Interfaces</li>
+  </ul>
+</details>
 
+<details open>
+  <summary><b><i>2.1.2. Capa de Dominio</b></i></summary>
+  <ul>
+    <li>Entidades</li>
+    <li>Agregados</li>
+    <li>Servicios de dominio</li>
+    <li>Repositorios</li>
+    <li>Eventos de dominio</li>
+  </ul>
+</details>
 
-Ten en cuenta que ya estan delimitados otros microservicios: auth (authenticacion y authorizacion), users (gestion de usuarios sean estudiantes o administradores), schools (gestion de escuelas profesionales, sus mallas curriculares, asignación de estudiantes y profesores de cada escuela), courses (Permite la creación y modificación de cursos y horarios para cada semestre), Notifications (Envía notificaciones automáticas a los estudiantes en momentos clave, como la confirmación de su matrícula, la habilitación de la selección de cursos y la recepción de pagos de matrícula), enrollments (proceso de inscripción de estudiantes en cursos. Incluye la selección de cursos, la confirmación de matrícula y la emisión de constancias de matrícula, tambien gestiona las solicitudes de cupos)
-
-
-
-
-
-
-
-### Subdominio: Gestión de Pagos
-
-El microservicio de Gestión de Pagos se encarga de manejar todas las transacciones financieras relacionadas con la matriculación de estudiantes en la universidad. Este subdominio incluye la creación, actualización y seguimiento de facturas de matrícula, así como la recepción y verificación de pagos. Además, gestiona los métodos de pago permitidos, tales como tarjetas de crédito, transferencias bancarias y pagos electrónicos. Es fundamental que este microservicio también gestione los estados de pago y las notificaciones automáticas de confirmación de transacciones exitosas. La integración con otros microservicios, como el de notificaciones y matriculación, asegura que los estudiantes sean informados adecuadamente sobre el estado de sus pagos y que solo los estudiantes con pagos confirmados puedan completar su proceso de matrícula.
-
-## Features necesarias:
-
-Generación de facturas
-Procesamiento de pagos: Aceptar y procesar pagos realizados por los estudiantes a través de diversos métodos de pago, como tarjetas de crédito, transferencias bancarias y pagos electrónicos. Registrar cada transacción en el sistema.
-Verificación de pagos: Confirmar que los pagos realizados por los estudiantes se han recibido y son válidos. Esto implica la integración con sistemas de pago externos para validar transacciones.
-Actualización de estados de pago
-Validación de pagos para matriculación
+<details open>
+  <summary><b><i>2.1.3. Capa de Infraestructura</b></i></summary>
+  <ul>
+    <li>Implementaciones de repositorios</li>
+    <li>Contexto de la base de datos</li>
+    <li>Integraciones externas</li>
+  </ul>
+</details>
 
 
-## Domain Services:
+<!-- ### 2.2. Componentes del Microservicio de Pagos
 
-Domain Services
-PaymentProcessingService
+<details open>
+  <summary><b><i>2.2.1. Entidades y Agregados</b></i></summary>
+  <p>Descripción de las entidades y agregados principales, como `Payment`, `Invoice`, `PaymentCode`, etc.</p>
+</details>
 
-Methods:
-processPayment(payment: Payment): PaymentStatus
-verifyPayment(payment: Payment): boolean
-Description: Servicio de dominio encargado de la lógica de procesamiento y verificación de pagos. Interactúa con sistemas de pago externos para confirmar transacciones.
-InvoiceManagementService
+<details open>
+  <summary><b><i>2.2.2. Servicios de Dominio</b></i></summary>
+  <p>Descripción de los servicios de dominio, como `PaymentDomainService`, `ElectronicBillDomainService`, etc.</p>
+</details>
 
-Methods:
-createInvoice(studentId: string, invoiceItems: List<InvoiceItem>): Invoice
-updateInvoice(invoiceId: string, invoiceItems: List<InvoiceItem>): Invoice
-checkInvoiceStatus(invoiceId: string): InvoiceStatus
-Description: Servicio de dominio encargado de la lógica de creación y gestión de facturas. Asegura que las facturas sean precisas y estén actualizadas en función de los cambios en la matrícula del estudiante.
+<details open>
+  <summary><b><i>2.2.3. Repositorios</b></i></summary>
+  <p>Descripción de los repositorios y su implementación, como `PaymentRepository`, `ElectronicBillRepository`, etc.</p>
+</details> -->
+
+### 2.2. Diagrama de la Arquitectura
+Diagrama que ilustre la arquitectura DDD aqui
+
+## 3. Pruebas
+
+### 3.1. Pruebas de API
+
+#### 3.1.1. Introducción a las Pruebas de API
+Descripción general de las pruebas de API y su importancia.
+
+#### 3.1.2. Escenarios de Prueba de API
+<details open>
+  <summary><b><i>Escenario 1:</b></i> Verificación de la creación de un pago.</summary>
+  <pre>
+  <code class="language-gherkin">
+  Scenario: Creación exitosa de un pago
+    Given que el sistema está en funcionamiento
+    When el usuario envía una solicitud de creación de pago con datos válidos
+    Then el sistema debería crear el pago y devolver un código de respuesta 201
+  </code>
+  </pre>
+</details>
+
+<details open>
+  <summary>**Escenario 2:** Verificación de la obtención de detalles de un pago.</summary>
+  <ul>
+    <li>Subelemento 2.1</li>
+    <li>Subelemento 2.2</li>
+    <li>Subelemento 2.3</li>
+  </ul>
+</details>
+
+<details open>
+  <summary>**Escenario 3:** Verificación de la actualización de un pago.</summary>
+  <ul>
+    <li>Subelemento 3.1</li>
+    <li>Subelemento 3.2</li>
+    <li>Subelemento 3.3</li>
+  </ul>
+</details>
+
+<details open>
+  <summary>**Escenario 4:** Verificación de la eliminación de un pago.</summary>
+  <ul>
+    <li>Subelemento 4.1</li>
+    <li>Subelemento 4.2</li>
+    <li>Subelemento 4.3</li>
+  </ul>
+</details>
+
+<details open>
+  <summary>**Escenario 5:** Manejo de errores y respuestas adecuadas.</summary>
+  <ul>
+    <li>Subelemento 5.1</li>
+    <li>Subelemento 5.2</li>
+    <li>Subelemento 5.3</li>
+  </ul>
+</details>
+
+#### 3.1.3. Herramientas y Tecnologías
+Descripción de las herramientas utilizadas para las pruebas de API (por ejemplo, Postman, Swagger, etc.).
+
+### 3.2. Pruebas de Rendimiento
+
+#### 3.2.1. Introducción a las Pruebas de Rendimiento
+Descripción general de las pruebas de rendimiento y su importancia.
+
+#### 3.2.2. Escenarios de Prueba de Rendimiento
+<details open>
+  <summary>**Escenario 1:** Prueba de carga bajo múltiples solicitudes simultáneas.</summary>
+  <ul>
+    <li>Subelemento 1.1</li>
+    <li>Subelemento 1.2</li>
+    <li>Subelemento 1.3</li>
+  </ul>
+</details>
+
+<details open>
+  <summary>**Escenario 2:** Prueba de estrés con picos de tráfico.</summary>
+  <ul>
+    <li>Subelemento 2.1</li>
+    <li>Subelemento 2.2</li>
+    <li>Subelemento 2.3</li>
+  </ul>
+</details>
+
+<details open>
+  <summary>**Escenario 3:** Prueba de escalabilidad.</summary>
+  <ul>
+    <li>Subelemento 3.1</li>
+    <li>Subelemento 3.2</li>
+    <li>Subelemento 3.3</li>
+  </ul>
+</details>
+
+#### 3.2.3. Herramientas y Tecnologías
+Descripción de las herramientas utilizadas para las pruebas de rendimiento (por ejemplo, Apache JMeter, k6, etc.).
+
+### 3.3. Pruebas de Seguridad
+
+#### 3.3.1. Introducción a las Pruebas de Seguridad
+Descripción general de las pruebas de seguridad y su importancia.
+
+#### 3.3.2. Escenarios de Prueba de Seguridad
+<details open>
+  <summary>**Escenario 1:** Verificación de la autenticación y autorización.</summary>
+  <ul>
+    <li>Subelemento 1.1</li>
+    <li>Subelemento 1.2</li>
+    <li>Subelemento 1.3</li>
+  </ul>
+</details>
+
+<details open>
+  <summary>**Escenario 2:** Prueba de inyección SQL.</summary>
+  <ul>
+    <li>Subelemento 2.1</li>
+    <li>Subelemento 2.2</li>
+    <li>Subelemento 2.3</li>
+  </ul>
+</details>
+
+<details open>
+  <summary>**Escenario 3:** Prueba de XSS (Cross-Site Scripting).</summary>
+  <ul>
+    <li>Subelemento 3.1</li>
+    <li>Subelemento 3.2</li>
+    <li>Subelemento 3.3</li>
+  </ul>
+</details>
+
+<details open>
+  <summary>**Escenario 4:** Prueba de CSRF (Cross-Site Request Forgery).</summary>
+  <ul>
+    <li>Subelemento 4.1</li>
+    <li>Subelemento 4.2</li>
+    <li>Subelemento 4.3</li>
+  </ul>
+</details>
+
+#### 3.3.3. Herramientas y Tecnologías
+Descripción de las herramientas utilizadas para las pruebas de seguridad (por ejemplo, OWASP ZAP, Burp Suite, etc.).
+
+## 4. Conclusiones
+Resumen de los hallazgos y mejoras implementadas basadas en las pruebas.
 
 
 
-
-ahora lista las clases necesarias para implementar este DDD
+<details open>
+  <summary>***Elemento 1</summary>
+  <ul>
+    <li>Subelemento 1.1</li>
+    <li>Subelemento 1.2</li>
+    <li>Subelemento 1.3</li>
+  </ul>
+</details>
