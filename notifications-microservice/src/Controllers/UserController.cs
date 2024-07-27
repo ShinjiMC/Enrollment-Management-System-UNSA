@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 using NotificationsMicroservice.Application.Dtos;
 using NotificationsMicroservice.Application.Services.Interfaces;
 
 namespace NotificationsMicroservice.Controllers
 {
     [ApiController]
-    [Route("api/users")]
+    [Route("api/v1/users")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -35,8 +36,19 @@ namespace NotificationsMicroservice.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] UserDto userDto)
         {
-            var createdUser = await _userService.CreateUserAsync(userDto);
-            return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, createdUser);
+            try
+            {
+                var createdUser = await _userService.CreateUserAsync(userDto);
+                return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, createdUser);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPut("{id}")]
@@ -45,15 +57,32 @@ namespace NotificationsMicroservice.Controllers
             if (id != userDto.Id)
                 return BadRequest("ID mismatch");
 
-            await _userService.UpdateUserAsync(userDto);
-            return NoContent();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                await _userService.UpdateUserAsync(userDto);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            await _userService.DeleteUserAsync(id);
-            return NoContent();
+            try
+            {
+                await _userService.DeleteUserAsync(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }

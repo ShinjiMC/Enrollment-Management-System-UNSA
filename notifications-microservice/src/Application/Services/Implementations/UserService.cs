@@ -1,7 +1,6 @@
-
 using NotificationsMicroservice.Application.Dtos;
 using NotificationsMicroservice.Application.Services.Interfaces;
-using NotificationsMicroservice.Domain.Entities; // Asegúrate de que esta línea esté incluida
+using NotificationsMicroservice.Domain.Entities;
 using NotificationsMicroservice.Domain.Services.Interfaces;
 
 namespace NotificationsMicroservice.Application.Services.Implementations
@@ -31,6 +30,9 @@ namespace NotificationsMicroservice.Application.Services.Implementations
         public async Task<UserDto> GetUserByIdAsync(int id)
         {
             var user = await _userDomainService.GetUserByIdAsync(id);
+            if (user == null)
+                return null;
+
             return new UserDto
             {
                 Id = user.Id,
@@ -43,6 +45,20 @@ namespace NotificationsMicroservice.Application.Services.Implementations
 
         public async Task<UserDto> CreateUserAsync(UserDto userDto)
         {
+            // Validar que los datos del UserDto sean válidos
+            if (string.IsNullOrWhiteSpace(userDto.Name) ||
+                string.IsNullOrWhiteSpace(userDto.Preference) ||
+                string.IsNullOrWhiteSpace(userDto.ContactInfo))
+            {
+                throw new ArgumentException("UserDto fields cannot be empty.");
+            }
+
+            var existingUser = await _userDomainService.GetUserByIdAsync(userDto.Id);
+            if (existingUser != null)
+            {
+                throw new InvalidOperationException("A user with the same ID already exists.");
+            }
+
             var user = new User
             {
                 Id = userDto.Id,
@@ -51,6 +67,7 @@ namespace NotificationsMicroservice.Application.Services.Implementations
                 ContactInfo = userDto.ContactInfo,
                 IsActive = userDto.IsActive
             };
+
             var createdUser = await _userDomainService.CreateUserAsync(user);
             return new UserDto
             {
@@ -64,6 +81,14 @@ namespace NotificationsMicroservice.Application.Services.Implementations
 
         public async Task UpdateUserAsync(UserDto userDto)
         {
+            // Validar que los datos del UserDto sean válidos
+            if (string.IsNullOrWhiteSpace(userDto.Name) ||
+                string.IsNullOrWhiteSpace(userDto.Preference) ||
+                string.IsNullOrWhiteSpace(userDto.ContactInfo))
+            {
+                throw new ArgumentException("UserDto fields cannot be empty.");
+            }
+
             var user = new User
             {
                 Id = userDto.Id,
@@ -72,13 +97,17 @@ namespace NotificationsMicroservice.Application.Services.Implementations
                 ContactInfo = userDto.ContactInfo,
                 IsActive = userDto.IsActive
             };
+
             await _userDomainService.UpdateUserAsync(user);
         }
 
         public async Task DeleteUserAsync(int id)
         {
+            var user = await _userDomainService.GetUserByIdAsync(id);
+            if (user == null)
+                throw new ArgumentException("User not found.");
+
             await _userDomainService.DeleteUserAsync(id);
         }
     }
 }
-
