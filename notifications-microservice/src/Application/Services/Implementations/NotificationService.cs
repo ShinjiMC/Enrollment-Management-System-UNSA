@@ -3,9 +3,6 @@ using NotificationsMicroservice.Application.Services.Interfaces;
 using NotificationsMicroservice.Domain.Entities; // Asegura que esté incluido si usas Notification
 using NotificationsMicroservice.Domain.Services.Interfaces;
 using NotificationsMicroservice.Domain.ValueObjects; // Inclúyelo si Message es un Value Object
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace NotificationsMicroservice.Application.Services.Implementations
 {
