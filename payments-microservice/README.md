@@ -1,6 +1,6 @@
 # Arquitectura DDD y Pruebas del Microservicio de Pagos
 
-## 1. Introducción
+## 1. Descripcion
 El microservicio de pagos se encarga de gestionar todas las transacciones financieras relacionadas con los pagos de los estudiantes, incluyendo la creación, actualización, obtención y eliminación de pagos.
 - **Contexto Delimitado:** Gestión de Pagos
 
