@@ -50,7 +50,10 @@ namespace NotificationsMicroservice.Controllers
         
             if (!userDto.IsActive)
                 return BadRequest("User does not have notifications activated");
-        
+
+            // Set the status to "Sent" if it is not provided
+            notificationDto.Status = string.IsNullOrWhiteSpace(notificationDto.Status) ? "Sent" : notificationDto.Status;
+            
             var createdNotification = await _notificationService.CreateNotificationAsync(notificationDto);
             return CreatedAtAction(nameof(GetNotificationById), new { id = createdNotification.Id }, createdNotification);
         }
