@@ -34,7 +34,7 @@ builder.Services.AddScoped<IPayerRepository, PayerRepository>();
 // Enable Swagger
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Payments API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Payments Microservice API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -55,7 +55,7 @@ builder.Services.AddSwaggerGen(c =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            Array.Empty<string>()
         }
     });
 });

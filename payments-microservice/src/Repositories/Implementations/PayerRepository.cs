@@ -25,9 +25,17 @@ namespace PaymentsMicroservice.Repositories.Implementations
             return await _context.Payers.Find(p => p.PayerId == payerId).FirstOrDefaultAsync();
         }
 
-        public async Task SavePayer(Payer payer)
+        public async Task<bool> SavePayer(Payer payer)
         {
-            await _context.Payers.InsertOneAsync(payer);
+            try
+            {
+                await _context.Payers.InsertOneAsync(payer);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
