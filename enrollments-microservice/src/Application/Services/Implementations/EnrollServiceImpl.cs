@@ -42,18 +42,31 @@ public class EnrollService : IEnrollService
         var user = await _userExternalService.GetDataByUserIdAsync(userId);
         if (user == null)
             return new GeneralResponse(false, "User not found", 404);
-        if (user.Credits < enrollmentDto.Credits)
-            return new GeneralResponse(false, "Insufficient credits", 400);
         enrollmentDto.FullName = user.FullName;
         enrollmentDto.AcademicPerformance = user.AcademicPerformance;
         var schoolName = await _schoolExternalService.GetNameBySchoolIdAsync(schoolId);
         if (schoolName == null)
             return new GeneralResponse(false, "School not found", 404);
         enrollmentDto.SchoolName = schoolName;
+        if (enrollmentDto.Courses == null || enrollmentDto.Courses.Count == 0)
+            return new GeneralResponse(false, "No courses to enroll", 400);
+        var totalCredits = 0;
+        foreach (var course in enrollmentDto.Courses)
+        {
+            if (course == null || course.Id == null)
+                return new GeneralResponse(false, "Invalid course ID", 400);
+            var courseExternal = await _coursesExternalService.GetCreditsOfCourseByIdAsync(course.Id, schoolId);
+            if (courseExternal == null || courseExternal.Credits == null)
+                return new GeneralResponse(false, "Course not found or credits missing", 404);
+            totalCredits += (int)courseExternal.Credits;
+        }
+        if (totalCredits > user.Credits)
+            return new GeneralResponse(false, "Insufficient credits", 400);
+        enrollmentDto.Credits = totalCredits;
         var enrollModel = EnrollMapping.ToModel(enrollmentDto);
         var result = await _enrollServiceDomain.CreateEnroll(enrollModel);
         if (!result.Flag)
-            return result;
+            return new GeneralResponse(false, "Failed to create enrollment", 500);
         return new GeneralResponse(true, "Enrollment created successfully", 201);
     }
 
@@ -134,7 +147,7 @@ public class EnrollService : IEnrollService
         {
             if (courseId != null)
             {
-                var course = await _coursesExternalService.GetScheduleOfCourseByIdAsync(courseId);
+                var course = await _coursesExternalService.GetScheduleOfCourseByIdAsync(courseId, schoolId);
                 if (course != null)
                     courseDtos.Add(course);
             }

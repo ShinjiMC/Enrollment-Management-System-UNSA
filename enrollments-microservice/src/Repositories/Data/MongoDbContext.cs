@@ -1,4 +1,5 @@
 using MongoDB.Driver;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using enrollments_microservice.Domain.Entities;
 
@@ -6,16 +7,19 @@ namespace enrollments_microservice.Repositories.Data;
 public class Counter
 {
     [BsonId]
-    public string Id { get; set; }
+    public string? Id { get; set; }
     public int SequenceValue { get; set; }
 }
 
 public class MongoDbContext
 {
     private readonly IMongoDatabase _database;
+    private readonly ILogger<MongoDbContext> _logger;
 
-    public MongoDbContext(IConfiguration configuration)
+    public MongoDbContext(IConfiguration configuration, ILogger<MongoDbContext> logger)
     {
+        _logger = logger;
+
         var connectionString = configuration.GetSection("MongoDb:ConnectionString").Value;
         var databaseName = configuration.GetSection("MongoDb:DatabaseName").Value;
 
@@ -24,6 +28,17 @@ public class MongoDbContext
 
         var client = new MongoClient(connectionString);
         _database = client.GetDatabase(databaseName);
+
+        try
+        {
+            _database.RunCommandAsync((Command<BsonDocument>)"{ ping: 1 }").Wait();
+            _logger.LogInformation("MongoDB connection validation succeeded.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "MongoDB connection validation failed.");
+            throw new InvalidOperationException("MongoDB connection validation failed.", ex);
+        }
     }
 
     public IMongoCollection<CourseModel> CourseModel =>

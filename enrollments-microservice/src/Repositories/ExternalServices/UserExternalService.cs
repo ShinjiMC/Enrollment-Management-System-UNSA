@@ -27,18 +27,17 @@ namespace enrollments_microservice.Repositories.ExternalServices
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var user = JsonSerializer.Deserialize<UserExternalDto>(content);
-                return user ?? null;
+                try
+                {
+                    var user = JsonSerializer.Deserialize<UserExternalDto>(content);
+                    return user;
+                }
+                catch (JsonException)
+                {
+                    return null;
+                }
             }
             return null;
-            /*
-            return new UserExternalDto
-            {
-                FullName = "Shinji Ikari",
-                Courses = ["course1", "course2"],
-                AcademicPerformance = 1,
-                Credits = 30
-            };*/
         }
     }
 }

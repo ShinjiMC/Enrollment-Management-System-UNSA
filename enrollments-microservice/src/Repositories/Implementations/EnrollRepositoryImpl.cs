@@ -36,8 +36,8 @@ public class EnrollRepository : IEnrollRepository
 
     public async Task<List<EnrollModel>> GetEnrollsByUserId(int userId)
     {
-        var filter = Builders<EnrollModel>.Filter.Eq(enroll => enroll.Student.StudentID, userId);
-        return await _context.EnrollModel.Find(filter).ToListAsync();
+        var enrolls = await _context.EnrollModel.Find(_ => true).ToListAsync();
+        return enrolls.Where(e => e.Student != null && e.Student.StudentID == userId).ToList();
     }
 
     public async Task<EnrollModel> GetEnrollByUserIdAndSchoolId(int userId, int schoolId)

@@ -17,9 +17,9 @@ public static class EnrollMapping
             Credits = enrollment.Student?.Credits ?? 0,
             Courses = enrollment.Courses?.Select(c => new CourseDto
             {
-                Id = c.CourseId.ToString(),
+                Id = c.CourseId?.ToString() ?? string.Empty,
                 Group = c.Group ?? string.Empty
-            }).ToList() ?? [],
+            }).ToList() ?? new List<CourseDto>(),
             SchoolId = enrollment.School?.SchoolID.ToString() ?? string.Empty,
             SchoolName = enrollment.School?.Name ?? string.Empty
         };
@@ -33,7 +33,7 @@ public static class EnrollMapping
             studentId: int.TryParse(enrollment.StudentId, out var studentId) ? studentId : 0,
             fullName: enrollment.FullName == null ? string.Empty : enrollment.FullName,
             academicPerformance: enrollment.AcademicPerformance ?? enrollment.AcademicPerformance.GetValueOrDefault(),
-            credits: enrollment.Credits
+            credits: enrollment.Credits ?? 0
         );
 
         var ValueObjectSchoolData = new SchoolData(

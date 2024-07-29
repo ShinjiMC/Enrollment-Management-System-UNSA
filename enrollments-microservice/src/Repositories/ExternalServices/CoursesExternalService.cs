@@ -5,7 +5,8 @@ namespace enrollments_microservice.Repositories.ExternalServices;
 
 public interface ICoursesExternalService
 {
-    Task<CourseExternalDto?> GetScheduleOfCourseByIdAsync(string id);
+    Task<CourseExternalDto?> GetScheduleOfCourseByIdAsync(string id, string schoolId);
+    Task<CourseExternalDto?> GetCreditsOfCourseByIdAsync(string id, string schoolId);
 }
 
 public class CoursesExternalService : ICoursesExternalService
@@ -21,7 +22,32 @@ public class CoursesExternalService : ICoursesExternalService
         _httpClient.BaseAddress = new Uri(baseUrl);
     }
 
-    public async Task<CourseExternalDto?> GetScheduleOfCourseByIdAsync(string id)
+    public async Task<CourseExternalDto?> GetCreditsOfCourseByIdAsync(string id, string schoolId)
+    {
+        // by id and schoolid
+        return id switch
+        {
+            "course1" => new CourseExternalDto
+            {
+                Credits = 4
+            },
+            "course2" => new CourseExternalDto
+            {
+                Credits = 4
+            },
+            "course3" => new CourseExternalDto
+            {
+                Credits = 30
+            },
+            "course4" => new CourseExternalDto
+            {
+                Credits = 30
+            },
+            _ => null
+        };
+    }
+
+    public async Task<CourseExternalDto?> GetScheduleOfCourseByIdAsync(string id, string schoolId)
     {
         /*var response = await _httpClient.GetAsync($"api/courses/{id}");
         if (response.IsSuccessStatusCode)
@@ -43,44 +69,42 @@ public class CoursesExternalService : ICoursesExternalService
                 Name = "Russian",
                 Semester = "A",
                 Credits = 4,
-                Schedules = new List<ScheduleExternalDto>
-                {
-                    new ScheduleExternalDto
-                    {
+                Schedules =
+                [
+                    new() {
                         Day = "Monday",
                         Group = "A",
                         Year = 2022,
                         TeacherName = "Asuka Langley",
-                        Time = new List<IntervalExternalDto>
-                        {
-                            new IntervalExternalDto
-                            {
+                        Time =
+                        [
+                            new() {
+                                DayOfWeek= "3",
                                 Start = "08:00",
-                                End = "10:00"
+                                End = "10:30"
                             },
-                            new IntervalExternalDto
-                            {
-                                Start = "10:00",
+                            new() {
+                                DayOfWeek= "3",
+                                Start = "10:10",
                                 End = "12:00"
                             }
-                        }
+                        ]
                     },
-                    new ScheduleExternalDto
-                    {
+                    new() {
                         Day = "Wednesday",
                         Group = "B",
                         Year = 2022,
                         TeacherName = "Alya Roshidere",
-                        Time = new List<IntervalExternalDto>
-                        {
-                            new IntervalExternalDto
-                            {
-                                Start = "08:00",
-                                End = "10:00"
+                        Time =
+                        [
+                            new() {
+                                DayOfWeek= "3",
+                                Start = "08:20",
+                                End = "10:40"
                             }
-                        }
+                        ]
                     }
-                }
+                ]
 
             },
             "course4" => new CourseExternalDto
@@ -88,31 +112,30 @@ public class CoursesExternalService : ICoursesExternalService
                 Name = "Evangelion",
                 Semester = "C",
                 Credits = 4,
-                Schedules = new List<ScheduleExternalDto>
-                {
-                    new ScheduleExternalDto
-                    {
+                Schedules =
+                [
+                    new() {
                         Day = "Monday",
                         Group = "A",
                         Year = 2022,
                         TeacherName = "Asuka Langley",
-                        Time = new List<IntervalExternalDto>
-                        {
-                            new IntervalExternalDto
-                            {
+                        Time =
+                        [
+                            new() {
+                                DayOfWeek= "3",
                                 Start = "08:00",
                                 End = "10:00"
                             },
-                            new IntervalExternalDto
-                            {
+                            new() {
+                                DayOfWeek= "3",
                                 Start = "10:00",
                                 End = "12:00"
                             }
-                        }
+                        ]
                     }
-                }
+                ]
             },
-            _ => throw new NotImplementedException()
+            _ => null
         };
     }
 }
