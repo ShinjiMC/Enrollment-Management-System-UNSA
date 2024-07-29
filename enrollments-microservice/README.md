@@ -540,7 +540,11 @@ Background:
 
 </details>
 
----
+#### 3.1.3. Pruebas de API con Swagger
+
+Swagger facilita la comprensión de los endpoints disponibles y cómo interactuar con ellos. Además, se incluye información sobre el archivo `requests/enroll.http`, que contiene los comandos cURL necesarios para ejecutar las pruebas de la API de manera eficiente. Este archivo permite realizar las solicitudes directamente desde la línea de comandos, complementando el uso de Swagger para una experiencia de prueba completa.
+
+![](resources/swagger.png)
 
 ### 3.2. Pruebas de Rendimiento
 
@@ -553,8 +557,13 @@ Background:
 <details open>
   <summary><b><i>Obtener detalles de Matricula</i></b></summary>
 
+```gherkin
+Background:
+    Given el endpoint "/api/v1/Enrollments/{enrollId}" está accesible
+```
+
   <details open>
-    <summary><b><i>Escenario 1:</i></b> Prueba de carga para "/api/v1/Enrollments/{enrollId}" con 10 solicitudes simultáneas</summary>
+    <summary><b><i>Escenario 1:</i></b> Prueba de carga para obtener detalles de matrícula con 10 solicitudes simultáneas</summary>
     
 ```gherkin
     Given el endpoint "/api/v1/Enrollments/1" está disponible
@@ -567,7 +576,7 @@ Background:
   </details>
 
   <details open>
-    <summary><b><i>Escenario 2:</i></b> Prueba de carga para "/api/v1/Enrollments/{enrollId}" con 25 solicitudes simultáneas</summary>
+    <summary><b><i>Escenario 2:</i></b> Prueba de carga para obtener detalles de matrícula con 25 solicitudes simultáneas</summary>
     
 ```gherkin
     Given el endpoint "/api/v1/Enrollments/1" está disponible
@@ -580,7 +589,7 @@ Background:
   </details>
 
   <details open>
-    <summary><b><i>Escenario 3:</i></b> Prueba de carga para "/api/v1/Enrollments/{enrollId}" con 50 solicitudes simultáneas</summary>
+    <summary><b><i>Escenario 3:</i></b> Prueba de carga para obtener detalles de matrícula con 50 solicitudes simultáneas</summary>
     
 ```gherkin
     Given el endpoint "/api/v1/Enrollments/1" está disponible
@@ -594,8 +603,14 @@ Background:
 </details>
 <details open>
   <summary><b><i>Obtener cursos disponibles</i></b></summary>
+  
+```gherkin
+Background:
+    Given el endpoint "/api/v1/Enrollments/available/{userId}/{schoolId}" está accesible
+```
+
   <details open>
-    <summary><b><i>Escenario 1:</i></b> Prueba de carga para "/api/v1/Enrollments/available/{userId}/{schoolId}" con 10 solicitudes simultáneas</summary>
+    <summary><b><i>Escenario 1:</i></b> Prueba de carga para obtener cursos disponibles con 10 solicitudes simultáneas</summary>
     
 ```gherkin
     Given el endpoint "/api/v1/Enrollments/available/3/1" está disponible
@@ -608,7 +623,7 @@ Background:
   </details>
 
   <details open>
-    <summary><b><i>Escenario 2:</i></b> Prueba de carga para "/api/v1/Enrollments/available/{userId}/{schoolId}" con 25 solicitudes simultáneas</summary>
+    <summary><b><i>Escenario 2:</i></b> Prueba de carga para obtener cursos disponibles con 25 solicitudes simultáneas</summary>
 
 ```gherkin
     Given el endpoint "/api/v1/Enrollments/available/3/1" está disponible
@@ -621,7 +636,7 @@ Background:
   </details>
 
   <details open>
-    <summary><b><i>Escenario 3:</i></b> Prueba de carga para "/api/v1/Enrollments/available/{userId}/{schoolId}" con 50 solicitudes simultáneas</summary>
+    <summary><b><i>Escenario 3:</i></b> Prueba de carga para obtener cursos disponibles con 50 solicitudes simultáneas</summary>
     
 ```gherkin
     Given el endpoint "/api/v1/Enrollments/available/3/1" está disponible
@@ -635,8 +650,14 @@ Background:
 </details>
 <details open>
   <summary><b><i>Obtener matrículas por ID de usuario</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/v1/Enrollments/user/{userId}" está accesible
+```
+
   <details open>
-    <summary><b><i>Escenario 1:</i></b> Prueba de carga para "/api/v1/Enrollments/user/{userId}" con 10 solicitudes simultáneas</summary>
+    <summary><b><i>Escenario 1:</i></b> Prueba de carga para obtener matrículas por ID de usuario con 10 solicitudes simultáneas</summary>
     
 ```gherkin
     Given el endpoint "/api/v1/Enrollments/user/3" está disponible
@@ -649,7 +670,7 @@ Background:
   </details>
 
   <details open>
-    <summary><b><i>Escenario 2:</i></b> Prueba de carga para "/api/v1/Enrollments/user/{userId}" con 25 solicitudes simultáneas</summary>
+    <summary><b><i>Escenario 2:</i></b> Prueba de carga para obtener matrículas por ID de usuario con 25 solicitudes simultáneas</summary>
     
 ```gherkin
     Given el endpoint "/api/v1/Enrollments/user/3" está disponible
@@ -662,7 +683,7 @@ Background:
   </details>
 
   <details open>
-    <summary><b><i>Escenario 3:</i></b> Prueba de carga para "/api/v1/Enrollments/user/{userId}" con 50 solicitudes simultáneas</summary>
+    <summary><b><i>Escenario 3:</i></b> Prueba de carga para obtener matrículas por ID de usuario con 50 solicitudes simultáneas</summary>
     
 ```gherkin
     Given el endpoint "/api/v1/Enrollments/user/3" está disponible
@@ -677,8 +698,14 @@ Background:
 
 <details open>
   <summary><b><i>Obtener matrículas por ID de escuela</i></b></summary>
+  
+```gherkin
+Background:
+    Given el endpoint "/api/v1/Enrollments/school/{schoolId}" está accesible
+```
+
   <details open>
-    <summary><b><i>Escenario 1:</i></b> Prueba de carga para "/api/v1/Enrollments/school/{schoolId}" con 10 solicitudes simultáneas</summary>
+    <summary><b><i>Escenario 1:</i></b> Prueba de carga para obtener matrículas por ID de escuela con 10 solicitudes simultáneas</summary>
     
 ```gherkin
     Given el endpoint "/api/v1/Enrollments/school/1" está disponible
@@ -691,7 +718,7 @@ Background:
   </details>
 
   <details open>
-    <summary><b><i>Escenario 2:</i></b> Prueba de carga para "/api/v1/Enrollments/school/{schoolId}" con 25 solicitudes simultáneas</summary>
+    <summary><b><i>Escenario 2:</i></b> Prueba de carga para obtener matrículas por ID de escuela con 25 solicitudes simultáneas</summary>
     
 ```gherkin
     Given el endpoint "/api/v1/Enrollments/school/1" está disponible
@@ -704,7 +731,7 @@ Background:
   </details>
 
   <details open>
-    <summary><b><i>Escenario 3:</i></b> Prueba de carga para "/api/v1/Enrollments/school/{schoolId}" con 50 solicitudes simultáneas</summary>
+    <summary><b><i>Escenario 3:</i></b> Prueba de carga para obtener matrículas por ID de escuela con 50 solicitudes simultáneas</summary>
     
 ```gherkin
     Given el endpoint "/api/v1/Enrollments/school/1" está disponible
@@ -719,8 +746,14 @@ Background:
 
 <details open>
   <summary><b><i>Obtener matrículas por ID de usuario y ID de escuela</i></b></summary>
+    
+```gherkin
+Background:
+    Given el endpoint "/api/v1/Enrollments/certificate/{userId}/{schoolId}" está accesible
+```
+
   <details open>
-    <summary><b><i>Escenario 1:</i></b> Prueba de carga para "/api/v1/Enrollments/certificate/{userId}/{schoolId}" con 10 solicitudes simultáneas</summary>
+    <summary><b><i>Escenario 1:</i></b> Prueba de carga para obtener matrículas por ID de usuario y ID de escuela con 10 solicitudes simultáneas</summary>
     
 ```gherkin
     Given el endpoint "/api/v1/Enrollments/certificate/3/1" está disponible
@@ -733,7 +766,7 @@ Background:
   </details>
 
   <details open>
-    <summary><b><i>Escenario 2:</i></b> Prueba de carga para "/api/v1/Enrollments/certificate/{userId}/{schoolId}" con 25 solicitudes simultáneas</summary>
+    <summary><b><i>Escenario 2:</i></b> Prueba de carga para obtener matrículas por ID de usuario y ID de escuela con 25 solicitudes simultáneas</summary>
     
 ```gherkin
     Given el endpoint "/api/v1/Enrollments/certificate/3/1" está disponible
@@ -746,7 +779,7 @@ Background:
   </details>
 
   <details open>
-    <summary><b><i>Escenario 3:</i></b> Prueba de carga para "/api/v1/Enrollments/certificate/{userId}/{schoolId}" con 50 solicitudes simultáneas</summary>
+    <summary><b><i>Escenario 3:</i></b> Prueba de carga para obtener matrículas por ID de usuario y ID de escuela con 50 solicitudes simultáneas</summary>
     
 ```gherkin
     Given el endpoint "/api/v1/Enrollments/certificate/3/1" está disponible
@@ -791,41 +824,150 @@ El siguiente informe presenta los resultados de las pruebas de rendimiento ejecu
 
 #### 3.3.1. Herramientas y Tecnologías
 
-Descripción de las herramientas utilizadas para las pruebas de seguridad (por ejemplo, OWASP ZAP, Burp Suite, etc.).
+**OWASP ZAP (Zed Attack Proxy)** es una herramienta de código abierto diseñada para realizar pruebas de seguridad en aplicaciones web. Desarrollada por el Open Web Application Security Project (OWASP), ZAP proporciona una amplia gama de funciones para identificar vulnerabilidades y evaluar la seguridad de aplicaciones durante el ciclo de desarrollo. Su interfaz intuitiva permite a los usuarios realizar escaneos automatizados, así como llevar a cabo pruebas manuales de seguridad, como la exploración de aplicaciones y la identificación de puntos débiles. ZAP es particularmente útil para detectar problemas de seguridad comunes, como inyecciones SQL, ataques de cross-site scripting (XSS) y configuraciones incorrectas. Además, ZAP ofrece soporte para integraciones con otras herramientas de desarrollo y pruebas, lo que facilita la inclusión de prácticas de seguridad en el proceso de desarrollo ágil. Su capacidad para generar reportes detallados ayuda a los equipos de desarrollo a abordar las vulnerabilidades de manera efectiva y mejorar la seguridad general de sus aplicaciones.
 
 #### 3.3.2. Escenarios de Prueba de Seguridad
 
+```gherkin
+Background:
+    Given que el endpoint "http://localhost:8004" está accesible
+```
+
 <details open>
-  <summary><b><i>Escenario 1:</i></b> Verificación de la autenticación y autorización.</summary>
+  <summary><b><i>Escenario 1:</i></b> Verificación de encabezados de seguridad HTTP.</summary>
 
 ```gherkin
-Scenario: Verificación de la autenticación y autorización
-  Given el endpoint "api/payments/" requiere autenticación
-  When un usuario no autenticado intenta acceder al endpoint
-  Then la respuesta debe ser 401 Unauthorized
+Scenario: Verificación de encabezados de seguridad HTTP
+  Given el sitio web "http://localhost:8004" debe incluir varios encabezados de seguridad HTTP
+  When se realiza un análisis de encabezados HTTP
+  Then los encabezados esperados deben estar presentes, incluyendo "Strict-Transport-Security", "Content-Security-Policy", y "X-Content-Type-Options"
 ```
 
 </details>
 
 <details open>
-  <summary><b><i>Escenario 2:</i></b> Prueba de inyección SQL.</summary>
+  <summary><b><i>Escenario 2:</i></b> Verificación de vulnerabilidades en bibliotecas JavaScript.</summary>
 
-<span>gherkin aqui</span>
-
-</details>
-
-<details open>
-  <summary><b><i>Escenario 3:</i></b> Prueba de XSS (Cross-Site Scripting).</summary>
-
-<span>gherkin aqui</span>
+```gherkin
+Scenario: Verificación de vulnerabilidades en bibliotecas JavaScript
+  Given el sitio web "http://localhost:8004" utiliza bibliotecas JavaScript de terceros
+  When se realiza un análisis de bibliotecas JavaScript
+  Then no se deben encontrar bibliotecas vulnerables, como aquellas indicadas por Retire.js
+```
 
 </details>
 
 <details open>
-  <summary><b><i>Escenario 4:</i></b> Prueba de CSRF (Cross-Site Request Forgery).</summary>
-  
-  <span>gherkin aqui</span>
+  <summary><b><i>Escenario 3:</i></b> Verificación de la configuración de cookies.</summary>
+
+```gherkin
+Scenario: Verificación de la configuración de cookies
+  Given el sitio web "http://localhost:8004" utiliza cookies para el manejo de sesiones
+  When se realiza un análisis de cookies
+  Then todas las cookies deben estar configuradas con las banderas adecuadas, incluyendo "HttpOnly" y "Secure"
+```
+
 </details>
+
+<details open>
+  <summary><b><i>Escenario 4:</i></b> Verificación de la protección contra ataques XSS.</summary>
+
+```gherkin
+Scenario: Verificación de la protección contra ataques XSS
+  Given el sitio web "http://localhost:8004" permite la entrada de usuarios
+  When se realiza un análisis de entrada para detectar vulnerabilidades XSS
+  Then no se deben encontrar puntos de entrada vulnerables a ataques de cross-site scripting (XSS)
+```
+
+</details>
+
+<details open>
+  <summary><b><i>Escenario 5:</i></b> Verificación de la política de seguridad de contenido (CSP).</summary>
+
+```gherkin
+Scenario: Verificación de la política de seguridad de contenido (CSP)
+  Given el sitio web "http://localhost:8004" debe tener una política de seguridad de contenido configurada
+  When se realiza un análisis de la política de seguridad de contenido
+  Then la política debe estar correctamente configurada y debe incluir directivas como "default-src" y "script-src"
+```
+
+</details>
+
+<details open>
+  <summary><b><i>Escenario 6:</i></b> Verificación de la protección contra el clickjacking.</summary>
+
+```gherkin
+Scenario: Verificación de la protección contra el clickjacking
+  Given el sitio web "http://localhost:8004" debe protegerse contra ataques de clickjacking
+  When se realiza un análisis de encabezados HTTP
+  Then debe estar presente el encabezado "X-Frame-Options" con una configuración segura
+```
+
+</details>
+
+<details open>
+  <summary><b><i>Escenario 7:</i></b> Verificación de redirecciones abiertas.</summary>
+
+```gherkin
+Scenario: Verificación de redirecciones abiertas
+  Given el sitio web "http://localhost:8004" debe manejar las redirecciones de forma segura
+  When se realiza un análisis para detectar redirecciones abiertas
+  Then no deben encontrarse vulnerabilidades de redirección abierta
+```
+
+</details>
+
+<details open>
+  <summary><b><i>Escenario 8:</i></b> Verificación de exposición de información sensible.</summary>
+
+```gherkin
+Scenario: Verificación de exposición de información sensible
+  Given el sitio web "http://localhost:8004" debe proteger la información sensible
+  When se realiza un análisis para detectar la exposición de información sensible
+  Then no se debe encontrar información sensible expuesta en encabezados HTTP o mensajes de error
+```
+
+</details>
+
+<details open>
+  <summary><b><i>Escenario 9:</i></b> Verificación de configuraciones de seguridad en la administración de sesiones.</summary>
+
+```gherkin
+Scenario: Verificación de configuraciones de seguridad en la administración de sesiones
+  Given el sitio web "http://localhost:8004" gestiona sesiones de usuario
+  When se realiza un análisis de la gestión de sesiones
+  Then la sesión debe estar protegida contra ataques como el secuestro de sesión y el manejo inseguro de IDs de sesión
+```
+
+</details>
+
+<details open>
+  <summary><b><i>Escenario 10:</i></b> Verificación de la protección contra ataques de CSRF.</summary>
+
+```gherkin
+Scenario: Verificación de la protección contra ataques de CSRF
+  Given el sitio web "http://localhost:8004" debe protegerse contra ataques de falsificación de solicitudes entre sitios (CSRF)
+  When se realiza un análisis para detectar la protección contra CSRF
+  Then deben encontrarse y validarse tokens anti-CSRF en formularios y solicitudes
+```
+
+</details>
+
+<details open>
+  <summary><b><i>Escenario 11:</i></b> Verificación de vulnerabilidades de exposición de información.</summary>
+
+```gherkin
+Scenario: Verificación de vulnerabilidades de exposición de información
+  Given el sitio web "http://localhost:8004" debe manejar la exposición de información con cuidado
+  When se realiza un análisis para detectar la divulgación de información sensible
+  Then no deben encontrarse vulnerabilidades de divulgación de información, como mensajes de error o encabezados de respuesta que revelen detalles internos
+```
+
+</details>
+
+<p align="center">
+  <img src="resources/security_test.png" alt="Performance Test" />
+</p>
 
 ## 4. Referencias
 

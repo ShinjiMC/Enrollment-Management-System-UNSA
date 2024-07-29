@@ -36,6 +36,11 @@ builder.Services.AddScoped<IEnrollRepository, EnrollRepository>();
 
 builder.Services.AddSwaggerGen();
 
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(8004); // This will listen on all network interfaces
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

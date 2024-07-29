@@ -1,61 +1,66 @@
-# Registrar Matricula
-POST http://localhost:5258/api/Enrollments/enroll/{userId}/{schoolId}
-http://localhost:5258/api/Enrollments/enroll/1/1
-{
-  "credits": 28,
+# Recibir todas las matriculas
+curl -X 'GET' \
+  'http://localhost:8004/api/v1/Enrollments/all' \
+  -H 'accept: */*'
+
+# Obtener cursos disponibles
+curl -X 'GET' \
+  'http://localhost:8004/api/v1/Enrollments/available/3/1' \
+  -H 'accept: */*'
+
+# Obtener matrículas por ID de usuario
+curl -X 'GET' \
+  'http://localhost:8004/api/v1/Enrollments/user/3' \
+  -H 'accept: */*'
+
+# Obtener matrículas por ID de escuela
+curl -X 'GET' \
+  'http://localhost:8004/api/v1/Enrollments/school/1' \
+  -H 'accept: */*'
+
+# Obtener matrículas por ID de usuario y ID de escuela
+curl -X 'GET' \
+  'http://localhost:8004/api/v1/Enrollments/certificate/3/1' \
+  -H 'accept: */*'
+
+# Obtener detalles de Matricula
+curl -X 'GET' \
+  'http://localhost:8004/api/v1/Enrollments/1' \
+  -H 'accept: */*'
+
+# Crear Matricula
+curl -X 'POST' \
+  'http://localhost:8004/api/v1/Enrollments/enroll/3/1' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
   "courses": [
     {
-      "id": "1",
+      "id": "course1",
       "group": "A"
-    },
-    {
-      "id": "3",
-      "group": "B"
     }
   ]
-}
+}'
 
-# Obtener todas las Matriculas Regitradas
-GET http://localhost:5258/api/Enrollments/all
-
-# Actualizar datos de Matricula
-PUT http://localhost:5258/api/Enrollments/enroll/{enrollId}
-http://localhost:5258/api/Enrollments/enroll/0
-{
+# Actualizar Matrícula
+curl -X 'PUT' \
+  'http://localhost:8004/api/v1/Enrollments/enroll/1' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
   "studentId": "1",
   "schoolId": "1",
   "fullName": "Shinji Ikari",
-  "academicPerformance": 0,
+  "academicPerformance": 1,
   "credits": 28,
   "courses": [
-    {
-      "id": "1",
-      "group": "A"
-    },
-    {
-      "id": "3",
-      "group": "C"
-    }
+    {"id": "1", "group": "A"},
+    {"id": "3", "group": "C"}
   ],
   "schoolName": "Evangelion"
-}
+}'
 
-# Eliminar una Matricula Registrada
-DELETE http://localhost:5258/api/Enrollments/enroll/{enrollId}
-http://localhost:5258/api/Enrollments/enroll/2
-
-# Obtener las matriculas de un Usuario
-GET http://localhost:5258/api/Enrollments/user/{userId}
-http://localhost:5258/api/Enrollments/user/1
-
-# Obtener los cursos disponibles para matricular de un Usuario
-GET http://localhost:5258/api/Enrollments/available/{userId}/{schoolId}
-http://localhost:5258/api/Enrollments/available/1/1
-
-# Obtener la Matricula por su id
-GET http://localhost:5258/api/Enrollments/{enrollId}
-http://localhost:5258/api/Enrollments/1
-
-# Obtener las Matriculas de una Escuela por su id
-GET http://localhost:5258/api/Enrollments/school/{schoolId}
-http://localhost:5258/api/Enrollments/school/1
+# Eliminar Matrícula
+curl -X 'DELETE' \
+  'http://localhost:8004/api/v1/Enrollments/enroll/1' \
+  -H 'accept: */*'
