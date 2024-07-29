@@ -1,3 +1,4 @@
+using MongoDB.Bson;
 using PaymentsMicroservice.Domain.Entities;
 using PaymentsMicroservice.Domain.Services.Interfaces;
 
@@ -5,8 +6,12 @@ namespace PaymentsMicroservice.Domain.Services.Implementations
 {
     public class PaymentCodeDomainService : IPaymentCodeDomainService
     {
-        public PaymentCode GeneratePaymentCode(string studentId, string electronicBillId)
+        public PaymentCode? GeneratePaymentCode(string studentId, string electronicBillId)
         {
+            if (!ObjectId.TryParse(studentId, out _) || !ObjectId.TryParse(electronicBillId, out _))
+            {
+                return null;
+            }
             // Lógica para generar un nuevo código de pago
             var newPaymentCode = new PaymentCode
             {
@@ -16,15 +21,12 @@ namespace PaymentsMicroservice.Domain.Services.Implementations
                 ElectronicBillId = electronicBillId,
                 IsUsed = true
             };
-            // print code
-            Console.WriteLine($"New payment code generated: {newPaymentCode.Code}");
             return newPaymentCode;
         }
 
-        public bool ValidatePaymentCode(string code)
+        public bool ValidateId(string payerId)
         {
-            // Lógica para validar el código de pago
-            return true; // Implementar validación real
+            return ObjectId.TryParse(payerId, out _); // verificar que id sea del tipo ObjectId de Mongodb
         }
 
         public void MarkPaymentCodeAsUsed(string code)

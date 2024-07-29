@@ -9,8 +9,6 @@ public interface IStudentController
 {
     Task<IActionResult> GetStudentById(string id);
     Task<IActionResult> GetCoursesByStudentId(string id);
-    // Task<IActionResult> GetStudentByCui(string cui);
-    // Task<IActionResult> GetCoursesByStudentCui(string cui);
     Task<IActionResult> GetAllStudents();
    
 }
@@ -35,6 +33,9 @@ public class StudentController : ControllerBase, IStudentController
         var student = await _studentService.GetStudentAsync(id);
         if (student == null)
             return NotFound();
+        
+        if (string.IsNullOrEmpty(student.FullName))
+            return NotFound();
 
         return Ok(student);
     }
@@ -43,6 +44,13 @@ public class StudentController : ControllerBase, IStudentController
     public async Task<IActionResult> GetCoursesByStudentId(string id)
     {
         var courses = await _studentService.GetCoursesByStudentIdAsync(id);
+        
+        if(courses == null)
+            return NotFound();
+        
+        if (string.IsNullOrEmpty(courses.FullName))
+            return NotFound();
+
         return Ok(courses);
     }
 
@@ -50,6 +58,7 @@ public class StudentController : ControllerBase, IStudentController
     public async Task<IActionResult> GetAllStudents() 
     {
         var users = await _studentService.GetAllStudents();
+        
         return Ok(users);
     }
 }

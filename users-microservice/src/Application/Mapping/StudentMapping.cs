@@ -52,5 +52,15 @@ namespace users_microservice.Application.Mapping
                 Credit = studentDto.Credit,
             };
         }
+        public static bool IsEmpty(this StudentDto studentDto)
+        {
+            return string.IsNullOrEmpty(studentDto.FullName) &&
+                string.IsNullOrEmpty(studentDto.Email) &&
+                (studentDto.UserData == null || string.IsNullOrEmpty(studentDto.UserData.UserName)) &&
+                !studentDto.CourseIds.Any() &&
+                studentDto.AcademicPerformance == null &&
+                studentDto.Credit == null &&
+                string.IsNullOrEmpty(studentDto.SchoolId);
+        }
     }
 }

@@ -17,7 +17,6 @@ namespace PaymentsMicroservice.Repositories.Implementations
 
         public async Task<Payment> GetPaymentById(string paymentId)
         {
-            Console.WriteLine("GetPaymentById: " + paymentId);
             return await _context.Payments.Find(p => p.PaymentId == paymentId).FirstOrDefaultAsync();
         }
 

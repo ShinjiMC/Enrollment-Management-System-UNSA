@@ -118,3 +118,20 @@ Content-Type: application/json
 # dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
 # test/test.csproj
 # dotnet test test/test.csproj --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+
+
+## usario de prueba creacion
+id = 0,
+id = 2
+creditos estudiante: 1
+{
+  "fullName": "Aldo Benito Martinez",
+  "userData": {
+    "userName": "bananon",
+    "password": "Aldechi@123",
+    "confirmPassword": "Aldechi@123",
+    "role": "ADMIN"
+  },
+  "email": "aldechi001@example.com",
+  "phoneNumber": "123456789"
+}

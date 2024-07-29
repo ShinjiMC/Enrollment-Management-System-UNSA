@@ -4,8 +4,8 @@ namespace PaymentsMicroservice.Domain.Services.Interfaces
 
     public interface IPaymentCodeDomainService
     {
-        PaymentCode GeneratePaymentCode(string studentId, string electronicBillId);
-        bool ValidatePaymentCode(string code);
+        PaymentCode? GeneratePaymentCode(string studentId, string electronicBillId);
+        bool ValidateId(string payerId);
         void MarkPaymentCodeAsUsed(string code);
     }
 }

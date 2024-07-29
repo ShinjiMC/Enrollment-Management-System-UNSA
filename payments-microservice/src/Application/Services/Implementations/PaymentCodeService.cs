@@ -17,9 +17,13 @@ namespace PaymentsMicroservice.Application.Services.Implementations
             _paymentCodeDomainService = paymentCodeDomainService;
         }
 
-        public PaymentCodeDto GeneratePaymentCode(string studentId, string electronicBillId)
+        public PaymentCodeDto? GeneratePaymentCode(string studentId, string electronicBillId)
         {
             var paymentCode = _paymentCodeDomainService.GeneratePaymentCode(studentId, electronicBillId);
+            if (paymentCode == null)
+            {
+                return null;
+            }
             return PaymentCodeMapper.ToDto(paymentCode);
         }
 

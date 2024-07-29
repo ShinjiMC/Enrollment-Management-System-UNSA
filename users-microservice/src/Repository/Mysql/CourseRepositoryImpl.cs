@@ -26,12 +26,12 @@ namespace users_microservice.Repository.Mysql
                 _context.Courses.Add(studentCourse);
                 await _context.SaveChangesAsync();
 
-                return new GeneralResponse(true, "Curso añadido al estudiante exitosamente", 200);
+                return new GeneralResponse(true, "Course addes successfully", 200, studentCourse.Id.ToString());
             }
             catch (Exception ex)
             {
                 // Manejo de errores
-                return new GeneralResponse(false, $"Error al añadir el curso al estudiante: {ex.Message}", 500);
+                return new GeneralResponse(false, $"Error al añadir el curso al estudiante: {ex.Message}", 500, "-");
             }
         }
 
@@ -56,14 +56,14 @@ namespace users_microservice.Repository.Mysql
 
             if (courseToRemove == null)
             {
-                return new GeneralResponse(false, "Curso no encontrado o no está asociado al estudiante", 404);
+                return new GeneralResponse(false, "Course not found", 404, "-");
             }
 
             // Eliminar el curso
             _context.Courses.Remove(courseToRemove);
             await _context.SaveChangesAsync();
 
-            return new GeneralResponse(true, "Curso eliminado del estudiante exitosamente", 200);
+            return new GeneralResponse(true, "Course deleted successfully", 200,"-");
         }
     }
 }
