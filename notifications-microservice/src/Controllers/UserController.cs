@@ -28,7 +28,7 @@ namespace NotificationsMicroservice.Controllers
         {
             var user = await _userService.GetUserByIdAsync(id);
             if (user == null)
-                return NotFound();
+                return NotFound("User not found.");
 
             return Ok(user);
         }
@@ -54,8 +54,9 @@ namespace NotificationsMicroservice.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDto userDto)
         {
-            if (id != userDto.Id)
-                return BadRequest("ID mismatch");
+            var user = await _userService.GetUserByIdAsync(id);
+            if (user == null)
+                return NotFound("User not found.");
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -74,6 +75,9 @@ namespace NotificationsMicroservice.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
+            var user = await _userService.GetUserByIdAsync(id);
+            if (user == null)
+                return NotFound();
             try
             {
                 await _userService.DeleteUserAsync(id);
