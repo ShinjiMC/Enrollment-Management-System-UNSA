@@ -23,7 +23,6 @@ namespace PaymentsMicroservice.Application.Services.Implementations
         public async Task<Payer> GetPayerById(string payerId)
         {
             var result =  await _payerRepository.GetPayerById(payerId);
-            Console.WriteLine(result);
             return result;
         }
 

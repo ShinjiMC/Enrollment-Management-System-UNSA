@@ -27,7 +27,6 @@ namespace PaymentsMicroservice.Domain.Services.Implementations
                 Status = new PaymentStatus("Pending")
             };
             var savedPayment = await _paymentRepository.SavePayment(payment);
-            Console.WriteLine("Payment created from Domain Service: " + savedPayment.PaymentId); 
             return savedPayment;
         }
 

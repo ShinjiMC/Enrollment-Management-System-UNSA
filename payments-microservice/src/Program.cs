@@ -67,6 +67,13 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAll", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
+// Configure Kestrel to listen on all network interfaces
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(8007); // This will listen on all network interfaces
+});
+
+
 
 // App
 var app = builder.Build();
@@ -81,7 +88,7 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 app.MapGet("/", () => "This is Payments Microservice !!!");
 
-app.Urls.Add("http://localhost:8007");
+// app.Urls.Add("http://localhost:8007");
 
 // Run
 await app.RunAsync();
