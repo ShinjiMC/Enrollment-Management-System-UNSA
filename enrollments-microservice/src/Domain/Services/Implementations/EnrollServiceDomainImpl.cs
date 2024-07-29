@@ -15,19 +15,12 @@ public class EnrollServiceDomain : IEnrollServiceDomain
         _enrollRepository = enrollRepository;
     }
 
-    public async Task<GeneralResponse> CreateEnroll(EnrollModel enrollModel)
+    public async Task<EnrollModel?> CreateEnroll(EnrollModel enrollModel)
     {
-        if (enrollModel == null)
-            return new GeneralResponse(false, "Model is Empty", 400);
-        if (enrollModel.Student == null)
-            return new GeneralResponse(false, "Student is required", 400);
-        if (enrollModel.School == null)
-            return new GeneralResponse(false, "School is required", 400);
-
         var createEnrollResult = await _enrollRepository.CreateEnroll(enrollModel);
-        if (!createEnrollResult.Flag)
-            return new GeneralResponse(false, createEnrollResult.Message, 403);
-        return new GeneralResponse(true, "Enroll created successfully", 201);
+        if (createEnrollResult == null)
+            return null;
+        return createEnrollResult;
     }
 
     public async Task<EnrollModel?> GetEnrollById(int id)
@@ -41,23 +34,23 @@ public class EnrollServiceDomain : IEnrollServiceDomain
     public async Task<List<EnrollModel>?> GetEnrollsByUserId(int userId)
     {
         var enroll = await _enrollRepository.GetEnrollsByUserId(userId);
-        if (enroll == null)
+        if (enroll.Count == 0)
             return null;
         return enroll;
     }
 
-    public async Task<EnrollModel?> GetEnrollByUserIdAndSchoolId(int userId, int schoolId)
+    public async Task<List<EnrollModel>?> GetEnrollByUserIdAndSchoolId(int userId, int schoolId)
     {
-        var enroll = await _enrollRepository.GetEnrollByUserIdAndSchoolId(userId, schoolId);
-        if (enroll == null)
+        var enrolls = await _enrollRepository.GetEnrollByUserIdAndSchoolId(userId, schoolId);
+        if (enrolls.Count == 0)
             return null;
-        return enroll;
+        return enrolls;
     }
 
     public async Task<List<EnrollModel>?> GetEnrollsBySchoolId(int schoolId)
     {
         var enrolls = await _enrollRepository.GetEnrollsBySchoolId(schoolId);
-        if (enrolls == null)
+        if (enrolls.Count == 0)
             return null;
         return enrolls;
     }

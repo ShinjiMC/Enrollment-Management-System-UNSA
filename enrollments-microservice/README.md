@@ -1,10 +1,10 @@
-# Arquitectura DDD y Pruebas del Microservicio de Matriculas
+# Arquitectura DDD y Pruebas del Microservicio de Matrículas
 
-## 1. Descripcion
+## 1. Descripción
 
-El microservicio de pagos se encarga de gestionar todas las transacciones financieras relacionadas con los pagos de los estudiantes, incluyendo la creación, actualización, obtención y eliminación de pagos.
+El microservicio de matrículas se encarga de gestionar todos los aspectos relacionados con las matrículas de los estudiantes, incluyendo la creación, actualización, consulta y eliminación de matrículas.
 
-- **Contexto Delimitado:** Gestión de Pagos
+- **Contexto Delimitado:** Gestión de Matrículas
 
 ## 2. Arquitectura DDD
 
@@ -15,7 +15,7 @@ El microservicio de pagos se encarga de gestionar todas las transacciones financ
   <ul>
     <li>Controladores</li>
     <ul>
-      <li><b>PaymentController</b>: Gestiona las solicitudes HTTP relacionadas con los pagos. Incluye métodos para crear, actualizar, obtener y eliminar pagos, delegando la lógica a los servicios de aplicación.</li>
+      <li><b>EnrollmentsController</b>: Gestiona las solicitudes HTTP relacionadas con las matrículas. Incluye métodos para crear, actualizar, obtener y eliminar matrículas, delegando la lógica a los servicios de aplicación.</li>
     </ul>
   </ul>
 </details>
@@ -24,15 +24,15 @@ El microservicio de pagos se encarga de gestionar todas las transacciones financ
   <ul>
     <li>Servicios de aplicación</li>
     <ul>
-      <li><b>PaymentService</b>: Contiene la lógica de negocio específica de la aplicación. Coordina las operaciones entre el controlador y el dominio, incluyendo la validación y transformación de datos.</li>
+      <li><b>EnrollServiceImpl</b>: Contiene la lógica de negocio específica de la aplicación para las matrículas. Coordina las operaciones entre el controlador y el dominio, incluyendo la validación y transformación de datos.</li>
     </ul>
     <li>DTOs</li>
     <ul>
-      <li><b>PaymentDto</b>: Objeto de transferencia de datos utilizado para encapsular los datos de un pago en una estructura simple que puede ser utilizada en la capa de presentación.</li>
+      <li><b>EnrollmentDto</b>: Objeto de transferencia de datos utilizado para encapsular los datos de una matrícula en una estructura simple que puede ser utilizada en la capa de presentación.</li>
     </ul>
     <li>Mapping</li>
     <ul>
-      <li><b>PaymentMapper</b>: Clase responsable de mapear entre entidades de dominio y DTOs, asegurando que los datos se transfieran correctamente entre capas.</li>
+      <li><b>EnrollMapping</b>: Clase responsable de mapear entre entidades de dominio y DTOs, asegurando que los datos se transfieran correctamente entre capas.</li>
     </ul>
   </ul>
 </details>
@@ -41,31 +41,21 @@ El microservicio de pagos se encarga de gestionar todas las transacciones financ
   <ul>
     <li>Entidades</li>
     <ul>
-      <li><b>Payment</b>: Representa la entidad principal del sistema de pagos, incluyendo propiedades como <code>PaymentId</code>, <code>Amount</code>, <code>PaymentDate</code>, <code>StudentId</code>, entre otras.</li>
+      <li><b>EnrollModel</b>: Representa la entidad principal del sistema de matrículas, incluyendo propiedades como <code>EnrollId</code>, <code>StudentId</code>, <code>CoursesId</code>, entre otras.</li>
     </ul>
     <li>Value Objects</li>
     <ul>
-      <li><b>Money</b>: Representa un objeto de valor para manejar cantidades monetarias con propiedades como <code>Amount</code> y <code>Currency</code>.</li>
-      <li><b>PaymentDetails</b>: Representa detalles adicionales del pago que no cambian la identidad del pago.</li>
-    </ul>
-    <li>Agregados</li>
-    <ul>
-      <li><b>PaymentAggregate</b>: Agrupa entidades y objetos de valor relacionados al pago, asegurando la consistencia interna del agregado.</li>
+      <li><b>StudentData</b>: Representa un objeto de valor que maneja los datos del estudiante.</li>
+      <li><b>SchoolData</b>: Representa un objeto de valor que maneja los datos de la escuela.</li>
     </ul>
     <li>Servicios de dominio</li>
     <ul>
-      <li><b>PaymentDomainService</b>: Contiene lógica de negocio compleja que involucra múltiples entidades o agregados. Por ejemplo, cálculos de comisiones o validaciones específicas de dominio.</li>
+      <li><b>EnrollServiceDomainImpl</b>: Contiene lógica de negocio compleja que involucra múltiples entidades. Por ejemplo, validaciones específicas de dominio para matrículas.</li>
     </ul>
     <li>Interfaces de repositorio</li>
     <ul>
-      <li><b>IPaymentRepository</b>: Define los métodos que deben ser implementados para la gestión de los pagos en el repositorio. Incluye métodos como <code>AddPayment</code>, <code>UpdatePayment</code>, <code>GetPaymentById</code> y <code>DeletePayment</code>.</li>
+      <li><b>IEnrollRepository</b>: Define los métodos que deben ser implementados para la gestión de matrículas en el repositorio. Incluye métodos como <code>AddEnroll</code>, <code>UpdateEnroll</code>, <code>GetEnrollById</code> y <code>DeleteEnroll</code>.</li>
     </ul>
-    <!-- <li>Eventos de dominio</li>
-    <ul>
-      <li><b>PaymentCreatedEvent</b>: Evento que se dispara cuando se crea un nuevo pago.</li>
-      <li><b>PaymentUpdatedEvent</b>: Evento que se dispara cuando se actualiza un pago.</li>
-      <li><b>PaymentDeletedEvent</b>: Evento que se dispara cuando se elimina un pago.</li>
-    </ul> -->
   </ul>
 </details>
 <details open>
@@ -73,16 +63,17 @@ El microservicio de pagos se encarga de gestionar todas las transacciones financ
   <ul>
     <li>Implementaciones de repositorios</li>
     <ul>
-      <li><b>PaymentRepository</b>: Implementación concreta de <code>IPaymentRepository</code>. Utiliza el contexto de la base de datos para realizar operaciones CRUD sobre los pagos.</li>
+      <li><b>EnrollRepositoryImpl</b>: Implementación concreta de <code>IEnrollRepository</code>. Utiliza el contexto de la base de datos para realizar operaciones CRUD sobre las matrículas.</li>
     </ul>
     <li>Contexto de la base de datos</li>
     <ul>
-      <li><b>PaymentDbContext</b>: Clase que maneja la conexión a la base de datos y proporciona acceso a las entidades a través de DbSets. Configura mapeos y relaciones entre entidades.</li>
+      <li><b>MongoDbContext</b>: Clase que maneja la conexión a la base de datos y proporciona acceso a las entidades a través de DbSets. Configura mapeos y relaciones entre entidades.</li>
     </ul>
     <li>Integraciones externas</li>
     <ul>
-      <li><b>PaymentGatewayIntegration</b>: Servicio que se integra con proveedores de pagos externos para procesar transacciones.</li>
-      <li><b>NotificationService</b>: Servicio que se encarga de enviar notificaciones a los usuarios sobre el estado de sus pagos.</li>
+      <li><b>CoursesExternalService</b>: Servicio que se integra con otro microservicio con datos de cursos.</li>
+      <li><b>SchoolExternalService</b>: Servicio que se integra con otro microservicio con datos de escuela.</li>
+      <li><b>UserExternalService</b>: Servicio que se integra con otro microservicio con datos de usuario.</li>
     </ul>
   </ul>
 </details>
@@ -97,37 +88,454 @@ El microservicio de pagos se encarga de gestionar todas las transacciones financ
 
 #### 3.1.1. Herramientas y Tecnologías
 
-Descripción de las herramientas utilizadas para las pruebas de API (por ejemplo, Postman, Swagger, etc.).
+Para llevar a cabo las pruebas de nuestra API, hemos utilizado una serie de herramientas y tecnologías clave que facilitan la evaluación exhaustiva y efectiva de las funcionalidades expuestas por la API. A continuación se describen las herramientas principales empleadas:
+
+- **Postman:** Esta herramienta es ampliamente utilizada para el diseño, prueba y documentación de APIs. Permite realizar solicitudes HTTP a los endpoints de la API, definir y gestionar colecciones de pruebas, y verificar respuestas con gran detalle. Postman también proporciona funcionalidades avanzadas como la ejecución de scripts pre y post solicitud, así como la integración con sistemas de CI/CD para automatizar las pruebas.
+
+- **Swagger:** Swagger, ahora conocido como OpenAPI, es una herramienta poderosa para documentar y probar APIs. Permite generar documentación interactiva que facilita la comprensión y el uso de los endpoints de la API. Con Swagger, es posible visualizar y probar los endpoints directamente desde la documentación, lo que ayuda a identificar problemas y validar el comportamiento de la API de manera eficiente.
+
+Estas herramientas y tecnologías no solo facilitan la creación de pruebas detalladas y la generación de documentación precisa, sino que también aseguran una integración continua y una experiencia de usuario consistente durante el ciclo de vida de desarrollo de la API.
 
 #### 3.1.2. Escenarios de Prueba de API
 
+En esta sección se detallan los escenarios de prueba para el servicio de matrículas, los cuales han sido diseñados para validar el correcto funcionamiento de las diferentes operaciones del API. Los detalles de los escenarios de prueba están disponibles en el archivo `enrollments-microservice.postman_collection.json`, el cual contiene las solicitudes y configuraciones para ejecutar los tests en Postman.
+
+Además, los resultados de la ejecución de estos tests se encuentran en el archivo `enrollments-microservice.postman_test_run.json`. Este archivo proporciona un resumen de las pruebas realizadas y los resultados obtenidos, facilitando la verificación del comportamiento esperado del API según los casos de prueba definidos.
+
 <details open>
-  <summary><b><i>Escenario 1:</i></b> Verificación de la creación de un pago.</summary>
-  
-  ```gherkin
-  Escenario: Verificación de la creación de un pago
-    Given el endpoint "api/payments/" está disponible
-    When se envía una solicitud POST con los datos del pago
-    Then la respuesta debe ser 201 Created
-    And el pago debe estar registrado en el sistema
-  ```
+  <summary><b><i>Crear matrícula</i></b></summary>
+
+```gherkin
+Background:
+    Given que el endpoint "/api/v1/Enrollments/enroll/{userId}/{schoolId}" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Crear matrícula con éxito</summary>
+
+```gherkin
+    Given que el sistema contiene un usuario con ID "1" y créditos suficientes
+    And el sistema contiene una escuela con ID "1" con el cuerpo:
+    {
+        "courses": [
+        {"id": "course1", "group": "A"}
+        ]
+    }
+    When envíe una solicitud POST a "/api/v1/Enrollments/enroll/1/1"
+    Then el código de estado de la respuesta debe ser 201
+    And el cuerpo de la respuesta debe contener "Enrollment created successfully"
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Crear matrícula cuando el usuario no existe</summary>
+
+```gherkin
+  Given el sistema no contiene un usuario con ID "999" con el cuerpo:
+    {
+      "courses": [
+        {"id": "1", "group": "A"},
+        {"id": "3", "group": "B"}
+      ]
+    }
+  When se envía una solicitud POST a "/api/v1/Enrollments/enroll/999/1"
+  Then el código de estado de la respuesta debe ser 404
+  And el cuerpo de la respuesta debe contener "User not found"
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 3:</i></b> Crear matrícula cuando el usuario tiene créditos insuficientes</summary>
+
+```gherkin
+    Given que el sistema contiene un usuario con ID "1" pero con créditos insuficientes
+    And el sistema contiene una escuela con ID "1" con el cuerpo:
+    {
+        "courses": [
+        {"id": "1", "group": "A"},
+        {"id": "3", "group": "B"}
+        ]
+    }
+    When envíe una solicitud POST a "/api/v1/Enrollments/enroll/1/1"
+    Then el código de estado de la respuesta debe ser 400
+    And el cuerpo de la respuesta debe contener "Insufficient credits"
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 4:</i></b> Crear matrícula cuando la escuela no existe</summary>
+
+```gherkin
+    Given que el sistema contiene un usuario con ID "1" y créditos suficientes
+    And el sistema no contiene una escuela con ID "999" con el cuerpo:
+    {
+        "courses": [
+        {"id": "1", "group": "A"},
+        {"id": "3", "group": "B"}
+        ]
+    }
+    When envíe una solicitud POST a "/api/v1/Enrollments/enroll/1/999"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "School not found"
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 5:</i></b> Crear matrícula cuando los cursos están vacíos</summary>
+
+```gherkin
+    Given que el sistema contiene un usuario con ID "1" y créditos suficientes
+    And el sistema no contiene una escuela con ID "1" con el cuerpo:
+    {
+        "courses": []
+    }
+    When envíe una solicitud POST a "/api/v1/Enrollments/enroll/1/1"
+    Then el código de estado de la respuesta debe ser 400
+    And el cuerpo de la respuesta debe contener "No courses to enroll"
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 6:</i></b> Crear matrícula cuando el ID del curso no existe</summary>
+
+```gherkin
+    Given que el sistema contiene un usuario con ID "1" y créditos suficientes
+    And el sistema contiene una escuela con ID "1" con el cuerpo:
+    {
+        "courses": [
+        {"id": "course999", "group": "A"},
+        {"id": "course3", "group": "B"}
+        ]
+    }
+    When envíe una solicitud POST a "/api/v1/Enrollments/enroll/1/1"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "Course not found or credits missing"
+```
+
+  </details>
+
 </details>
 
 <details open>
-  <summary><b><i>Escenario 2:</i></b> Verificación de la obtención de detalles de un pago.</summary>
-  
-  ```gherkin
-  Given el endpoint "api/payments/{id}" está disponible
-    When se envía una solicitud GET con un ID de pago válido
-    Then la respuesta debe ser 200 OK
-    And los detalles del pago deben ser correctos
-  ```
+<summary><b><i>Obtener detalles de la matrícula</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/v1/Enrollments/{id}" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Obtener detalles de la matrícula con éxito</summary>
+
+```gherkin
+    Given el sistema contiene una matrícula con ID "1"
+    When se envía una solicitud GET a "/api/v1/Enrollments/1"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener los detalles de la matrícula con ID "1"
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Obtener detalles de la matrícula cuando no existe</summary>
+
+```gherkin
+        Given el sistema no contiene una matrícula con ID "999"
+    When se envía una solicitud GET a "/api/v1/Enrollments/999"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener un mensaje de error "Not Found"
+```
+
+  </details>
+
 </details>
 
 <details open>
-  <summary><b><i>Escenario 3:</i></b> Verificación de la actualización de un pago.</summary>
-  
-  <span>gherkin aqui</span>
+    <summary><b><i>Actualizar matrícula</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/v1/Enrollments/enroll/{enrollId}" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Actualizar matrícula con éxito</summary>
+
+```gherkin
+    Given el sistema contiene una matrícula con ID "0" con el cuerpo:
+    {
+        "studentId": "1",
+        "schoolId": "1",
+        "fullName": "Shinji Ikari",
+        "academicPerformance": 0,
+        "credits": 28,
+        "courses": [
+            {"id": "1", "group": "A"},
+            {"id": "3", "group": "C"}
+        ],
+        "schoolName": "Evangelion"
+    }
+    When se envía una solicitud PUT a "/api/v1/Enrollments/enroll/0"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener "Enroll updated successfully"
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Actualizar matrícula cuando no existe</summary>
+
+```gherkin
+    Given el sistema no contiene una matrícula con ID "999" con el cuerpo:
+    {
+        "studentId": "1",
+        "schoolId": "1",
+        "fullName": "Shinji Ikari",
+        "academicPerformance": 0,
+        "credits": 28,
+        "courses": [
+            {"id": "1", "group": "A"},
+            {"id": "3", "group": "C"}
+        ],
+        "schoolName": "Evangelion"
+    }
+    When se envía una solicitud PUT a "/api/v1/Enrollments/enroll/999"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "Enroll not found"
+```
+
+  </details>
+
+</details>
+
+<details open>
+    <summary><b><i>Eliminar matrícula</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/v1/Enrollments/enroll/{enrollId}" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Eliminar matrícula con éxito</summary>
+
+```gherkin
+    Given el sistema contiene una matrícula con ID "1"
+    When se envía una solicitud DELETE a "/api/v1/Enrollments/enroll/1"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener "Enrollment deleted successfully"
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Eliminar matrícula cuando no existe</summary>
+
+```gherkin
+    Given el sistema no contiene una matrícula con ID "999"
+    When se envía una solicitud DELETE a "/api/v1/Enrollments/enroll/999"
+    Then el código de estado de la respuesta debe ser 400
+    And el cuerpo de la respuesta debe contener "Enrollment not found"
+```
+
+  </details>
+
+</details>
+
+<details open>
+    <summary><b><i>Obtener cursos disponibles</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/v1/Enrollments/available/{userId}/{schoolId}" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Obtener cursos disponibles con éxito</summary>
+
+```gherkin
+    Given el sistema contiene un usuario con ID "1" y una escuela con ID "1"
+    And el usuario ha completado los cursos con IDs "1" y "2"
+    And la escuela tiene una malla con cursos que requieren los IDs "1" y "2"
+    And hay cursos disponibles con ID "3" que no han sido completados por el usuario
+    When se envía una solicitud GET a "/api/v1/Enrollments/available/1/1"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener una lista de cursos disponibles con ID "3"
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Obtener cursos disponibles cuando el usuario no existe</summary>
+
+```gherkin
+    Given el sistema no contiene un usuario con ID "999"
+    When se envía una solicitud GET a "/api/v1/Enrollments/available/999/1"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "User not found"
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 3:</i></b> Obtener cursos disponibles cuando la escuela no existe</summary>
+
+```gherkin
+    Given el sistema contiene un usuario con ID "1"
+    And el sistema no contiene una escuela con ID "999"
+    When se envía una solicitud GET a "/api/v1/Enrollments/available/1/999"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "School not found"
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 4:</i></b> Obtener cursos disponibles cuando no hay cursos disponibles</summary>
+
+```gherkin
+    Given el sistema contiene un usuario con ID "1"
+    And la escuela tiene una malla con cursos que han sido completados por el usuario
+    When se envía una solicitud GET a "/api/v1/Enrollments/available/1/1"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "No courses available"
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 5:</i></b> Obtener cursos disponibles cuando los cursos no existen</summary>
+
+```gherkin
+    Given el sistema contiene un usuario con ID "1"
+    And la escuela tiene una malla con cursos que requieren los IDs "1" y "2"
+    And el curso de ID “4” no tiene horarios registrados
+    When se envía una solicitud GET a "/api/v1/Enrollments/available/1/1"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "Course not found"
+```
+
+  </details>
+
+</details>
+
+<details open>
+    <summary><b><i>Obtener matrículas por ID de usuario</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/v1/Enrollments/user/{userId}" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Obtener matrículas por ID de usuario con éxito</summary>
+
+```gherkin
+    Given el sistema contiene matrículas asociadas al usuario con ID "1"
+    When se envía una solicitud GET a "/api/v1/Enrollments/user/1"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener una lista de matrículas para el usuario con ID "1"
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Obtener matrículas por ID de usuario cuando el usuario no existe</summary>
+
+```gherkin
+    Given el sistema no contiene matrículas asociadas al usuario con ID "999"
+    When se envía una solicitud GET a "/api/v1/Enrollments/user/999"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "User not found"
+```
+
+  </details>
+
+</details>
+
+<details open>
+    <summary><b><i>Obtener matrículas por ID de escuela</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/v1/Enrollments/school/{schoolId}" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Obtener matrículas por ID de escuela con éxito</summary>
+
+```gherkin
+    Given el sistema contiene matrículas asociadas a la escuela con ID "1"
+    When se envía una solicitud GET a "/api/v1/Enrollments/school/1"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener una lista de matrículas para la escuela con ID "1"
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Obtener matrículas por ID de escuela cuando la escuela no existe</summary>
+
+```gherkin
+    Given el sistema no contiene matrículas asociadas a la escuela con ID "999"
+    When se envía una solicitud GET a "/api/v1/Enrollments/school/999"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "School not found"
+```
+
+  </details>
+
+</details>
+
+<details open>
+    <summary><b><i>Obtener matrículas por ID de usuario y ID de escuela</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/v1/Enrollments/certificate/{userId}/{schoolId}" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Obtener matrículas por ID de usuario y ID de escuela con éxito</summary>
+
+```gherkin
+    Given el sistema contiene las matrículas para el usuario con ID "1" en la escuela con ID "1"
+    When se envía una solicitud GET a "/api/v1/Enrollments/certificate/1/1"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener una lista de matrículas para el usuario con ID "1" en la escuela con ID "1"
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Obtener matrícula por ID de usuario y ID de escuela cuando la escuela no existe</summary>
+
+```gherkin
+    Given el sistema no contiene una inscripción para el usuario con ID "1" en la escuela con ID "999"
+    When se envía una solicitud GET a "/api/v1/Enrollments/certificate/1/999"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "School not found"
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 3:</i></b> Obtener matrícula por ID de usuario y ID de escuela cuando el usuario no existe</summary>
+
+```gherkin
+    Given el sistema no contiene una inscripción para el usuario con ID "999" en la escuela con ID "1"
+    When se envía una solicitud GET a "/api/v1/Enrollments/certificate/999/1"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "User not found"
+```
+
+  </details>
+
 </details>
 
 ---

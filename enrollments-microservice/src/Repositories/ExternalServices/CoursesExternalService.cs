@@ -66,6 +66,7 @@ public class CoursesExternalService : ICoursesExternalService
         {
             "course3" => new CourseExternalDto
             {
+                Id = "course3",
                 Name = "Russian",
                 Semester = "A",
                 Credits = 4,
@@ -109,6 +110,7 @@ public class CoursesExternalService : ICoursesExternalService
             },
             "course4" => new CourseExternalDto
             {
+                Id = "course4",
                 Name = "Evangelion",
                 Semester = "C",
                 Credits = 4,

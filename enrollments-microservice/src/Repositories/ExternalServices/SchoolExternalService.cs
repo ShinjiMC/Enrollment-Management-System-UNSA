@@ -76,6 +76,47 @@ public class SchoolExternalService : ISchoolExternalService
                     }
                 }
             };
+        else if (id == "2")
+            return new SchoolExternalDto
+            {
+                FullName = "Tokyo-2",
+                Curriculum = []
+            };
+        else if (id == "3")
+            return new SchoolExternalDto
+            {
+                FullName = "Tokyo-2",
+                Curriculum = [
+                    new PreCoursesExternalDto
+                    {
+                        Id = "course1",
+                        PreRequeriments = new List<string>()
+                    },
+                    new PreCoursesExternalDto
+                    {
+                        Id = "course2",
+                        PreRequeriments = new List<string>()
+                    },
+                    new PreCoursesExternalDto
+                    {
+                        Id = "course3",
+                        PreRequeriments = new List<string>{
+                            "course1",
+                            "course2"
+                        }
+                    },
+                    new PreCoursesExternalDto
+                    {
+                        Id = "course4",
+                        PreRequeriments = new List<string>()
+                    },
+                    new PreCoursesExternalDto
+                    {
+                        Id = "course5",
+                        PreRequeriments = new List<string>()
+                    }
+                ]
+            };
         return null;
     }
 }
