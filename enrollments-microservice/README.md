@@ -540,38 +540,13 @@ Background:
 
 </details>
 
-El siguiente informe presenta los resultados de las pruebas de rendimiento ejecutadas utilizando Apache JMeter.
-
-<p align="center">
-  <img src="resources/performance_test.png" alt="Performance Test" />
-</p>
-
-| **Label**                                           | **#Samples** | **FAIL** | **Error%** | **Average (ms)** | **Min (ms)** | **Max (ms)** | **Median (ms)** | **90th pct (ms)** | **95th pct (ms)** | **99th pct (ms)** | **Transactions/s** | **Received (KB/sec)** | **Sent (KB/sec)** |
-| --------------------------------------------------- | ------------ | -------- | ---------- | ---------------- | ------------ | ------------ | --------------- | ----------------- | ----------------- | ----------------- | ------------------ | --------------------- | ----------------- |
-| **Total**                                           | 925          | 0        | 0.00%      | 1408.74          | 97           | 5292         | 1730.00         | 2834.60           | 3655.50           | 4630.92           | 12.71              | 34.91                 | 1.78              |
-| **GetCoursesAvailableWith10RequestsTest**           | 110          | 0        | 0.00%      | 2094.74          | 1612         | 5292         | 1937.00         | 2506.00           | 3683.40           | 5281.77           | 1.61               | 1.36                  | 0.23              |
-| **GetCoursesAvailableWith25RequestsTest**           | 25           | 0        | 0.00%      | 3752.28          | 2957         | 4625         | 3681.00         | 4476.80           | 4603.40           | 4625.00           | 4.59               | 3.88                  | 0.66              |
-| **GetCoursesAvailableWith50RequestsTest**           | 50           | 0        | 0.00%      | 3842.18          | 2839         | 5236         | 3666.00         | 4742.30           | 5172.60           | 5236.00           | 8.99               | 7.60                  | 1.30              |
-| **GetEnrollmentsBySchoolAndUserWith10RequestsTest** | 110          | 0        | 0.00%      | 1999.85          | 1707         | 2851         | 1934.50         | 2460.30           | 2708.90           | 2850.56           | 1.64               | 6.56                  | 0.24              |
-| **GetEnrollmentsBySchoolAndUserWith25RequestsTest** | 25           | 0        | 0.00%      | 1925.16          | 1709         | 2446         | 1944.00         | 2145.20           | 2361.70           | 2446.00           | 5.79               | 23.14                 | 0.85              |
-| **GetEnrollmentsBySchoolAndUserWith50RequestsTest** | 50           | 0        | 0.00%      | 1982.74          | 1717         | 2840         | 1945.00         | 2313.80           | 2598.85           | 2840.00           | 10.78              | 43.08                 | 1.58              |
-| **GetEnrollmentsBySchoolWith10RequestsTest**        | 110          | 0        | 0.00%      | 98.19            | 97           | 109          | 98.00           | 100.00            | 100.45            | 108.23            | 1.70               | 7.72                  | 0.24              |
-| **GetEnrollmentsBySchoolWith25RequestsTest**        | 25           | 0        | 0.00%      | 99.08            | 97           | 103          | 98.00           | 102.00            | 102.70            | 103.00            | 10.89              | 49.57                 | 1.52              |
-| **GetEnrollmentsBySchoolWith50RequestsTest**        | 50           | 0        | 0.00%      | 99.72            | 97           | 113          | 98.50           | 102.90            | 104.45            | 113.00            | 19.50              | 88.78                 | 2.72              |
-| **GetEnrollmentsByUserWith10RequestsTest**          | 110          | 0        | 0.00%      | 2032.60          | 1707         | 2619         | 2012.50         | 2410.30           | 2499.95           | 2618.89           | 1.64               | 6.54                  | 0.23              |
-| **GetEnrollmentsByUserWith25RequestsTest**          | 25           | 0        | 0.00%      | 2110.56          | 1715         | 2889         | 2031.00         | 2737.40           | 2848.20           | 2889.00           | 5.48               | 21.89                 | 0.75              |
-| **GetEnrollmentsByUserWith50RequestsTest**          | 50           | 0        | 0.00%      | 2118.62          | 1704         | 2937         | 2135.50         | 2503.40           | 2648.55           | 2937.00           | 10.35              | 41.36                 | 1.43              |
-| **GetEnrollmentsWith10RequestsTest**                | 110          | 0        | 0.00%      | 101.39           | 97           | 423          | 98.00           | 100.00            | 104.00            | 391.54            | 1.66               | 0.57                  | 0.22              |
-| **GetEnrollmentsWith25RequestsTest**                | 25           | 0        | 0.00%      | 104.80           | 97           | 137          | 102.00          | 125.60            | 137.00            | 137.00            | 24.93              | 8.57                  | 3.31              |
-| **GetEnrollmentsWith50RequestsTest**                | 50           | 0        | 0.00%      | 103.58           | 97           | 137          | 101.50          | 112.40            | 137.00            | 137.00            | 48.88              | 16.80                 | 6.49              |
-
 ---
 
 ### 3.2. Pruebas de Rendimiento
 
 #### 3.2.1. Herramientas y Tecnologías
 
-Descripción de las herramientas utilizadas para las pruebas de rendimiento (por ejemplo, Apache JMeter, k6, etc.).
+**Apache JMeter** es una herramienta de código abierto ampliamente utilizada para realizar pruebas de rendimiento y carga en aplicaciones. Diseñada para evaluar el rendimiento de servicios web y aplicaciones en una variedad de protocolos, JMeter permite simular múltiples usuarios concurrentes para medir el comportamiento del sistema bajo diferentes cargas. Con su interfaz gráfica intuitiva, JMeter facilita la creación de planes de prueba personalizados, la definición de escenarios de carga y la configuración de métricas detalladas. Esta herramienta también ofrece capacidades para generar reportes detallados y gráficos, proporcionando una visión integral del rendimiento del sistema y ayudando a identificar cuellos de botella y áreas de mejora. Su flexibilidad y extensibilidad la convierten en una opción ideal para evaluar la capacidad de respuesta y la estabilidad de aplicaciones en entornos de producción.
 
 #### 3.2.2. Escenarios de Prueba de Rendimiento
 
@@ -784,6 +759,33 @@ Descripción de las herramientas utilizadas para las pruebas de rendimiento (por
   </details>
 
 </details>
+
+El siguiente informe presenta los resultados de las pruebas de rendimiento ejecutadas utilizando Apache JMeter.
+
+<p align="center">
+  <img src="resources/performance_test.png" alt="Performance Test" />
+</p>
+
+| **Label**                                           | **#Samples** | **FAIL** | **Error%** | **Average (ms)** | **Min (ms)** | **Max (ms)** | **Median (ms)** | **90th pct (ms)** | **95th pct (ms)** | **99th pct (ms)** | **Transactions/s** | **Received (KB/sec)** | **Sent (KB/sec)** |
+| --------------------------------------------------- | ------------ | -------- | ---------- | ---------------- | ------------ | ------------ | --------------- | ----------------- | ----------------- | ----------------- | ------------------ | --------------------- | ----------------- |
+| **Total**                                           | 925          | 0        | 0.00%      | 1408.74          | 97           | 5292         | 1730.00         | 2834.60           | 3655.50           | 4630.92           | 12.71              | 34.91                 | 1.78              |
+| **GetCoursesAvailableWith10RequestsTest**           | 110          | 0        | 0.00%      | 2094.74          | 1612         | 5292         | 1937.00         | 2506.00           | 3683.40           | 5281.77           | 1.61               | 1.36                  | 0.23              |
+| **GetCoursesAvailableWith25RequestsTest**           | 25           | 0        | 0.00%      | 3752.28          | 2957         | 4625         | 3681.00         | 4476.80           | 4603.40           | 4625.00           | 4.59               | 3.88                  | 0.66              |
+| **GetCoursesAvailableWith50RequestsTest**           | 50           | 0        | 0.00%      | 3842.18          | 2839         | 5236         | 3666.00         | 4742.30           | 5172.60           | 5236.00           | 8.99               | 7.60                  | 1.30              |
+| **GetEnrollmentsBySchoolAndUserWith10RequestsTest** | 110          | 0        | 0.00%      | 1999.85          | 1707         | 2851         | 1934.50         | 2460.30           | 2708.90           | 2850.56           | 1.64               | 6.56                  | 0.24              |
+| **GetEnrollmentsBySchoolAndUserWith25RequestsTest** | 25           | 0        | 0.00%      | 1925.16          | 1709         | 2446         | 1944.00         | 2145.20           | 2361.70           | 2446.00           | 5.79               | 23.14                 | 0.85              |
+| **GetEnrollmentsBySchoolAndUserWith50RequestsTest** | 50           | 0        | 0.00%      | 1982.74          | 1717         | 2840         | 1945.00         | 2313.80           | 2598.85           | 2840.00           | 10.78              | 43.08                 | 1.58              |
+| **GetEnrollmentsBySchoolWith10RequestsTest**        | 110          | 0        | 0.00%      | 98.19            | 97           | 109          | 98.00           | 100.00            | 100.45            | 108.23            | 1.70               | 7.72                  | 0.24              |
+| **GetEnrollmentsBySchoolWith25RequestsTest**        | 25           | 0        | 0.00%      | 99.08            | 97           | 103          | 98.00           | 102.00            | 102.70            | 103.00            | 10.89              | 49.57                 | 1.52              |
+| **GetEnrollmentsBySchoolWith50RequestsTest**        | 50           | 0        | 0.00%      | 99.72            | 97           | 113          | 98.50           | 102.90            | 104.45            | 113.00            | 19.50              | 88.78                 | 2.72              |
+| **GetEnrollmentsByUserWith10RequestsTest**          | 110          | 0        | 0.00%      | 2032.60          | 1707         | 2619         | 2012.50         | 2410.30           | 2499.95           | 2618.89           | 1.64               | 6.54                  | 0.23              |
+| **GetEnrollmentsByUserWith25RequestsTest**          | 25           | 0        | 0.00%      | 2110.56          | 1715         | 2889         | 2031.00         | 2737.40           | 2848.20           | 2889.00           | 5.48               | 21.89                 | 0.75              |
+| **GetEnrollmentsByUserWith50RequestsTest**          | 50           | 0        | 0.00%      | 2118.62          | 1704         | 2937         | 2135.50         | 2503.40           | 2648.55           | 2937.00           | 10.35              | 41.36                 | 1.43              |
+| **GetEnrollmentsWith10RequestsTest**                | 110          | 0        | 0.00%      | 101.39           | 97           | 423          | 98.00           | 100.00            | 104.00            | 391.54            | 1.66               | 0.57                  | 0.22              |
+| **GetEnrollmentsWith25RequestsTest**                | 25           | 0        | 0.00%      | 104.80           | 97           | 137          | 102.00          | 125.60            | 137.00            | 137.00            | 24.93              | 8.57                  | 3.31              |
+| **GetEnrollmentsWith50RequestsTest**                | 50           | 0        | 0.00%      | 103.58           | 97           | 137          | 101.50          | 112.40            | 137.00            | 137.00            | 48.88              | 16.80                 | 6.49              |
+
+---
 
 ### 3.3. Pruebas de Seguridad
 
