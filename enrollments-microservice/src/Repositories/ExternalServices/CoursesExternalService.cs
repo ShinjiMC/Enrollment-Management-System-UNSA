@@ -29,11 +29,11 @@ public class CoursesExternalService : ICoursesExternalService
         {
             "course1" => new CourseExternalDto
             {
-                Credits = 4
+                Credits = 1
             },
             "course2" => new CourseExternalDto
             {
-                Credits = 4
+                Credits = 1
             },
             "course3" => new CourseExternalDto
             {
