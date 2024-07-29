@@ -80,7 +80,7 @@ El microservicio de matrículas se encarga de gestionar todos los aspectos relac
 
 ### 2.2. Diagrama de la Arquitectura
 
-![](resources/PaymentsArchitecture.png)
+![](resources/enrollment_microservice.png)
 
 ## 3. Pruebas
 
