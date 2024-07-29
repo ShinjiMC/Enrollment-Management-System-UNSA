@@ -33,6 +33,7 @@ namespace Infrastructure.Persistence.Repositories
         public async Task<IReadOnlyList<Schedule>> GetByCourseIdAsync(Guid courseId)
         {
             return await _context.Schedules
+                .Include(c => c.Course)
                 .Where(s => s.CourseId == courseId)
                 .ToListAsync();
         }

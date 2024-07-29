@@ -7,6 +7,7 @@ using Application.Schedules.GetById;
 using Application.Schedules.Update;
 using Application.Schedules.GetByYearSemesterSchool;
 using Application.Schedules.GetByCourseIdQuery;
+using Application.Schedules.Delete;
 
 namespace Web.API.Controllers;
 
@@ -67,6 +68,16 @@ public class Schedules : ApiController
         var updateResult = await _mediator.Send(command);
 
         return updateResult.Match(
+            customerId => NoContent(),
+            errors => Problem(errors)
+        );
+    }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var customerResult = await _mediator.Send(new DeleteScheduleCommand(id));
+
+        return customerResult.Match(
             customerId => NoContent(),
             errors => Problem(errors)
         );

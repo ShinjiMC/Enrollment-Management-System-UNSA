@@ -18,6 +18,12 @@ internal sealed class GetAllScheduleQueryHandler : IRequestHandler<GetByCourseId
     {
         IReadOnlyList<Schedule> schedules = await _scheduleRepository.GetByCourseIdAsync(query.Id);
 
+        // Verifica si no se encontraron horarios
+        if (schedules == null || !schedules.Any())
+        {
+            return Error.NotFound("Schedule.NotFound", "No schedules found for the provided course Id.");
+        }
+
         var response = schedules.Select(schedule => new ScheduleResponse(
                 schedule.ScheduleId.ToString(),
                 schedule.CourseId.ToString(),
@@ -25,10 +31,11 @@ internal sealed class GetAllScheduleQueryHandler : IRequestHandler<GetByCourseId
                 schedule.Year,
                 new ScheduleDetailsDto(schedule.ScheduleDetails.Group, schedule.ScheduleDetails.ProfessorId),
                 schedule.Entries.Select(entry => new ScheduleEntryDto(entry.DayOfWeek, entry.StartTime, entry.EndTime)),
-                new CourseDto(schedule.Course.Name, schedule.Course.Credits, schedule.Course.Hours, schedule.Course.Active, 
-                schedule.Course.Semester.Value ,schedule.Course.SchoolId.ToString())
+                new CourseDto(schedule.Course.Name, schedule.Course.Credits, schedule.Course.Hours, schedule.Course.Active,
+                schedule.Course.Semester.Value, schedule.Course.SchoolId.ToString())
         )).ToList();
 
         return response;
     }
+
 }

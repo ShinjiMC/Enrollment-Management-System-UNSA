@@ -56,7 +56,7 @@ internal sealed class UpdateCourseCommandHandler : IRequestHandler<UpdateCourseC
             semester,
             command.SchoolId);
 
-        await _courseRepository.Update(course);
+        _courseRepository.Update(course); //esta linea 
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
