@@ -37,6 +37,8 @@ public class StudyPlanCourseRepository : IStudyPlanCourseRepository
         return studyPlanCourse;
     }
 
+
+
     public List<StudyPlanCourse> GetAllStudyPlans()
     {
         var studyPlanCourses = _context.StudyPlanCourse.AsQueryable()
@@ -63,5 +65,15 @@ public class StudyPlanCourseRepository : IStudyPlanCourseRepository
     public void AddStudyPlanCourse(StudyPlanCourse studyPlanCourse)
     {
         _context.StudyPlanCourse.InsertOne(studyPlanCourse);
+
+        if (studyPlanCourse.Prerequisites != null && studyPlanCourse.Prerequisites.Count > 0)
+        {
+            foreach (var prerequisite in studyPlanCourse.Prerequisites)
+            {
+                prerequisite.CourseId = studyPlanCourse.Id;  // Asegurarse de que el CourseId esté correctamente asignado
+                _context.CoursePrerequisites.InsertOne(prerequisite);
+            }
+        }
     }
+
 }
