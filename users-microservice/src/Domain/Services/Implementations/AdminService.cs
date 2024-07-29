@@ -21,36 +21,27 @@ public class AdminServiceDomainImpl: IAdminServiceDomain
     {
         if (userDto == null)
         {
-            return new GeneralResponse(false, "Model is empty", 400);
+            return new GeneralResponse(false, "Model is empty", 400,"-");
         }
 
         var createUserResult = await _adminRepository.CreateUser(userDto);
         if (!createUserResult.Flag)
         {
-            return new GeneralResponse(false, createUserResult.Message, 403);
+            return new GeneralResponse(false, createUserResult.Message, 403,"-");
         }
 
-        return new GeneralResponse(true, "Account created with Admin role", 200);
+        return createUserResult;
     }
 
     public async Task<GeneralResponse> UpdateAdminAccount(AdminModel userDto)
     {
-        
-        var user = await _adminRepository.GetUserById(userDto.Id);
-        if (user == null)
-        {
-            return new GeneralResponse(false, "User not found", 404);
-        }
 
-        user.FullName = userDto.FullName;
-        user.Email = userDto.Email;
-
-        var result = await _adminRepository.UpdateUser(user);
+        var result = await _adminRepository.UpdateUser(userDto);
 
         // Si UpdateUser podría devolver null, maneja la nulabilidad
         if (result == null)
         {
-            return new GeneralResponse(false, "Error", 204);
+            return new GeneralResponse(false, "Error", 204,"-");
         }
 
         // Asegúrate de que el tipo devuelto sea compatible con el tipo esperado
@@ -61,9 +52,9 @@ public class AdminServiceDomainImpl: IAdminServiceDomain
     {
         
         var user = await _adminRepository.GetUserById(id);
-        if (user == null)
+        if (user == null || string.IsNullOrEmpty(user.FullName))
         {
-            return new GeneralResponse(false, "User not found", 404);
+            return new GeneralResponse(false, "User not found", 404,"-");
         }
 
         var result = await _adminRepository.DeleteUser(user);
@@ -76,22 +67,22 @@ public class AdminServiceDomainImpl: IAdminServiceDomain
     {
         if (studentModel == null)
         {
-            return new GeneralResponse(false, "Model is empty", 400);
+            return new GeneralResponse(false, "Model is empty", 400,"-");
         }
 
         var createStudentResult = await _adminRepository.CreateStudent(studentModel);
         if (!createStudentResult.Flag)
         {
-            return new GeneralResponse(false, createStudentResult.Message, 403);
+            return new GeneralResponse(false, createStudentResult.Message, 403,"-");
         }
 
-        return new GeneralResponse(true, "Student created successfully", 200);
+        return createStudentResult;
     }
     public async Task<GeneralResponse> CreateStudentCourse(List<CourseModel> courseModel)
         {
             if (courseModel == null)
             {
-                return new GeneralResponse(false, "Model is empty", 400);
+                return new GeneralResponse(false, "Model is empty", 400,"-");
             }
 
             // Crear una entrada en la tabla CourseModel
@@ -100,7 +91,7 @@ public class AdminServiceDomainImpl: IAdminServiceDomain
                 await _courseRepository.AddCourseToStudent(course);
             }
 
-            return new GeneralResponse(true, "Course created", 201);
+            return new GeneralResponse(true, "Course created", 201,"-");
         }
 
     public async Task<GeneralResponse> UpdateStudent(StudentModel studentModel)
@@ -110,13 +101,13 @@ public class AdminServiceDomainImpl: IAdminServiceDomain
 
         if (string.IsNullOrEmpty(studentId)) // Asegúrate de que el Id no esté vacío o nulo
         {
-            return new GeneralResponse(false, "Student not found", 404);
+            return new GeneralResponse(false, "Student not found", 404,"-");
         }
 
         var student = await _adminRepository.GetStudentById(studentModel.Id);
         if (student == null)
         {
-            return new GeneralResponse(false, "Student not found", 404);
+            return new GeneralResponse(false, "Student not found", 404,"-");
         }
 
         student.FullName = studentModel.FullName;
@@ -133,7 +124,7 @@ public class AdminServiceDomainImpl: IAdminServiceDomain
         var student = await _adminRepository.GetStudentById(id);
         if (student == null)
         {
-            return new GeneralResponse(false, "Student not found", 404);
+            return new GeneralResponse(false, "Student not found", 404, "-");
         }
 
         var result = await _adminRepository.DeleteStudent(student);
@@ -181,8 +172,12 @@ public class AdminServiceDomainImpl: IAdminServiceDomain
     }
 
 
-    public Task<AdminModel> GetAdminById(int id)
+    public async Task<AdminModel> GetAdminById(int id)
     {
-        throw new NotImplementedException();
+        var result = await _adminRepository.GetUserById(id);
+        if(result == null)
+            return new AdminModel();
+
+        return result;
     }
 }

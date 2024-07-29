@@ -10,10 +10,11 @@ using Domain.Schedules.Services.Interfaces;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Schedules.Common;
 
 namespace Application.Schedules.Create
 {
-    internal sealed class CreateScheduleCommandHandler : IRequestHandler<CreateScheduleCommand, ErrorOr<Unit>>
+    internal sealed class CreateScheduleCommandHandler : IRequestHandler<CreateScheduleCommand, ErrorOr<ScheduleResponse>>
     {
         private readonly IScheduleRepository _scheduleRepository;
         private readonly ICourseRepository _courseRepository; // Añadido para obtener el curso
@@ -21,7 +22,7 @@ namespace Application.Schedules.Create
         private readonly IUnitOfWork _unitOfWork;
 
         public CreateScheduleCommandHandler(
-            IScheduleRepository scheduleRepository, 
+            IScheduleRepository scheduleRepository,
             ICourseRepository courseRepository,
             IScheduleDomainService scheduleDomainService,
             IUnitOfWork unitOfWork)
@@ -32,7 +33,7 @@ namespace Application.Schedules.Create
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        public async Task<ErrorOr<Unit>> Handle(CreateScheduleCommand command, CancellationToken cancellationToken)
+        public async Task<ErrorOr<ScheduleResponse>> Handle(CreateScheduleCommand command, CancellationToken cancellationToken)
         {
             try
             {
@@ -68,7 +69,7 @@ namespace Application.Schedules.Create
                 {
                     return Errors.Schedule.InvalidScheduleHours;
                 }
-
+                    
                 var schedule = new Schedule(
                     Guid.NewGuid(), // O usa el ScheduleId proporcionado si es necesario
                     command.Year,
@@ -80,8 +81,17 @@ namespace Application.Schedules.Create
 
                 _scheduleRepository.Add(schedule);
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-                return Unit.Value;
+                var response = new ScheduleResponse(
+                    schedule.ScheduleId.ToString(),
+                    schedule.CourseId.ToString(),
+                    schedule.SchoolId,
+                    schedule.Year,
+                    new ScheduleDetailsDto(schedule.ScheduleDetails.Group, schedule.ScheduleDetails.ProfessorId),
+                    schedule.Entries.Select(entry => new ScheduleEntryDto(entry.DayOfWeek, entry.StartTime, entry.EndTime)),
+                    new CourseDto(schedule.Course.Name, schedule.Course.Credits, schedule.Course.Hours, schedule.Course.Active,
+                    schedule.Course.Semester.Value, schedule.Course.SchoolId.ToString())
+                );
+                return response;
             }
             catch (Exception ex)
             {

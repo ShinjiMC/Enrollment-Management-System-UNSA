@@ -6,6 +6,6 @@ namespace PaymentsMicroservice.Domain.Repositories
     {
         Task<List<Payer>> GetPayers();
         Task<Payer> GetPayerById(string payerId);
-        Task SavePayer(Payer payer);
+        Task<bool> SavePayer(Payer payer);
     }
 }

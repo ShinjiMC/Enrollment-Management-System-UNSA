@@ -4,10 +4,11 @@ using Domain.ValueObjects;
 using Domain.DomainErrors;
 using MediatR;
 using ErrorOr;
+using CoursesPrerequisite.Common;
 
 namespace Application.CoursesPrerequisite.Create
 {
-    internal sealed class CreateCoursesPrerequisiteCommandHandler : IRequestHandler<CreateCoursesPrerequisiteCommand, ErrorOr<Unit>>
+    internal sealed class CreateCoursesPrerequisiteCommandHandler : IRequestHandler<CreateCoursesPrerequisiteCommand, ErrorOr<CoursesPrerequisiteResponse>>
     {
         private readonly ICoursePrerequisiteRepository _courseRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -20,7 +21,7 @@ namespace Application.CoursesPrerequisite.Create
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        public async Task<ErrorOr<Unit>> Handle(CreateCoursesPrerequisiteCommand command, CancellationToken cancellationToken)
+        public async Task<ErrorOr<CoursesPrerequisiteResponse>> Handle(CreateCoursesPrerequisiteCommand command, CancellationToken cancellationToken)
         {
             try
             {
@@ -30,8 +31,8 @@ namespace Application.CoursesPrerequisite.Create
                 );
                 _courseRepository.Add(course);
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-                return Unit.Value;
+                var response = new CoursesPrerequisiteResponse(course.CourseId, course.PrerequisiteCourseId);
+                return response;
             }
             catch (Exception ex)
             {

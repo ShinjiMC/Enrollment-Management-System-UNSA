@@ -1,10 +1,9 @@
 namespace PaymentsMicroservice.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using PaymentsMicroservice.Application.Dtos;
     using PaymentsMicroservice.Application.Services.Interfaces;
 
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class PaymentCodeCommandController : ControllerBase
     {
@@ -15,18 +14,20 @@ namespace PaymentsMicroservice.Controllers
             _paymentCodeService = paymentService;
         }
 
-        [HttpPost] // Route: api/paymentcodecommand
-        public ActionResult<string> GeneratePaymentCode(PaymentCodeDto paymentCodeDto)
+        [HttpPost] // Route: api/v1/paymentcodecommand
+        public ActionResult<string> GeneratePaymentCode(PaymentCodeRequest paymentCodeRequest)
         {
-            var codeGenerated = _paymentCodeService.GeneratePaymentCode(paymentCodeDto.StudentId, paymentCodeDto.ElectronicBillId);
-            paymentCodeDto.Code = codeGenerated.Code;
-            paymentCodeDto.IsUsed = codeGenerated.IsUsed;
-            var saved = _paymentCodeService.SavePaymentCode(paymentCodeDto);
-            if (!saved)
+            var codeGenerated = _paymentCodeService.GeneratePaymentCode(paymentCodeRequest.StudentId, paymentCodeRequest.ElectronicBillId);
+            if (codeGenerated == null)
             {
-                return StatusCode(500, "An error occurred while saving the payment code.");
+                return StatusCode(400, new { Error = "Error al generar el código de pago. studentId o electronicBillId es inválido" });
             }
-            return Ok(codeGenerated.Code);    
+            var codeSaved = _paymentCodeService.SavePaymentCode(codeGenerated);
+            if (!codeSaved)
+            {
+                return StatusCode(500, new { Error = "Error al almacenar el código de pago" });
+            }
+            return Ok(new { Code = codeGenerated.Code });
         }
     }
 }

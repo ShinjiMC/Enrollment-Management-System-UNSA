@@ -5,10 +5,11 @@ using Domain.DomainErrors;
 using MediatR;
 using ErrorOr;
 using Domain.Schedules;
+using Courses.Common;
 
 namespace Application.Courses.Create
 {
-    internal sealed class CreateCourseCommandHandler : IRequestHandler<CreateCourseCommand, ErrorOr<Unit>>
+    internal sealed class CreateCourseCommandHandler : IRequestHandler<CreateCourseCommand, ErrorOr<CourseResponse>>
     {
         private readonly ICourseRepository _courseRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -21,7 +22,7 @@ namespace Application.Courses.Create
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        public async Task<ErrorOr<Unit>> Handle(CreateCourseCommand command, CancellationToken cancellationToken)
+        public async Task<ErrorOr<CourseResponse>> Handle(CreateCourseCommand command, CancellationToken cancellationToken)
         {
             try
             {
@@ -41,11 +42,18 @@ namespace Application.Courses.Create
                     command.SchoolId
                 );
 
+                if(command.Hours == 0){
+                    return Errors.Course.InvalidHours;
+                }
+                if(command.Credits == 0){
+                    return Errors.Course.InvalidCredits;
+                }
+
                 // Agregar el curso al repositorio
                 _courseRepository.Add(course);
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-                return Unit.Value;
+                var response = new CourseResponse(course.CourseId, course.Name, course.Credits, course.Hours, course.Active, course.Semester.Value, course.SchoolId);
+                return response;
             }
             catch (Exception ex)
             {

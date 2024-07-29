@@ -4,7 +4,7 @@ using PaymentsMicroservice.Application.Services.Interfaces;
 
 namespace PaymentsMicroservice.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class ElectronicBillController : ControllerBase
     {
@@ -18,19 +18,23 @@ namespace PaymentsMicroservice.Controllers
         [HttpGet("{electronicBillId}")] // Route: api/electronicbill/{electronicBillId}
         public async Task<ActionResult<ElectronicBillDto>> GetElectronicBillById(string electronicBillId)
         {
-            var electronicBill = await _electronicBillService.GetElectronicBillById(electronicBillId);
-            if (electronicBill == null)
-            {
-                return NotFound("Electronic bill not found");
+            try {
+                var electronicBill = await _electronicBillService.GetElectronicBillById(electronicBillId);
+                return Ok(electronicBill);
+            } catch (System.Exception e) {
+                return NotFound(new { message = e.Message });
             }
-            return Ok(electronicBill);
         }
 
         [HttpPost] // Route: api/electronicbill
         public async Task<ActionResult<ElectronicBillDto>> CreateElectronicBill(ElectronicBillDto electronicBillDto)
         {
-            var createdElectronicBill = await _electronicBillService.CreateElectronicBill(electronicBillDto);
-            return CreatedAtAction(nameof(GetElectronicBillById), new { electronicBillId = createdElectronicBill.ElectronicBillId }, createdElectronicBill);
+            try {
+                var createdElectronicBill = await _electronicBillService.CreateElectronicBill(electronicBillDto);
+                return CreatedAtAction(nameof(GetElectronicBillById), new { electronicBillId = createdElectronicBill.ElectronicBillId }, createdElectronicBill);
+            } catch (System.Exception e) {
+                return BadRequest(new { message = e.Message });
+            }
         }
 
         [HttpGet] // Route: api/electronicbill
@@ -39,7 +43,7 @@ namespace PaymentsMicroservice.Controllers
             var electronicBills = await _electronicBillService.GetElectronicBills();
             if (electronicBills == null)
             {
-                return NotFound("No electronic bills found");
+                return NotFound(new { message = "No se encontraron facturas electrónicas" });
             }
             return Ok(electronicBills);
         }

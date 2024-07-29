@@ -2,43 +2,47 @@ namespace PaymentsMicroservice.Controllers
 {
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc;
+    using PaymentsMicroservice.Application.Services.Interfaces;
     using PaymentsMicroservice.Domain.Entities;
-    using PaymentsMicroservice.Domain.Repositories;
 
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class PayerController : ControllerBase
     {
-        private readonly IPayerRepository _payerRepository;
+        private readonly IPayerService _payerService;
 
-        public PayerController(IPayerRepository payerRepository)
+        public PayerController(IPayerService payerService)
         {
-            _payerRepository = payerRepository;
+            _payerService = payerService;
         }
 
-        [HttpGet] // Route: api/payer
+        [HttpGet] // Route: api/v1/payer
         public ActionResult<List<Payer>> GetPayers()
         {
-            var payers = _payerRepository.GetPayers().Result;
+            var payers = _payerService.GetPayers().Result;
             return Ok(payers);
         }
         
-        [HttpGet("{payerId}")] // Route: api/payer/{payerId}
-        public ActionResult<Payer> GetPayerById(string payerId)
+        [HttpGet("{payerId}")] // Route: api/v1/payer/{payerId}
+        public async Task<ActionResult<Payer>> GetPayerById(string payerId)
         {
-            var payer =  _payerRepository.GetPayerById(payerId);
+            var payer = await _payerService.GetPayerById(payerId);
             if (payer == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Pagante no encontrado" }); 
             }
             return Ok(payer);
         }
 
-        [HttpPost] // Route: api/payer
-        public ActionResult SavePayer(Payer payer)
+        [HttpPost] // Route: api/v1/payer
+        public ActionResult<string> SavePayer(Payer payer)
         {
-            _payerRepository.SavePayer(payer);
-            return Ok("Payer saved successfully");
+            var result = _payerService.SavePayer(payer).Result;
+            if (!result)
+            {
+                return BadRequest("Error al guardar pagante");
+            }
+            return Ok("Pagante guardado correctamente");
         }
     }
 }

@@ -6,5 +6,5 @@ public class ScheduleExternalDto
     public string? Group { get; set; } = string.Empty;
     public int? Year { get; set; } = 0;
     public string? TeacherName { get; set; } = string.Empty;
-    public List<IntervalExternalDto>? Time { get; set; } = new List<IntervalExternalDto>();
+    public List<IntervalExternalDto>? Time { get; set; } = [];
 }

@@ -11,8 +11,8 @@ namespace PaymentsMicroservice.Application.Mapping
     {
         public static ElectronicBillDto ToDto(ElectronicBill electronicBill)
         {
-            if (electronicBill == null) throw new ArgumentNullException(nameof(electronicBill));
-            
+            ArgumentNullException.ThrowIfNull(electronicBill);
+
             return new ElectronicBillDto
             {
                 ElectronicBillId = electronicBill.ElectronicBillId,
@@ -63,7 +63,7 @@ namespace PaymentsMicroservice.Application.Mapping
                     ElectronicBillItemId = item.ElectronicBillItemId,
                     Description = item.Description,
                     Amount = new Money(item.Amount.Amount, item.Amount.Currency)
-                }).ToList() ?? new List<ElectronicBillItem>() // Ensures Items is never null
+                }).ToList() ?? [] // Ensures Items is never null
             };
         }
     }

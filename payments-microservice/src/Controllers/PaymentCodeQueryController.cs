@@ -4,7 +4,7 @@ namespace PaymentsMicroservice.Controllers
     using PaymentsMicroservice.Application.Dtos;
     using PaymentsMicroservice.Application.Services.Interfaces;
 
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class PaymentCodeQueryController : ControllerBase
     {
@@ -15,7 +15,7 @@ namespace PaymentsMicroservice.Controllers
             _paymentCodeService = paymentCodeService;
         }
 
-        [HttpGet("{paymentCodeId}")] // Route: api/paymentcodequery/{paymentCodeId}
+        [HttpGet("{paymentCodeId}")] // Route: api/v1/paymentcodequery/{paymentCodeId}
         public ActionResult<PaymentCodeDto> GetPaymentCodeById(string paymentCodeId)
         {
             var paymentCode = _paymentCodeService.GetPaymentCodeById(paymentCodeId);
@@ -26,7 +26,7 @@ namespace PaymentsMicroservice.Controllers
             return Ok(paymentCode);
         }
 
-        [HttpGet] // Route: api/paymentcodequery
+        [HttpGet] // Route: api/v1/paymentcodequery
         public ActionResult<List<PaymentCodeDto>> GetPaymentCodes()
         {
             var paymentCodes = _paymentCodeService.GetPaymentCodes();

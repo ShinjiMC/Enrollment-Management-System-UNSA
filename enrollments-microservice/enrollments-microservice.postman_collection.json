@@ -1,0 +1,1259 @@
+{
+	"info": {
+		"_postman_id": "25d4e3cc-64fc-4a24-b1d2-9d668b0ffa81",
+		"name": "enrollments-microservice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37189749"
+	},
+	"item": [
+		{
+			"name": "Crear Matricula",
+			"item": [
+				{
+					"name": "Crear matrícula con éxito",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'Enrollment created successfully');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"courses\": [\r\n    {\r\n      \"id\": \"course1\",\r\n      \"group\": \"A\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/enroll/3/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"enroll",
+								"3",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear matrícula cuando el usuario no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains 'User not found'\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'User not found');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"courses\": [\r\n    {\r\n      \"id\": \"course1\",\r\n      \"group\": \"A\"\r\n    },\r\n    {\r\n      \"id\": \"course3\",\r\n      \"group\": \"B\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/enroll/999/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"enroll",
+								"999",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear matrícula cuando el usuario tiene créditos insuficientes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains 'Insufficient credits'\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'Insufficient credits');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"courses\": [\r\n    {\r\n      \"id\": \"course1\",\r\n      \"group\": \"A\"\r\n    },\r\n    {\r\n      \"id\": \"course3\",\r\n      \"group\": \"B\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/enroll/3/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"enroll",
+								"3",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear matrícula cuando la escuela no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains 'School not found'\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'School not found');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"courses\": [\r\n    {\r\n      \"id\": \"course1\",\r\n      \"group\": \"A\"\r\n    },\r\n    {\r\n      \"id\": \"course3\",\r\n      \"group\": \"B\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/enroll/3/999",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"enroll",
+								"3",
+								"999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear matrícula cuando los cursos están vacíos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains 'No courses to enroll'\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'No courses to enroll');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"courses\": [  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/enroll/3/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"enroll",
+								"3",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear matrícula cuando los cursos no existen",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains 'Course not found or credits missing'\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'Course not found or credits missing');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"courses\": [\r\n    {\r\n      \"id\": \"course999\",\r\n      \"group\": \"A\"\r\n    },\r\n    {\r\n      \"id\": \"course3\",\r\n      \"group\": \"B\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/enroll/3/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"enroll",
+								"3",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Obtener detalles de Matricula",
+			"item": [
+				{
+					"name": "Obtener detalles de la matrícula con éxito",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains non-null enrollment details\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData.id, 'ID should not be null').to.not.be.null;\r",
+									"    pm.expect(jsonData.studentId, 'Student ID should not be null').to.not.be.null;\r",
+									"    pm.expect(jsonData.schoolId, 'School ID should not be null').to.not.be.null;\r",
+									"    pm.expect(jsonData.fullName, 'Full Name should not be null').to.not.be.null;\r",
+									"    pm.expect(jsonData.academicPerformance, 'Academic Performance should not be null').to.not.be.null;\r",
+									"    pm.expect(jsonData.credits, 'Credits should not be null').to.not.be.null;\r",
+									"    pm.expect(jsonData.schoolName, 'School Name should not be null').to.not.be.null;\r",
+									"\r",
+									"    pm.expect(jsonData.courses, 'Courses should not be null').to.not.be.null;\r",
+									"    pm.expect(jsonData.courses).to.be.an('array').that.is.not.empty;\r",
+									"\r",
+									"    jsonData.courses.forEach(function(course) {\r",
+									"        pm.expect(course.id, 'Course ID should not be null').to.not.be.null;\r",
+									"        pm.expect(course.group, 'Course Group should not be null').to.not.be.null;\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener detalles de la matrícula cuando no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Actualizar Matrícula",
+			"item": [
+				{
+					"name": "Actualizar matrícula con éxito",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Definir la URL y el cuerpo de la solicitud POST\r",
+									"const postUrl = \"http://localhost:8004/api/v1/Enrollments/enroll/3/1\";\r",
+									"const postBody = {\r",
+									"    \"courses\": [\r",
+									"        {\r",
+									"            \"id\": \"course1\",\r",
+									"            \"group\": \"A\"\r",
+									"        }\r",
+									"    ]\r",
+									"};\r",
+									"\r",
+									"// Realizar la solicitud POST\r",
+									"pm.sendRequest({\r",
+									"    url: postUrl,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(postBody)\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Error:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"    \r",
+									"    // Verificar el código de estado\r",
+									"    if (res.json().statusCode === 201) {\r",
+									"        const jsonResponse = res.json();\r",
+									"        const enrollmentId = jsonResponse.data.id;\r",
+									"        pm.environment.set(\"enrollmentId\", enrollmentId);\r",
+									"    } else {\r",
+									"        console.error(\"Error en la solicitud POST:\", res.json().statusCode);\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'Enroll updated successfully');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"studentId\": \"1\",\r\n  \"schoolId\": \"1\",\r\n  \"fullName\": \"Shinji Ikari\",\r\n  \"academicPerformance\": 1,\r\n  \"credits\": 28,\r\n  \"courses\": [\r\n    {\"id\": \"1\", \"group\": \"A\"},\r\n    {\"id\": \"3\", \"group\": \"C\"}\r\n  ],\r\n  \"schoolName\": \"Evangelion\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/enroll/{{enrollmentId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"enroll",
+								"{{enrollmentId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar matrícula cuando no existe",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'Enroll not found');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"studentId\": \"1\",\r\n  \"schoolId\": \"1\",\r\n  \"fullName\": \"Shinji Ikari\",\r\n  \"academicPerformance\": 1,\r\n  \"credits\": 28,\r\n  \"courses\": [\r\n    {\"id\": \"1\", \"group\": \"A\"},\r\n    {\"id\": \"3\", \"group\": \"C\"}\r\n  ],\r\n  \"schoolName\": \"Evangelion\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/enroll/9999",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"enroll",
+								"9999"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Eliminar Matrícula",
+			"item": [
+				{
+					"name": "Eliminar matrícula con éxito",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Definir la URL y el cuerpo de la solicitud POST\r",
+									"const postUrl = \"http://localhost:8004/api/v1/Enrollments/enroll/3/1\";\r",
+									"const postBody = {\r",
+									"    \"courses\": [\r",
+									"        {\r",
+									"            \"id\": \"course1\",\r",
+									"            \"group\": \"A\"\r",
+									"        }\r",
+									"    ]\r",
+									"};\r",
+									"\r",
+									"// Realizar la solicitud POST\r",
+									"pm.sendRequest({\r",
+									"    url: postUrl,\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/json'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(postBody)\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.error(\"Error:\", err);\r",
+									"        return;\r",
+									"    }\r",
+									"    \r",
+									"    // Verificar el código de estado\r",
+									"    if (res.json().statusCode === 201) {\r",
+									"        const jsonResponse = res.json();\r",
+									"        const enrollmentId = jsonResponse.data.id;\r",
+									"        pm.environment.set(\"enrollmentId\", enrollmentId);\r",
+									"    } else {\r",
+									"        console.error(\"Error en la solicitud POST:\", res.json().statusCode);\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'Enroll deleted successfully');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/enroll/{{enrollmentId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"enroll",
+								"{{enrollmentId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar matrícula cuando no existe",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'Enroll not found');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/enroll/9999",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"enroll",
+								"9999"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Obtener cursos disponibles",
+			"item": [
+				{
+					"name": "Obtener cursos disponibles con éxito",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'Courses available');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/available/3/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"available",
+								"3",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener cursos disponibles cuando el usuario no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'User not found');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/available/9999/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"available",
+								"9999",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener cursos disponibles cuando la escuela no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'School not found or syllabus missing');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/available/3/99999",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"available",
+								"3",
+								"99999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener cursos disponibles cuando no hay cursos disponibles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'No courses available');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/available/3/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"available",
+								"3",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener cursos disponibles cuando los cursos no existen",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'Course not found');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/available/3/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"available",
+								"3",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Obtener matrículas por ID de usuario",
+			"item": [
+				{
+					"name": "Obtener matrículas por ID de usuario con éxito",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'Enrollments found');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/user/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"user",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener matrículas por ID de usuario cuando el usuario no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'User not found');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/user/9999",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"user",
+								"9999"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Obtener matrículas por ID de escuela",
+			"item": [
+				{
+					"name": "Obtener matrículas por ID de escuela con éxito",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'Enrollments found');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/school/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"school",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener matrículas por ID de escuela cuando la escuela no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'School not found');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/school/999",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"school",
+								"999"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Obtener matrículas por ID de usuario y ID de escuela",
+			"item": [
+				{
+					"name": "Obtener matrículas por ID de usuario y ID de escuela con éxito",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'Enrollments found');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/certificate/3/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"certificate",
+								"3",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener inscripción por ID de usuario y ID de escuela cuando la escuela no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'School not found');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/certificate/3/999",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"certificate",
+								"3",
+								"999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener inscripción por ID de usuario y ID de escuela cuando usuario no existe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains success message\", function () {\r",
+									"    pm.response.to.have.jsonBody('message', 'User not found');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8004/api/v1/Enrollments/certificate/9999/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8004",
+							"path": [
+								"api",
+								"v1",
+								"Enrollments",
+								"certificate",
+								"9999",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

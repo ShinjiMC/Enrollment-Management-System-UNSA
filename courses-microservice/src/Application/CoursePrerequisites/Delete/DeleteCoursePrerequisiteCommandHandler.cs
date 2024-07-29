@@ -17,14 +17,17 @@ internal sealed class DeleteCoursePrerequisiteCommandHandler : IRequestHandler<D
     }
     public async Task<ErrorOr<Unit>> Handle(DeleteCoursePrerequisiteCommand command, CancellationToken cancellationToken)
     {
-        if (await _courseRepository.GetByIdAsync(command.Id) is not CoursePrerequisite course)
-        {
-            return Error.NotFound("Course.NotFound", "The course with the provide Id was not found.");
-        }
-        _courseRepository.Delete(course);
+        var coursePrerequisite = await _courseRepository.GetByIdAsync(command.CourseId, command.CoursePrerequisiteId);
 
+        if (coursePrerequisite == null)
+        {
+            return Error.NotFound("CoursePrerequisite.NotFound", "The course prerequisite with the provided IDs was not found.");
+        }
+
+        await _courseRepository.DeleteAsync(command.CourseId, command.CoursePrerequisiteId);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
     }
+
 }

@@ -1,0 +1,904 @@
+{
+	"id": "27d8caaa-610e-4497-871a-9214d4357f40",
+	"name": "enrollments-microservice",
+	"timestamp": "2024-07-29T08:04:01.734Z",
+	"collection_id": "37189749-25d4e3cc-64fc-4a24-b1d2-9d668b0ffa81",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 47,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2024-07-29T08:03:38.842Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "b785cadc-7ffc-46b5-a17a-db19912636a1",
+			"name": "Crear matrícula con éxito",
+			"url": "http://localhost:8004/api/v1/Enrollments/enroll/3/1",
+			"time": 1535,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Response body contains success message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains success message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1535
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Response body contains success message": true
+				}
+			]
+		},
+		{
+			"id": "88213587-2dd5-4bd8-8678-7f7c25355a13",
+			"name": "Crear matrícula cuando el usuario no existe",
+			"url": "http://localhost:8004/api/v1/Enrollments/enroll/999/1",
+			"time": 1017,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response body contains 'User not found'": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains 'User not found'": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1017
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response body contains 'User not found'": true
+				}
+			]
+		},
+		{
+			"id": "f9bd82b6-13f0-45b1-82fd-9239cd3da5bc",
+			"name": "Crear matrícula cuando el usuario tiene créditos insuficientes",
+			"url": "http://localhost:8004/api/v1/Enrollments/enroll/3/1",
+			"time": 1048,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Status code is 400": true,
+				"Response body contains 'Insufficient credits'": true
+			},
+			"testPassFailCounts": {
+				"Status code is 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains 'Insufficient credits'": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1048
+			],
+			"allTests": [
+				{
+					"Status code is 400": true,
+					"Response body contains 'Insufficient credits'": true
+				}
+			]
+		},
+		{
+			"id": "5213c681-ebc1-492c-b858-cbb5be5dacd4",
+			"name": "Crear matrícula cuando la escuela no existe",
+			"url": "http://localhost:8004/api/v1/Enrollments/enroll/3/999",
+			"time": 1013,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response body contains 'School not found'": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains 'School not found'": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1013
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response body contains 'School not found'": true
+				}
+			]
+		},
+		{
+			"id": "e2586fa1-abca-45fc-8d7d-8a98e1c55d21",
+			"name": "Crear matrícula cuando los cursos están vacíos",
+			"url": "http://localhost:8004/api/v1/Enrollments/enroll/3/1",
+			"time": 1005,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Status code is 400": true,
+				"Response body contains 'No courses to enroll'": true
+			},
+			"testPassFailCounts": {
+				"Status code is 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains 'No courses to enroll'": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1005
+			],
+			"allTests": [
+				{
+					"Status code is 400": true,
+					"Response body contains 'No courses to enroll'": true
+				}
+			]
+		},
+		{
+			"id": "70f63424-a091-4f4d-a59b-ee2680c25173",
+			"name": "Crear matrícula cuando los cursos no existen",
+			"url": "http://localhost:8004/api/v1/Enrollments/enroll/3/1",
+			"time": 1006,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response body contains 'Course not found or credits missing'": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains 'Course not found or credits missing'": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1006
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response body contains 'Course not found or credits missing'": true
+				}
+			]
+		},
+		{
+			"id": "26cdff2d-7b74-4ddf-a566-885a8c9e6cdc",
+			"name": "Obtener detalles de la matrícula con éxito",
+			"url": "http://localhost:8004/api/v1/Enrollments/1",
+			"time": 149,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response body contains non-null enrollment details": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains non-null enrollment details": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				149
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response body contains non-null enrollment details": true
+				}
+			]
+		},
+		{
+			"id": "6fa25982-b9f3-4b02-b619-fe95b2930110",
+			"name": "Obtener detalles de la matrícula cuando no existe",
+			"url": "http://localhost:8004/api/v1/Enrollments/0",
+			"time": 113,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				113
+			],
+			"allTests": [
+				{
+					"Status code is 404": true
+				}
+			]
+		},
+		{
+			"id": "702e6386-e2d1-4730-8ae9-dcafad26ed0e",
+			"name": "Actualizar matrícula con éxito",
+			"url": "http://localhost:8004/api/v1/Enrollments/enroll/28",
+			"time": 322,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response body contains success message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains success message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				322
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response body contains success message": true
+				}
+			]
+		},
+		{
+			"id": "5e94eecc-0722-4134-ad9a-100e775702e7",
+			"name": "Actualizar matrícula cuando no existe",
+			"url": "http://localhost:8004/api/v1/Enrollments/enroll/9999",
+			"time": 103,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response body contains success message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains success message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				103
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response body contains success message": true
+				}
+			]
+		},
+		{
+			"id": "b63d34da-f8b5-4bcb-acdc-22727ebc317b",
+			"name": "Eliminar matrícula con éxito",
+			"url": "http://localhost:8004/api/v1/Enrollments/enroll/29",
+			"time": 318,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response body contains success message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains success message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				318
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response body contains success message": true
+				}
+			]
+		},
+		{
+			"id": "fe399fdf-4b0a-4a8d-ab01-2b2fbb07542a",
+			"name": "Eliminar matrícula cuando no existe",
+			"url": "http://localhost:8004/api/v1/Enrollments/enroll/9999",
+			"time": 103,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response body contains success message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains success message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				103
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response body contains success message": true
+				}
+			]
+		},
+		{
+			"id": "202ab6a2-240b-4f8e-a960-3c55fa2660f7",
+			"name": "Obtener cursos disponibles con éxito",
+			"url": "http://localhost:8004/api/v1/Enrollments/available/3/1",
+			"time": 1013,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response body contains success message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains success message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1013
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response body contains success message": true
+				}
+			]
+		},
+		{
+			"id": "242092f9-87d3-4024-8e38-ea929e4737bd",
+			"name": "Obtener cursos disponibles cuando el usuario no existe",
+			"url": "http://localhost:8004/api/v1/Enrollments/available/9999/1",
+			"time": 1003,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response body contains success message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains success message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1003
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response body contains success message": true
+				}
+			]
+		},
+		{
+			"id": "5f13a85c-c55c-4487-806f-2a62fea1cb80",
+			"name": "Obtener cursos disponibles cuando la escuela no existe",
+			"url": "http://localhost:8004/api/v1/Enrollments/available/3/99999",
+			"time": 1053,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response body contains success message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains success message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1053
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response body contains success message": true
+				}
+			]
+		},
+		{
+			"id": "2f6bf4a2-1710-4589-92f0-3080d9ab9aea",
+			"name": "Obtener cursos disponibles cuando no hay cursos disponibles",
+			"url": "http://localhost:8004/api/v1/Enrollments/available/3/2",
+			"time": 1015,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response body contains success message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains success message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1015
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response body contains success message": true
+				}
+			]
+		},
+		{
+			"id": "e84ba9e4-bcc7-4eba-be7a-6edd39c0bdfa",
+			"name": "Obtener cursos disponibles cuando los cursos no existen",
+			"url": "http://localhost:8004/api/v1/Enrollments/available/3/3",
+			"time": 1007,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response body contains success message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains success message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1007
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response body contains success message": true
+				}
+			]
+		},
+		{
+			"id": "94631a94-7bde-45a2-a8e1-116e9e981f93",
+			"name": "Obtener matrículas por ID de usuario con éxito",
+			"url": "http://localhost:8004/api/v1/Enrollments/user/3",
+			"time": 1113,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response body contains success message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains success message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1113
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response body contains success message": true
+				}
+			]
+		},
+		{
+			"id": "fb7df3bc-bfcc-46d0-91f7-846fd96f9049",
+			"name": "Obtener matrículas por ID de usuario cuando el usuario no existe",
+			"url": "http://localhost:8004/api/v1/Enrollments/user/9999",
+			"time": 1020,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response body contains success message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains success message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1020
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response body contains success message": true
+				}
+			]
+		},
+		{
+			"id": "c4605a45-c252-4334-812a-e1443ce8fda1",
+			"name": "Obtener matrículas por ID de escuela con éxito",
+			"url": "http://localhost:8004/api/v1/Enrollments/school/1",
+			"time": 108,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response body contains success message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains success message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				108
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response body contains success message": true
+				}
+			]
+		},
+		{
+			"id": "fefc3098-21e1-4266-849b-b5a7a4a92d2b",
+			"name": "Obtener matrículas por ID de escuela cuando la escuela no existe",
+			"url": "http://localhost:8004/api/v1/Enrollments/school/999",
+			"time": 2,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response body contains success message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains success message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response body contains success message": true
+				}
+			]
+		},
+		{
+			"id": "be01a2e3-41e4-4a45-9202-36db256c0f6a",
+			"name": "Obtener matrículas por ID de usuario y ID de escuela con éxito",
+			"url": "http://localhost:8004/api/v1/Enrollments/certificate/3/1",
+			"time": 1150,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response body contains success message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains success message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1150
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response body contains success message": true
+				}
+			]
+		},
+		{
+			"id": "270c26b4-b5e1-459e-a6b5-769712deea7e",
+			"name": "Obtener inscripción por ID de usuario y ID de escuela cuando la escuela no existe",
+			"url": "http://localhost:8004/api/v1/Enrollments/certificate/3/999",
+			"time": 1048,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response body contains success message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains success message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1048
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response body contains success message": true
+				}
+			]
+		},
+		{
+			"id": "111d9a5c-0212-4ead-b1c5-e0bc647c6e9c",
+			"name": "Obtener inscripción por ID de usuario y ID de escuela cuando usuario no existe",
+			"url": "http://localhost:8004/api/v1/Enrollments/certificate/9999/1",
+			"time": 1012,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response body contains success message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response body contains success message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1012
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response body contains success message": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 18276,
+	"collection": {
+		"requests": [
+			{
+				"id": "b785cadc-7ffc-46b5-a17a-db19912636a1",
+				"method": "POST"
+			},
+			{
+				"id": "88213587-2dd5-4bd8-8678-7f7c25355a13",
+				"method": "POST"
+			},
+			{
+				"id": "f9bd82b6-13f0-45b1-82fd-9239cd3da5bc",
+				"method": "POST"
+			},
+			{
+				"id": "5213c681-ebc1-492c-b858-cbb5be5dacd4",
+				"method": "POST"
+			},
+			{
+				"id": "e2586fa1-abca-45fc-8d7d-8a98e1c55d21",
+				"method": "POST"
+			},
+			{
+				"id": "70f63424-a091-4f4d-a59b-ee2680c25173",
+				"method": "POST"
+			},
+			{
+				"id": "26cdff2d-7b74-4ddf-a566-885a8c9e6cdc",
+				"method": "GET"
+			},
+			{
+				"id": "6fa25982-b9f3-4b02-b619-fe95b2930110",
+				"method": "GET"
+			},
+			{
+				"id": "702e6386-e2d1-4730-8ae9-dcafad26ed0e",
+				"method": "PUT"
+			},
+			{
+				"id": "5e94eecc-0722-4134-ad9a-100e775702e7",
+				"method": "PUT"
+			},
+			{
+				"id": "b63d34da-f8b5-4bcb-acdc-22727ebc317b",
+				"method": "DELETE"
+			},
+			{
+				"id": "fe399fdf-4b0a-4a8d-ab01-2b2fbb07542a",
+				"method": "DELETE"
+			},
+			{
+				"id": "202ab6a2-240b-4f8e-a960-3c55fa2660f7",
+				"method": "GET"
+			},
+			{
+				"id": "242092f9-87d3-4024-8e38-ea929e4737bd",
+				"method": "GET"
+			},
+			{
+				"id": "5f13a85c-c55c-4487-806f-2a62fea1cb80",
+				"method": "GET"
+			},
+			{
+				"id": "2f6bf4a2-1710-4589-92f0-3080d9ab9aea",
+				"method": "GET"
+			},
+			{
+				"id": "e84ba9e4-bcc7-4eba-be7a-6edd39c0bdfa",
+				"method": "GET"
+			},
+			{
+				"id": "94631a94-7bde-45a2-a8e1-116e9e981f93",
+				"method": "GET"
+			},
+			{
+				"id": "fb7df3bc-bfcc-46d0-91f7-846fd96f9049",
+				"method": "GET"
+			},
+			{
+				"id": "c4605a45-c252-4334-812a-e1443ce8fda1",
+				"method": "GET"
+			},
+			{
+				"id": "fefc3098-21e1-4266-849b-b5a7a4a92d2b",
+				"method": "GET"
+			},
+			{
+				"id": "be01a2e3-41e4-4a45-9202-36db256c0f6a",
+				"method": "GET"
+			},
+			{
+				"id": "270c26b4-b5e1-459e-a6b5-769712deea7e",
+				"method": "GET"
+			},
+			{
+				"id": "111d9a5c-0212-4ead-b1c5-e0bc647c6e9c",
+				"method": "GET"
+			}
+		]
+	}
+}
