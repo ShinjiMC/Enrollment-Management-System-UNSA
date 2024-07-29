@@ -5,7 +5,7 @@ using PaymentsMicroservice.Application.Services.Interfaces;
 namespace PaymentsMicroservice.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class PaymentController : ControllerBase
     {
         private readonly IPaymentService _paymentService;
@@ -29,12 +29,12 @@ namespace PaymentsMicroservice.API.Controllers
         [HttpGet("{paymentId}")] // Route: GET api/payment/{paymentId}
         public async Task<ActionResult<PaymentDto>> GetPaymentById(string paymentId)
         {
-            var payment = await _paymentService.GetPaymentById(paymentId);
-            if (payment == null)
-            {
-                return NotFound("Pago no encontrado");
+            try {
+                var payment = await _paymentService.GetPaymentById(paymentId);
+                return Ok(payment);
+            } catch (Exception ex) {
+                return NotFound(new { message = ex.Message });
             }
-            return Ok(payment);
         }
 
         [HttpPut("{paymentId}/status")] // Route: PUT api/payment/{paymentId}/status
@@ -43,9 +43,9 @@ namespace PaymentsMicroservice.API.Controllers
             var updated = await _paymentService.UpdatePaymentStatus(paymentId, status);
             if (!updated)
             {
-                return NotFound("No se puede actualizar el estado del pago");
+                return NotFound(new { message = "No se puede actualizar el estado del pago" });
             }
-            return Ok("Estado del pago actualizado");
+            return Ok(new { message = "Estado del pago actualizado" });
         }
     }
 }
