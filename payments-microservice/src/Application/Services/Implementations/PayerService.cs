@@ -1,5 +1,3 @@
-using PaymentsMicroservice.Domain.Entities;
-
 namespace PaymentsMicroservice.Application.Services.Implementations
 {
     using System.Collections.Generic;
@@ -22,9 +20,11 @@ namespace PaymentsMicroservice.Application.Services.Implementations
             return await _payerRepository.GetPayers();
         }
 
-        public async Task<Payer?> GetPayerById(string payerId)
+        public async Task<Payer> GetPayerById(string payerId)
         {
-            return await _payerRepository.GetPayerById(payerId);
+            var result =  await _payerRepository.GetPayerById(payerId);
+            Console.WriteLine(result);
+            return result;
         }
 
         public async Task<bool> SavePayer(Payer payer)

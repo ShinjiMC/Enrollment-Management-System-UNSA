@@ -20,14 +20,9 @@ namespace PaymentsMicroservice.Repositories.Implementations
             return await _context.Payers.Find(p => true).ToListAsync();
         }
 
-        public async Task<Payer?> GetPayerById(string payerId)
+        public async Task<Payer> GetPayerById(string payerId)
         {
-            var result =  await _context.Payers.Find(p => p.PayerId == payerId).FirstOrDefaultAsync();
-            if (result == null)
-            {
-                return null;
-            }
-            return result;
+            return await _context.Payers.Find(p => p.PayerId == payerId).FirstOrDefaultAsync();
         }
 
         public async Task<bool> SavePayer(Payer payer)

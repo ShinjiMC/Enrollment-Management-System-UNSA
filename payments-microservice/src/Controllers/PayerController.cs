@@ -24,17 +24,14 @@ namespace PaymentsMicroservice.Controllers
         }
         
         [HttpGet("{payerId}")] // Route: api/v1/payer/{payerId}
-        public ActionResult<Payer> GetPayerById(string payerId)
+        public async Task<ActionResult<Payer>> GetPayerById(string payerId)
         {
-            var payer =  _payerService.GetPayerById(payerId);
-            try
+            var payer = await _payerService.GetPayerById(payerId);
+            if (payer == null)
             {
-                return Ok(payer);
+                return NotFound(new { message = "Pagante no encontrado" }); 
             }
-            catch (System.Exception)
-            {
-                return NotFound("Pagante no encontrado");
-            }
+            return Ok(payer);
         }
 
         [HttpPost] // Route: api/v1/payer
