@@ -3,8 +3,8 @@ namespace SchoolsMicroservice.Service;
 
 public interface IStudyPlanCourseService
 {
-    StudyPlanCourse GetCourseWithPrerequisites(int courseId);
-    List<StudyPlanCourse> GetAllCoursesWithPrerequisites();
+    StudyPlanCourse GetStudyPlanById(int courseId);
+    List<StudyPlanCourse> GetAllStudyPlans();
 
     void AddStudyPlanCourse(StudyPlanCourse studyPlanCourse);
 }

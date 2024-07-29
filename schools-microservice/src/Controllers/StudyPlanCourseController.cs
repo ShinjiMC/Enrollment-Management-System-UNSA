@@ -16,9 +16,9 @@ namespace YourNamespace.Controllers
         }
 
         [HttpGet("{courseId}")]
-        public ActionResult<StudyPlanCourse> GetCourseWithPrerequisites(int courseId)
+        public ActionResult<StudyPlanCourse> GetStudyPlanById(int courseId)
         {
-            var course = _studyPlanCourseService.GetCourseWithPrerequisites(courseId);
+            var course = _studyPlanCourseService.GetStudyPlanById(courseId);
             if (course == null)
             {
                 return NotFound();
@@ -27,9 +27,9 @@ namespace YourNamespace.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<StudyPlanCourse>> GetAllCoursesWithPrerequisites()
+        public ActionResult<List<StudyPlanCourse>> GetAllStudyPlans()
         {
-            var courses = _studyPlanCourseService.GetAllCoursesWithPrerequisites();
+            var courses = _studyPlanCourseService.GetAllStudyPlans();
             return Ok(courses);
         }
 
@@ -37,7 +37,7 @@ namespace YourNamespace.Controllers
         public ActionResult AddStudyPlanCourse(StudyPlanCourse studyPlanCourse)
         {
             _studyPlanCourseService.AddStudyPlanCourse(studyPlanCourse);
-            return CreatedAtAction(nameof(GetCourseWithPrerequisites), new { id = studyPlanCourse.Id }, studyPlanCourse);
+            return CreatedAtAction(nameof(GetStudyPlanById), new { id = studyPlanCourse.Id }, studyPlanCourse);
         }
 
         

@@ -3,7 +3,7 @@ namespace SchoolsMicroservice.Service;
 
 public interface IStudyPlanCourseRepository
 {
-    StudyPlanCourse GetCourseWithPrerequisites(int courseId);
-    List<StudyPlanCourse> GetAllCoursesWithPrerequisites(); // Nuevo método
+    StudyPlanCourse GetStudyPlanById(int courseId);
+    List<StudyPlanCourse> GetAllStudyPlans(); // Nuevo método
     void AddStudyPlanCourse(StudyPlanCourse studyPlanCourse);
 }

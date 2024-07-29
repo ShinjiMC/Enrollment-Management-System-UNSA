@@ -12,9 +12,9 @@ public class StudyPlanCourseRepository : IStudyPlanCourseRepository
         _context = context;
     }
 
-    public StudyPlanCourse GetCourseWithPrerequisites(int courseId)
+    public StudyPlanCourse GetStudyPlanById(int courseId)
     {
-        var course = _context.Courses.AsQueryable()
+        var studyPlanCourse = _context.StudyPlanCourse.AsQueryable()
             .Where(c => c.Id == courseId)
             .Select(c => new StudyPlanCourse
             {
@@ -22,10 +22,10 @@ public class StudyPlanCourseRepository : IStudyPlanCourseRepository
                 Name = c.Name
             }).FirstOrDefault();
 
-        if (course != null)
+        if (studyPlanCourse != null)
         {
-            course.Prerequisites = _context.CoursePrerequisites.AsQueryable()
-                .Where(p => p.CourseId == course.Id)
+            studyPlanCourse.Prerequisites = _context.CoursePrerequisites.AsQueryable()
+                .Where(p => p.CourseId == studyPlanCourse.Id)
                 .Select(p => new CoursePrerequisite
                 {
                     Id = p.Id,
@@ -34,19 +34,19 @@ public class StudyPlanCourseRepository : IStudyPlanCourseRepository
                 }).ToList();
         }
 
-        return course;
+        return studyPlanCourse;
     }
 
-    public List<StudyPlanCourse> GetAllCoursesWithPrerequisites()
+    public List<StudyPlanCourse> GetAllStudyPlans()
     {
-        var courses = _context.Courses.AsQueryable()
+        var studyPlanCourses = _context.StudyPlanCourse.AsQueryable()
             .Select(c => new StudyPlanCourse
             {
                 Id = c.Id,
                 Name = c.Name
             }).ToList();
 
-        foreach (var course in courses)
+        foreach (var course in studyPlanCourses)
         {
             course.Prerequisites = _context.CoursePrerequisites.AsQueryable()
                 .Where(p => p.CourseId == course.Id)
@@ -58,7 +58,7 @@ public class StudyPlanCourseRepository : IStudyPlanCourseRepository
                 }).ToList();
         }
 
-        return courses;
+        return studyPlanCourses;
     }
     public void AddStudyPlanCourse(StudyPlanCourse studyPlanCourse)
     {

@@ -10,13 +10,13 @@ public class StudyPlanCourseService : IStudyPlanCourseService
         _studyPlanCourseRepository = studyPlanCourseRepository;
     }
 
-    public StudyPlanCourse GetCourseWithPrerequisites(int courseId)
+    public StudyPlanCourse GetStudyPlanById(int courseId)
     {
-        return _studyPlanCourseRepository.GetCourseWithPrerequisites(courseId);
+        return _studyPlanCourseRepository.GetStudyPlanById(courseId);
     }
-    public List<StudyPlanCourse> GetAllCoursesWithPrerequisites()
+    public List<StudyPlanCourse> GetAllStudyPlans()
     {
-        return _studyPlanCourseRepository.GetAllCoursesWithPrerequisites();
+        return _studyPlanCourseRepository.GetAllStudyPlans();
     }
 
     public void AddStudyPlanCourse(StudyPlanCourse studyPlanCourse)
