@@ -21,7 +21,7 @@ namespace users_microservice.Domain.Services.Implementations
         {
             if (studentModel == null)
             {
-                return new GeneralResponse(false, "Model is empty", 400);
+                return new GeneralResponse(false, "Model is empty", 400,"-");
             }
 
             var createUserResult = await _adminRepository.CreateUser(studentModel);
@@ -31,22 +31,24 @@ namespace users_microservice.Domain.Services.Implementations
             }
 
 
-            return new GeneralResponse(true, "Account created", 201);
+            return createUserResult;
         }
         public async Task<GeneralResponse> CreateStudentCourse(List<CourseModel> courseModel)
         {
             if (courseModel == null)
             {
-                return new GeneralResponse(false, "Model is empty", 400);
+                return new GeneralResponse(false, "Model is empty", 400,"-");
             }
 
             // Crear una entrada en la tabla CourseModel
+            List<string> ids;
             foreach (var course in courseModel)
             {
-                await _courseRepository.AddCourseToStudent(course);
+                var result =await _courseRepository.AddCourseToStudent(course);
+                // ids.push
             }
 
-            return new GeneralResponse(true, "Course created", 201);
+            return new GeneralResponse(true, "Course created", 201,"-");
         }
 
         public async Task<GeneralResponse> UpdateStudent(StudentModel studentModel)
@@ -55,7 +57,7 @@ namespace users_microservice.Domain.Services.Implementations
             var student = await _adminRepository.GetStudentById(studentModel.Id);
             if (student == null)
             {
-                return new GeneralResponse(false, "Student not found", 404);
+                return new GeneralResponse(false, "Student not found", 404,"-");
             }
 
             student.FullName = studentModel.FullName;
@@ -70,7 +72,7 @@ namespace users_microservice.Domain.Services.Implementations
             var student = await _adminRepository.GetStudentById(id);
             if (student == null)
             {
-                return new GeneralResponse(false, "Student not found", 404);
+                return new GeneralResponse(false, "Student not found", 404,"-");
             }
 
             var result = await _adminRepository.DeleteStudent(student);

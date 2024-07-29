@@ -26,6 +26,12 @@ public class ExternalServiceController : ControllerBase, IExternalServiceControl
     public async Task<IActionResult> ExternalServiceStudentCourse(string id) 
     {
         var users = await _externalService.GetStudentCourseData(id);
+
+        if(users == null)
+            return NotFound();
+        
+        if (string.IsNullOrEmpty(users.FullName))
+            return NotFound();
         return Ok(users);
     }
 }

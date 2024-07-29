@@ -51,7 +51,7 @@ namespace users_microservice.Application.Service.Implementations
 
             if (!authCreationResult) {
                 // Si la creación de cursos falla, devuelve el resultado de error
-                return new GeneralResponse(false, "Auth failed to created", 404);
+                return new GeneralResponse(false, "Auth failed to created", 404,"-");
             }
 
             // Devolver el resultado exitoso incluyendo los datos del estudiante y los cursos
@@ -59,7 +59,7 @@ namespace users_microservice.Application.Service.Implementations
             (
                 true,
                  "Student and courses created successfully.",
-                204
+                204, studentModel.Id.ToString()
             );
         }
 
