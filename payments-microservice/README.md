@@ -136,27 +136,97 @@ Descripción de las herramientas utilizadas para las pruebas de API (por ejemplo
 Descripción de las herramientas utilizadas para las pruebas de rendimiento (por ejemplo, Apache JMeter, k6, etc.).
 
 #### 3.2.2. Escenarios de Prueba de Rendimiento
+
+```gherkin
+Background: 
+  Dado que el endpoint "api/v1/electronicbill/{electronicBillId}" está disponible
+```
+
 <details open>
-  <summary><b><i>Escenario 1:</i></b> Prueba de carga bajo 100 solicitudes simultáneas GET.</summary>
+  <summary><b><i>Escenario 1:</i></b> Obtener detalles de una factura electrónica con 10 peticiones concurrentes.</summary>
   
   ```gherkin
-  Given el endpoint "api/payments/" está disponible
-    When se envían 100 solicitudes GET simultáneas al endpoint
+  Scenario: Obtener detalles de una factura electrónica con 10 peticiones concurrentes
+    Given existe una factura electrónica con el ID "12345"
+    When se envían 10 peticiones GET concurrentes al endpoint "api/v1/electronicbill/12345"
     Then todas las respuestas deben ser 200 OK
-    And el tiempo de respuesta promedio debe ser menor a 2 segundos
-    And no debe haber errores o caídas del servicio
+    And el tiempo de respuesta promedio debe ser menor a 300 ms
   ```
+  
 </details>
 
 <details open>
-  <summary><b><i>Escenario 2:</i></b> Prueba de estrés con picos de tráfico.</summary>
-  <span>gherkin aqui</span>
+  <summary><b><i>Escenario 2:</i></b> Obtener detalles de una factura electrónica con 25 peticiones concurrentes.</summary>
+  
+  ```gherkin
+  Escenario: Obtener detalles de una factura electrónica con 25 peticiones concurrentes
+    Given existe una factura electrónica con el ID "12345"
+    When se envían 25 peticiones GET concurrentes al endpoint "api/v1/electronicbill/12345"
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 600 ms
+  ```
+  
 </details>
 
 <details open>
-  <summary><b><i>Escenario 3:</i></b> Prueba de escalabilidad.</summary>
-  <span>gherkin aqui</span>
+  <summary><b><i>Escenario 3:</i></b> Obtener detalles de una factura electrónica con 50 peticiones concurrentes.</summary>
+  
+  ```gherkin
+  Escenario: Obtener detalles de una factura electrónica con 50 peticiones concurrentes
+    Given existe una factura electrónica con el ID "12345"
+    When se envían 50 peticiones GET concurrentes al endpoint "api/v1/electronicbill/12345"
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 1000 ms
+  ```
+  
 </details>
+
+
+```gherkin
+Background: 
+  Dado que el endpoint "api/v1/electronicbill" está disponible
+```
+
+<details open>
+  <summary><b><i>Escenario 4:</i></b> Verificar la obtención de todas las facturas electrónicas con 10 peticiones concurrentes.</summary>
+  
+  ```gherkin
+  Escenario: Verificar la obtención de todas las facturas electrónicas con 10 peticiones concurrentes
+    Given existen varias facturas electrónicas en el sistema
+    When se envían 10 peticiones GET concurrentes al endpoint "api/v1/electronicbill"
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 300 ms
+  ```
+  
+</details>
+
+<details open>
+  <summary><b><i>Escenario 5:</i></b> Verificar la obtención de todas las facturas electrónicas con 25 peticiones concurrentes.</summary>
+  
+  ```gherkin
+  Escenario: Verificar la obtención de todas las facturas electrónicas con 25 peticiones concurrentes
+    Given existen varias facturas electrónicas en el sistema
+    When se envían 25 peticiones GET concurrentes al endpoint "api/v1/electronicbill"
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 600 ms
+  ```
+  
+</details>
+
+<details open>
+  <summary><b><i>Escenario 6:</i></b> Verificar la obtención de todas las facturas electrónicas con 50 peticiones concurrentes.</summary>
+  
+  ```gherkin
+  Escenario: Verificar la obtención de todas las facturas electrónicas con 50 peticiones concurrentes
+    Given existen varias facturas electrónicas en el sistema
+    When se envían 50 peticiones GET concurrentes al endpoint "api/v1/electronicbill"
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 1000 ms
+  ```
+  
+</details>
+
+
 
 
 ### 3.3. Pruebas de Seguridad
