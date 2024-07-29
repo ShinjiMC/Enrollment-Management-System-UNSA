@@ -1,9 +1,9 @@
 using SchoolsMicroservice.Models;
 namespace SchoolsMicroservice.Service;
 
-public interface IStudyPlanCourseRepository
+public interface IStudyPlanSchoolRepository
 {
-    StudyPlanCourse GetStudyPlanById(int courseId);
-    List<StudyPlanCourse> GetAllStudyPlans(); // Nuevo método
-    void AddStudyPlanCourse(StudyPlanCourse studyPlanCourse);
+    StudyPlanSchool GetStudyPlanBySchoolName(string schoolName);
+    StudyPlanSchool GetStudyPlanBySchoolId(int schoolId);
+    void AddStudyPlanSchool(StudyPlanSchool studyPlanSchool);
 }

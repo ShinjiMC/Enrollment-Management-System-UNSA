@@ -1,26 +1,27 @@
 using SchoolsMicroservice.Models;
 namespace SchoolsMicroservice.Service;
 
-public class StudyPlanCourseService : IStudyPlanCourseService
+public class StudyPlanSchoolService : IStudyPlanSchoolService
 {
-    private readonly IStudyPlanCourseRepository _studyPlanCourseRepository;
+    private readonly IStudyPlanSchoolRepository _studyPlanSchoolRepository;
 
-    public StudyPlanCourseService(IStudyPlanCourseRepository studyPlanCourseRepository)
+    public StudyPlanSchoolService(IStudyPlanSchoolRepository studyPlanSchoolRepository)
     {
-        _studyPlanCourseRepository = studyPlanCourseRepository;
+        _studyPlanSchoolRepository = studyPlanSchoolRepository;
     }
 
-    public StudyPlanCourse GetStudyPlanById(int courseId)
+    public StudyPlanSchool GetStudyPlanBySchoolName(string schoolName)
     {
-        return _studyPlanCourseRepository.GetStudyPlanById(courseId);
-    }
-    public List<StudyPlanCourse> GetAllStudyPlans()
-    {
-        return _studyPlanCourseRepository.GetAllStudyPlans();
+        return _studyPlanSchoolRepository.GetStudyPlanBySchoolName(schoolName);
     }
 
-    public void AddStudyPlanCourse(StudyPlanCourse studyPlanCourse)
+    public StudyPlanSchool GetStudyPlanBySchoolId(int schoolId)
     {
-        _studyPlanCourseRepository.AddStudyPlanCourse(studyPlanCourse);
+        return _studyPlanSchoolRepository.GetStudyPlanBySchoolId(schoolId);
+    }
+
+    public void AddStudyPlanSchool(StudyPlanSchool studyPlanSchool)
+    {
+        _studyPlanSchoolRepository.AddStudyPlanSchool(studyPlanSchool);
     }
 }

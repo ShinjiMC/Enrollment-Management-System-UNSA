@@ -1,14 +1,14 @@
 namespace SchoolsMicroservice.Models;
-public class StudyPlanCourse
+
+public class StudyPlanSchool
 {
     public int Id { get; set; }
     public string Name { get; set; }
-    public List<CoursePrerequisite> Prerequisites { get; set; }
+    public List<CourseOfStudyPlan> CoursesOfStudyPlan { get; set; }
 }
 
-public class CoursePrerequisite
+public class CourseOfStudyPlan
 {
-    public int Id { get; set; }
-    public int CourseId { get; set; }
-    public int PrerequisiteCourseId { get; set; }
+    public int IdCourse { get; set; }
+    public List<int> PrerequisitesCourse { get; set; }
 }

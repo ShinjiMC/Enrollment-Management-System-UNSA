@@ -15,14 +15,14 @@ builder.Services.AddScoped<ISchoolService, SchoolService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
-builder.Services.AddScoped<IStudyPlanCourseService, StudyPlanCourseService>();
+builder.Services.AddScoped<IStudyPlanSchoolService, StudyPlanSchoolService>();
 
 // Register repositories
 builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-builder.Services.AddScoped<IStudyPlanCourseRepository, StudyPlanCourseRepository>(); // Nuevo repositorio
+builder.Services.AddScoped<IStudyPlanSchoolRepository, StudyPlanSchoolRepository>(); // Nuevo repositorio
 
 // Enable Swagger
 builder.Services.AddSwaggerGen(c =>

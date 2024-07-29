@@ -16,13 +16,10 @@ namespace SchoolsMicroservice.Repositories.Data
             _database = client.GetDatabase(databaseName);
         }
 
-        public IMongoCollection<StudyPlanCourse> StudyPlanCourse =>
-            _database.GetCollection<StudyPlanCourse>("StudyPlanCourse");
 
         public IMongoCollection<Course> Courses =>
             _database.GetCollection<Course>("Courses");
-        public IMongoCollection<CoursePrerequisite> CoursePrerequisites =>
-            _database.GetCollection<CoursePrerequisite>("CoursePrerequisites");
+
 
         public IMongoCollection<Department> Departments =>
             _database.GetCollection<Department>("Departments");
@@ -32,6 +29,10 @@ namespace SchoolsMicroservice.Repositories.Data
 
         public IMongoCollection<Teacher> Teachers =>
             _database.GetCollection<Teacher>("Teachers");
+        
+        public IMongoCollection<StudyPlanSchool> StudyPlanSchools =>
+            _database.GetCollection<StudyPlanSchool>("StudyPlanSchools");
+
     
     }
 }

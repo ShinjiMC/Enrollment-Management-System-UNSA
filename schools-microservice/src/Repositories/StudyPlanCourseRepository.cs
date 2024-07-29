@@ -3,77 +3,31 @@ using SchoolsMicroservice.Models;
 using SchoolsMicroservice.Repositories.Data;
 namespace SchoolsMicroservice.Service;
 
-public class StudyPlanCourseRepository : IStudyPlanCourseRepository
+
+public class StudyPlanSchoolRepository : IStudyPlanSchoolRepository
 {
     private readonly MongoDbContext _context;
 
-    public StudyPlanCourseRepository(MongoDbContext context)
+    public StudyPlanSchoolRepository(MongoDbContext context)
     {
         _context = context;
     }
 
-    public StudyPlanCourse GetStudyPlanById(int courseId)
+    public StudyPlanSchool GetStudyPlanBySchoolName(string schoolName)
     {
-        var studyPlanCourse = _context.StudyPlanCourse.AsQueryable()
-            .Where(c => c.Id == courseId)
-            .Select(c => new StudyPlanCourse
-            {
-                Id = c.Id,
-                Name = c.Name
-            }).FirstOrDefault();
-
-        if (studyPlanCourse != null)
-        {
-            studyPlanCourse.Prerequisites = _context.CoursePrerequisites.AsQueryable()
-                .Where(p => p.CourseId == studyPlanCourse.Id)
-                .Select(p => new CoursePrerequisite
-                {
-                    Id = p.Id,
-                    CourseId = p.CourseId,
-                    PrerequisiteCourseId = p.PrerequisiteCourseId
-                }).ToList();
-        }
-
-        return studyPlanCourse;
+        return _context.StudyPlanSchools.AsQueryable()
+            .FirstOrDefault(s => s.Name == schoolName);
     }
 
-
-
-    public List<StudyPlanCourse> GetAllStudyPlans()
+    public StudyPlanSchool GetStudyPlanBySchoolId(int schoolId)
     {
-        var studyPlanCourses = _context.StudyPlanCourse.AsQueryable()
-            .Select(c => new StudyPlanCourse
-            {
-                Id = c.Id,
-                Name = c.Name
-            }).ToList();
-
-        foreach (var course in studyPlanCourses)
-        {
-            course.Prerequisites = _context.CoursePrerequisites.AsQueryable()
-                .Where(p => p.CourseId == course.Id)
-                .Select(p => new CoursePrerequisite
-                {
-                    Id = p.Id,
-                    CourseId = p.CourseId,
-                    PrerequisiteCourseId = p.PrerequisiteCourseId
-                }).ToList();
-        }
-
-        return studyPlanCourses;
+        return _context.StudyPlanSchools.AsQueryable()
+            .FirstOrDefault(s => s.Id == schoolId);
     }
-    public void AddStudyPlanCourse(StudyPlanCourse studyPlanCourse)
+    
+
+    public void AddStudyPlanSchool(StudyPlanSchool studyPlanSchool)
     {
-        _context.StudyPlanCourse.InsertOne(studyPlanCourse);
-
-        if (studyPlanCourse.Prerequisites != null && studyPlanCourse.Prerequisites.Count > 0)
-        {
-            foreach (var prerequisite in studyPlanCourse.Prerequisites)
-            {
-                prerequisite.CourseId = studyPlanCourse.Id;  // Asegurarse de que el CourseId esté correctamente asignado
-                _context.CoursePrerequisites.InsertOne(prerequisite);
-            }
-        }
+        _context.StudyPlanSchools.InsertOne(studyPlanSchool);
     }
-
 }

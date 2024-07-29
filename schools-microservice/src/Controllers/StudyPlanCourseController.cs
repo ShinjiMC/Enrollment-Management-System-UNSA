@@ -2,42 +2,45 @@ using Microsoft.AspNetCore.Mvc;
 using SchoolsMicroservice.Models;
 using SchoolsMicroservice.Service;
 
-[Route("api/[controller]")]
 [ApiController]
-public class StudyPlanCourseController : ControllerBase
+[Route("api/[controller]")]
+public class StudyPlanSchoolController : ControllerBase
 {
-    private readonly IStudyPlanCourseService _studyPlanCourseService;
+    private readonly IStudyPlanSchoolService _studyPlanSchoolService;
 
-    public StudyPlanCourseController(IStudyPlanCourseService studyPlanCourseService)
+    public StudyPlanSchoolController(IStudyPlanSchoolService studyPlanSchoolService)
     {
-        _studyPlanCourseService = studyPlanCourseService;
-    }
-
-    [HttpGet("{courseId}")]
-    public ActionResult<StudyPlanCourse> GetStudyPlanById(int courseId)
-    {
-        var course = _studyPlanCourseService.GetStudyPlanById(courseId);
-        if (course == null)
-        {
-            return NotFound();
-        }
-        return Ok(course);
-    }
-
-    [HttpGet]
-    public ActionResult<List<StudyPlanCourse>> GetAllStudyPlans()
-    {
-        var courses = _studyPlanCourseService.GetAllStudyPlans();
-        return Ok(courses);
+        _studyPlanSchoolService = studyPlanSchoolService;
     }
 
     [HttpPost]
-    public ActionResult AddStudyPlanCourse(StudyPlanCourse studyPlanCourse)
+    public IActionResult AddStudyPlanSchool([FromBody] StudyPlanSchool studyPlanSchool)
     {
-        _studyPlanCourseService.AddStudyPlanCourse(studyPlanCourse);
-        return CreatedAtAction(nameof(GetStudyPlanById), new { id = studyPlanCourse.Id }, studyPlanCourse);
+        _studyPlanSchoolService.AddStudyPlanSchool(studyPlanSchool);
+        return Ok();
     }
 
-    
+    [HttpGet("{schoolName}")]
+    public ActionResult<StudyPlanSchool> GetStudyPlanBySchoolName(string schoolName)
+    {
+        var studyPlanSchool = _studyPlanSchoolService.GetStudyPlanBySchoolName(schoolName);
+        if (studyPlanSchool == null)
+        {
+            return NotFound();
+        }
+        return Ok(studyPlanSchool);
+    }
 
+    [HttpGet("byId/{schoolId}")]
+    public ActionResult<StudyPlanSchool> GetStudyPlanBySchoolId(int schoolId)
+    {
+        var studyPlanSchool = _studyPlanSchoolService.GetStudyPlanBySchoolId(schoolId);
+        if (studyPlanSchool == null)
+        {
+            return NotFound();
+        }
+        return Ok(studyPlanSchool);
+    }
 }
+
+
