@@ -22,7 +22,7 @@ namespace PaymentsMicroservice.Application.Services.Implementations
             return await _payerRepository.GetPayers();
         }
 
-        public async Task<Payer> GetPayerById(string payerId)
+        public async Task<Payer?> GetPayerById(string payerId)
         {
             return await _payerRepository.GetPayerById(payerId);
         }

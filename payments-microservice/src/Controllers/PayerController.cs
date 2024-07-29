@@ -27,11 +27,14 @@ namespace PaymentsMicroservice.Controllers
         public ActionResult<Payer> GetPayerById(string payerId)
         {
             var payer =  _payerService.GetPayerById(payerId);
-            if (payer == null)
+            try
+            {
+                return Ok(payer);
+            }
+            catch (System.Exception)
             {
                 return NotFound("Pagante no encontrado");
             }
-            return Ok(payer);
         }
 
         [HttpPost] // Route: api/v1/payer
