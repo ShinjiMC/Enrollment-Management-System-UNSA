@@ -1,5 +1,6 @@
 using MediatR;
 using ErrorOr;
+using Courses.Common;
 
 namespace Application.Courses.Create
 {
@@ -9,6 +10,6 @@ namespace Application.Courses.Create
         int Hours,
         bool Active,
         string Semester,  
-        int SchoolId    
-    ) : IRequest<ErrorOr<Unit>>;
+        string SchoolId    
+    ) : IRequest<ErrorOr<CourseResponse>>;
 }

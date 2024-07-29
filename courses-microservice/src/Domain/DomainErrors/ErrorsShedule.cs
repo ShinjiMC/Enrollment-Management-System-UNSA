@@ -11,6 +11,6 @@ public static partial class Errors
             Error.Validation("Schedule.Details", "Details has not valid format.");
 
         public static Error InvalidScheduleHours => 
-            Error.Validation("Schedule.Address", "Hours are not valid.");
+            Error.Validation("Schedule.Hours", "Hours are not valid.");
     }
 }
