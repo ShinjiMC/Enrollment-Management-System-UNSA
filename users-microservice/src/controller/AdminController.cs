@@ -45,7 +45,7 @@ public class AdminController : ControllerBase, IAdminController
         if (updatedAdmin == null)
             return NotFound();
 
-        return Ok(updatedAdmin);
+        return StatusCode(updatedAdmin.StatusCode, updatedAdmin);
     }
 
     [HttpDelete("admin/{id}")]
@@ -55,13 +55,26 @@ public class AdminController : ControllerBase, IAdminController
         if (!result.Flag)
             return NotFound();
 
-        return NoContent();
+        return StatusCode(result.StatusCode, result);
     }
 
     [HttpGet("admin/{id}")]
     public async Task<IActionResult> GetAdmin(string id)
     {
         var admin = await _adminService.RetrieveAdminAccountAsync(id);
+        if (admin == null)
+            return NotFound();
+
+        if (string.IsNullOrEmpty(admin.FullName) )
+            return NotFound();
+
+        return Ok(admin);
+    }
+
+    [HttpGet("admin/all")]
+    public async Task<IActionResult> GetAllAdmins()
+    {
+        var admin = await _adminService.GetAllAdminsAsync();
         if (admin == null)
             return NotFound();
 
@@ -74,6 +87,9 @@ public class AdminController : ControllerBase, IAdminController
         var student = await _adminService.GetStudentAsync(id);
         if (student == null)
             return NotFound();
+        
+        if (string.IsNullOrEmpty(student.FullName) )
+            return NotFound();
 
         return Ok(student);
     }
@@ -82,6 +98,9 @@ public class AdminController : ControllerBase, IAdminController
     public async Task<IActionResult> GetCoursesByStudentId(string id)
     {
         var courses = await _adminService.GetCoursesByStudentIdAsync(id);
+
+        if (string.IsNullOrEmpty(courses.FullName) )
+            return NotFound();
         return Ok(courses);
     }
     [HttpPut("student/{id}")]
@@ -90,6 +109,7 @@ public class AdminController : ControllerBase, IAdminController
         var updatedStudent = await _adminService.UpdateStudentAsync(id, student);
         if (updatedStudent == null)
             return NotFound();
+        
 
         return Ok(updatedStudent);
     }

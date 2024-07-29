@@ -24,19 +24,25 @@ namespace users_microservice.Repository.Mysql
 
         public async Task CommitTransactionAsync()
         {
-            await _context.Database.CommitTransactionAsync();
+            if (_context.Database.CurrentTransaction != null)
+            {
+                await _context.Database.CurrentTransaction.CommitAsync();
+            }
         }
 
         public async Task RollbackTransactionAsync()
         {
-            await _context.Database.RollbackTransactionAsync();
+            if (_context.Database.CurrentTransaction != null)
+            {
+                await _context.Database.CurrentTransaction.RollbackAsync();
+            }
         }
         
         public async Task<GeneralResponse> CreateUser(UserModel user)
         {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-            return new GeneralResponse(true, "User created successfully", 200);
+            return new GeneralResponse(true, "User created successfully", 201, user.Id.ToString());
         }
 
         public async Task<AdminModel?> GetUserById(int id)
@@ -53,14 +59,14 @@ namespace users_microservice.Repository.Mysql
         {
             _context.Users.Update(userDto);
             await _context.SaveChangesAsync();
-            return new GeneralResponse(true, "User updated successfully", 200);
+            return new GeneralResponse(true, "User updated successfully", 200, userDto.Id.ToString());
         }
 
         public async Task<GeneralResponse> DeleteUser(UserModel user)
         {
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
-            return new GeneralResponse(true, "User deleted successfully", 200);
+            return new GeneralResponse(true, "User deleted successfully", 204,"-");
         }
 
         // Método para obtener todos los administradores
@@ -80,7 +86,7 @@ namespace users_microservice.Repository.Mysql
         {
             _context.Students.Add(student);
             await _context.SaveChangesAsync();
-            return new GeneralResponse(true, "Student created successfully", 200);
+            return new GeneralResponse(true, "Student created successfully", 201,student.Id.ToString());
         }
 
         public async Task<StudentModel?> GetStudentById(int id)
@@ -92,14 +98,14 @@ namespace users_microservice.Repository.Mysql
         {
             _context.Students.Update(student);
             await _context.SaveChangesAsync();
-            return new GeneralResponse(true, "Student updated successfully", 200);
+            return new GeneralResponse(true, "Student updated successfully", 200,"-");
         }
 
         public async Task<GeneralResponse> DeleteStudent(StudentModel student)
         {
             _context.Students.Remove(student);
             await _context.SaveChangesAsync();
-            return new GeneralResponse(true, "Student deleted successfully", 200);
+            return new GeneralResponse(true, "Student deleted successfully", 200,"-");
         }
 
     }

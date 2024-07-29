@@ -25,20 +25,43 @@ namespace users_microservice.Application.Service.Implementations
 
         public async Task<GeneralResponse> CreateAdminAccountAsync(AdminDto adminDto)
         {
+            // Crear el modelo de administrador a partir del DTO
             var adminModel = AdminMapping.ToModel(adminDto);
             
-            var result = await _adminServiceDomain.CreateAdminAccount(adminModel);
+            // Iniciar la transacción
+            await _adminRepository.BeginTransactionAsync();
 
-            var newUserDto = UserMapping.ToUserDto(adminDto);
+            try
+            {
+                // Crear la cuenta de administrador en la base de datos
+                await _adminServiceDomain.CreateAdminAccount(adminModel);
 
-            var authCreationResult = await _externalService.RegisterUserAsync(newUserDto);
+                // Crear el DTO del usuario para el servicio externo
+                var newUserDto = UserMapping.ToUserDto(adminDto);
 
-            if (!authCreationResult) {
-                // Si la creación de cursos falla, devuelve el resultado de error
-                return new GeneralResponse(false, "Auth failed to created", 404);
+                // Registrar el usuario en el servicio externo
+                // var authCreationResult = await _externalService.RegisterUserAsync(newUserDto);
+
+                // if (!authCreationResult)
+                // {
+                //     // Si la creación de usuario en el servicio externo falla, revertir la transacción
+                //     await _adminRepository.RollbackTransactionAsync();
+                //     return new GeneralResponse(false, "Fail to connect external service", 500);
+                // }
+
+                // Confirmar la transacción si  ha salido bien
+                await _adminRepository.CommitTransactionAsync();
+                
+                return new GeneralResponse(true, "Admin user created successfully", 201, adminModel.Id.ToString() );
             }
-
-            return result;
+            catch (Exception ex)
+            {
+                // En caso de excepción, revertir la transacción
+                await _adminRepository.RollbackTransactionAsync();
+                // Opcional: loguear la excepción
+                
+                return new GeneralResponse(false, ex.ToString() , 500, "-");
+            }
         }
 
         public async Task<AdminDto> RetrieveAdminAccountAsync(string id)
@@ -59,11 +82,46 @@ namespace users_microservice.Application.Service.Implementations
 
         public async Task<GeneralResponse> UpdateAdminAccountAsync(AdminDto adminDto)
         {
-            var adminModel = AdminMapping.ToModel(adminDto);
+            if(string.IsNullOrEmpty(adminDto.Id))
+                return new GeneralResponse(false, "User not found", 404, "-");
+            
+            var idUser = int.Parse(adminDto.Id);
 
-            var result = await _adminServiceDomain.UpdateAdminAccount(adminModel);
+            await _adminRepository.BeginTransactionAsync();
 
-            return result;
+            try
+            {
+                
+                var user = await _adminServiceDomain.GetAdminById(idUser);
+
+                
+                if (user == null || string.IsNullOrEmpty(user.FullName))
+                {
+                    await _adminRepository.RollbackTransactionAsync();
+                    return new GeneralResponse(false, "User not found", 404, "-");
+                }
+               
+
+                user.FullName = adminDto.FullName;
+                user.Email = adminDto.Email;
+                user.PhoneNumber = adminDto.PhoneNumber;
+
+                var result = await _adminRepository.UpdateUser(user);
+
+                if (result == null)
+                {
+                    await _adminRepository.RollbackTransactionAsync();
+                    return new GeneralResponse(false, "Error", 204, "-");
+                }
+
+                await _adminRepository.CommitTransactionAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                await _adminRepository.RollbackTransactionAsync();
+                return new GeneralResponse(false, $"Error: {ex.Message}", 500, "-");
+            }
         }
 
         public async Task<GeneralResponse> DeleteAdminAccountAsync(string id)
@@ -71,7 +129,7 @@ namespace users_microservice.Application.Service.Implementations
 
             if (string.IsNullOrEmpty(id))
             {
-                return new GeneralResponse(false, "Error Delete", 204);
+                return new GeneralResponse(false, "Error Delete", 204,"-");
             }
 
             int adminId = int.Parse(id);
@@ -85,44 +143,61 @@ namespace users_microservice.Application.Service.Implementations
             // Mapear el DTO a un modelo de estudiante
             var studentModel = StudentMapping.ToModel(studentDto);
             
-            // Crear el estudiante en el dominio
-            var result = await _adminServiceDomain.CreateStudent(studentModel);
+            // Iniciar la transacción
+            await _adminRepository.BeginTransactionAsync();
 
-            if (!result.Flag) {
-                // Si la creación del estudiante falla, devuelve el resultado inmediatamente
+            try
+            {
+                // Crear el estudiante en el dominio
+                var result = await _adminServiceDomain.CreateStudent(studentModel);
+
+                if (!result.Flag)
+                {
+                    // Si la creación del estudiante falla, devolver el resultado inmediatamente
+                    await _adminRepository.RollbackTransactionAsync();
+                    return result;
+                }
+
+                // Mapear los cursos desde el DTO usando el CourseMapping
+                var courses = studentDto.CourseIds.Select(courseId => CourseMapping.ToModel(courseId, studentModel.Id)).ToList();
+
+                // Crear los cursos en el dominio
+                var courseCreationResult = await _adminServiceDomain.CreateStudentCourse(courses);
+
+                if (!courseCreationResult.Flag)
+                {
+                    // Si la creación de cursos falla, devolver el resultado de error
+                    await _adminRepository.RollbackTransactionAsync();
+                    return courseCreationResult;
+                }
+
+                var newUserDto = UserMapping.ToUserDto(studentDto);
+
+                // var authCreationResult = await _externalService.RegisterUserAsync(newUserDto);
+
+                // if (!authCreationResult)
+                // {
+                //     // Si la creación en el servicio externo falla, devolver el resultado de error
+                //     await _adminRepository.RollbackTransactionAsync();
+                //     return new GeneralResponse(false, "Auth failed to created", 404, "-");
+                // }
+
+                // Confirmar la transacción si todo ha salido bien
+                await _adminRepository.CommitTransactionAsync();
+                
+                // Devolver el resultado exitoso incluyendo los datos del estudiante y los cursos
                 return result;
             }
-            // Obtener el id generado
-
-            
-            // Mapear los cursos desde el DTO usando el CourseMapping
-            var courses = studentDto.CourseIds.Select(courseId => CourseMapping.ToModel(courseId, studentModel.Id)).ToList();
-
-            // Crear los cursos en el dominio
-            var courseCreationResult = await _adminServiceDomain.CreateStudentCourse(courses);
-
-            if (!courseCreationResult.Flag) {
-                // Si la creación de cursos falla, devuelve el resultado de error
-                return courseCreationResult;
+            catch (Exception ex)
+            {
+                // En caso de excepción, revertir la transacción
+                await _adminRepository.RollbackTransactionAsync();
+                
+                // Opcional: loguear la excepción
+                return new GeneralResponse(false, $"Error: {ex.Message}", 500, "-");
             }
-
-            var newUserDto = UserMapping.ToUserDto(studentDto);
-
-            var authCreationResult = await _externalService.RegisterUserAsync(newUserDto);
-
-            if (!authCreationResult) {
-                // Si la creación de cursos falla, devuelve el resultado de error
-                return new GeneralResponse(false, "Auth failed to created", 404);
-            }
-
-            // Devolver el resultado exitoso incluyendo los datos del estudiante y los cursos
-            return new GeneralResponse
-            (
-                true,
-                 "Student and courses created successfully.",
-                204
-            );
         }
+
 
         public async Task<GeneralResponse> UpdateStudentAsync(string id, StudentDto studentDto)
         {
@@ -139,7 +214,7 @@ namespace users_microservice.Application.Service.Implementations
             
             if (string.IsNullOrEmpty(id))
             {
-                return new GeneralResponse(false,"ERROR", 204);
+                return new GeneralResponse(false,"ERROR", 204,"-");
             }
 
             int studentId = int.Parse(id);
