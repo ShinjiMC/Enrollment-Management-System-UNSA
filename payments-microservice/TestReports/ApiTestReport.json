@@ -1,0 +1,534 @@
+{
+	"info": {
+		"_postman_id": "627ae54e-0622-40a2-88e6-d4593ee15d03",
+		"name": "PaymentsMicroservice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36971856"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8007/api/payment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Request 1: Status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.test(\"El endpoint 'api/payment' está accesible\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Crear un pago con datos válidos\", function () {",
+							"    pm.request.body.raw = JSON.stringify({",
+							"        amount: 100.00,",
+							"        description: \"Pago de curso\",",
+							"        payerId: \"12345\"",
+							"    });",
+							"",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"baseUrl\") + \"/api/payment\",",
+							"        method: 'POST',",
+							"        header: { 'Content-Type': 'application/json' },",
+							"        body: pm.request.body",
+							"    }, function (err, res) {",
+							"        pm.expect(res).to.have.status(200);",
+							"        pm.expect(res.json()).to.have.property(\"amount\", 100.00);",
+							"        pm.expect(res.json()).to.have.property(\"description\", \"Pago de curso\");",
+							"        pm.expect(res.json()).to.have.property(\"payerId\", \"12345\");",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"Crear un pago con datos incompletos\", function () {",
+							"    pm.request.body.raw = JSON.stringify({",
+							"        amount: 100.00,",
+							"        description: \"Pago de curso\"",
+							"    });",
+							"",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"baseUrl\") + \"/api/payment\",",
+							"        method: 'POST',",
+							"        header: { 'Content-Type': 'application/json' },",
+							"        body: pm.request.body",
+							"    }, function (err, res) {",
+							"        pm.expect(res).to.have.status(400);",
+							"        pm.expect(res.json().error).to.eql(\"Datos faltantes\");",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"Crear un pago con datos inválidos\", function () {",
+							"    pm.request.body.raw = JSON.stringify({",
+							"        amount: -50.00,",
+							"        description: \"Pago de curso\",",
+							"        payerId: \"12345\"",
+							"    });",
+							"",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"baseUrl\") + \"/api/payment\",",
+							"        method: 'POST',",
+							"        header: { 'Content-Type': 'application/json' },",
+							"        body: pm.request.body",
+							"    }, function (err, res) {",
+							"        pm.expect(res).to.have.status(400);",
+							"        pm.expect(res.json().error).to.eql(\"Datos inválidos\");",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8007/api/payment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"api",
+						"payment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8007/api/payment/{paymentId}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Request 2: Status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// GET api/payment/{paymentId}",
+							"pm.test(\"El endpoint 'api/payment/{paymentId}' está accesible\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Obtener un pago existente\", function () {",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"baseUrl\") + \"/api/payment/payment123\",",
+							"        method: 'GET'",
+							"    }, function (err, res) {",
+							"        pm.expect(res).to.have.status(200);",
+							"        pm.expect(res.json()).to.have.property(\"paymentId\", \"payment123\");",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"Obtener un pago que no existe\", function () {",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"baseUrl\") + \"/api/payment/nonexistentId\",",
+							"        method: 'GET'",
+							"    }, function (err, res) {",
+							"        pm.expect(res).to.have.status(404);",
+							"        pm.expect(res.json().error).to.eql(\"Payment not found\");",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8007/api/payment/{paymentId}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"api",
+						"payment",
+						"{paymentId}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8007/api/payment/{paymentId}/status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// PUT api/payment/{paymentId}/status",
+							"pm.test(\"El endpoint 'api/payment/{paymentId}/status' está accesible\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Actualizar el estado del pago con datos válidos\", function () {",
+							"    pm.request.body.raw = JSON.stringify({",
+							"        status: \"Paid\"",
+							"    });",
+							"",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"baseUrl\") + \"/api/payment/payment123/status\",",
+							"        method: 'PUT',",
+							"        header: { 'Content-Type': 'application/json' },",
+							"        body: pm.request.body",
+							"    }, function (err, res) {",
+							"        pm.expect(res).to.have.status(200);",
+							"        pm.expect(res.json()).to.eql(\"Payment status updated\");",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"Intentar actualizar el estado de un pago inexistente\", function () {",
+							"    pm.request.body.raw = JSON.stringify({",
+							"        status: \"Paid\"",
+							"    });",
+							"",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"baseUrl\") + \"/api/payment/nonexistentId/status\",",
+							"        method: 'PUT',",
+							"        header: { 'Content-Type': 'application/json' },",
+							"        body: pm.request.body",
+							"    }, function (err, res) {",
+							"        pm.expect(res).to.have.status(404);",
+							"        pm.expect(res.json().error).to.eql(\"Cannot update payment status\");",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(\"Pre request 2\")"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8007/api/payment/{paymentId}/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"api",
+						"payment",
+						"{paymentId}",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8007/api/electronicbill",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// POST api/electronicbill",
+							"pm.test(\"El endpoint 'api/electronicbill' está accesible\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Crear una factura electrónica con datos válidos\", function () {",
+							"    pm.request.body.raw = JSON.stringify({",
+							"        amount: 150.00,",
+							"        description: \"Curso de matemáticas\",",
+							"        dueDate: \"2024-08-01\"",
+							"    });",
+							"",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"baseUrl\") + \"/api/electronicbill\",",
+							"        method: 'POST',",
+							"        header: { 'Content-Type': 'application/json' },",
+							"        body: pm.request.body",
+							"    }, function (err, res) {",
+							"        pm.expect(res).to.have.status(201);",
+							"        pm.expect(res.json()).to.have.property(\"amount\", 150.00);",
+							"        pm.expect(res.json()).to.have.property(\"description\", \"Curso de matemáticas\");",
+							"        pm.expect(res.json()).to.have.property(\"dueDate\", \"2024-08-01\");",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"Crear una factura electrónica con datos incompletos\", function () {",
+							"    pm.request.body.raw = JSON.stringify({",
+							"        amount: 150.00,",
+							"        description: \"Curso de matemáticas\"",
+							"    });",
+							"",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"baseUrl\") + \"/api/electronicbill\",",
+							"        method: 'POST',",
+							"        header: { 'Content-Type': 'application/json' },",
+							"        body: pm.request.body",
+							"    }, function (err, res) {",
+							"        pm.expect(res).to.have.status(400);",
+							"        pm.expect(res.json().error).to.eql(\"Datos faltantes\");",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"Crear una factura electrónica con datos inválidos\", function () {",
+							"    pm.request.body.raw = JSON.stringify({",
+							"        amount: -150.00,",
+							"        description: \"Curso de matemáticas\",",
+							"        dueDate: \"invalid-date\"",
+							"    });",
+							"",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"baseUrl\") + \"/api/electronicbill\",",
+							"        method: 'POST',",
+							"        header: { 'Content-Type': 'application/json' },",
+							"        body: pm.request.body",
+							"    }, function (err, res) {",
+							"        pm.expect(res).to.have.status(400);",
+							"        pm.expect(res.json().error).to.eql(\"Datos inválidos\");",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(\"Pre request 2\")"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8007/api/electronicbill",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"api",
+						"electronicbill"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8007/api/electronicbill/{electronicBillId}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// GET api/electronicbill/{electronicBillId}",
+							"pm.test(\"El endpoint 'api/electronicbill/{electronicBillId}' está accesible\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Obtener una factura electrónica existente\", function () {",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"baseUrl\") + \"/api/electronicbill/bill123\",",
+							"        method: 'GET'",
+							"    }, function (err, res) {",
+							"        pm.expect(res).to.have.status(200);",
+							"        pm.expect(res.json()).to.have.property(\"electronicBillId\", \"bill123\");",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"Obtener una factura electrónica que no existe\", function () {",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"baseUrl\") + \"/api/electronicbill/nonexistentId\",",
+							"        method: 'GET'",
+							"    }, function (err, res) {",
+							"        pm.expect(res).to.have.status(404);",
+							"        pm.expect(res.json().error).to.eql(\"Electronic bill not found\");",
+							"    });",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8007/api/electronicbill/{electronicBillId}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"api",
+						"electronicbill",
+						"{electronicBillId}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8007/api/electronicbill",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is a JSON array\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an('array');",
+							"});",
+							"",
+							"pm.test(\"Each electronic bill has necessary fields\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    jsonData.forEach(function (bill) {",
+							"        pm.expect(bill).to.have.property('electronicBillId');",
+							"        pm.expect(bill).to.have.property('amount');",
+							"        pm.expect(bill).to.have.property('status');",
+							"    });",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8007/api/electronicbill",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"api",
+						"electronicbill"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8007/api/electronicbill/{electronicBillId}/status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// PUT api/electronicbill/{electronicBillId}/status",
+							"pm.test(\"El endpoint 'api/electronicbill/{electronicBillId}/status' está accesible\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Actualizar el estado de la factura electrónica con datos válidos\", function () {",
+							"    pm.request.body.raw = JSON.stringify({",
+							"        status: \"Paid\"",
+							"    });",
+							"",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"baseUrl\") + \"/api/electronicbill/bill123/status\",",
+							"        method: 'PUT',",
+							"        header: { 'Content-Type': 'application/json' },",
+							"        body: pm.request.body",
+							"    }, function (err, res) {",
+							"        pm.expect(res).to.have.status(200);",
+							"        pm.expect(res.json()).to.eql(\"Electronic bill status updated\");",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"Intentar actualizar el estado de una factura electrónica inexistente\", function () {",
+							"    pm.request.body.raw = JSON.stringify({",
+							"        status: \"Paid\"",
+							"    });",
+							"",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"baseUrl\") + \"/api/electronicbill/nonexistentId/status\",",
+							"        method: 'PUT',",
+							"        header: { 'Content-Type': 'application/json' },",
+							"        body: pm.request.body",
+							"    }, function (err, res) {",
+							"        pm.expect(res).to.have.status(404);",
+							"        pm.expect(res.json().error).to.eql(\"Cannot update electronic bill status\");",
+							"    });",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8007/api/electronicbill/{electronicBillId}/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"api",
+						"electronicbill",
+						"{electronicBillId}",
+						"status"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

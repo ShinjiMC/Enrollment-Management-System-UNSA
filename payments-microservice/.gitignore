@@ -1,1 +1,2 @@
-TestReports
+# Ignore Performance Test Reports
+TestReports/PerformanceTestReport/
