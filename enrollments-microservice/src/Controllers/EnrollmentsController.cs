@@ -39,32 +39,28 @@ public class EnrollmentsController : ControllerBase, IEnrollmentsController
     public async Task<IActionResult> GetAvailableCourses(string userId, string schoolId)
     {
         var result = await _enrollService.GetAvailableCourses(userId, schoolId);
-        if (result == null) return NotFound();
-        return Ok(result);
+        return StatusCode(result.StatusCode, result);
     }
 
     [HttpGet("user/{userId}")]
     public async Task<IActionResult> GetEnrollmentsByUserId(string userId)
     {
         var result = await _enrollService.GetEnrollmentsByUserId(userId);
-        if (result == null) return NotFound();
-        return Ok(result);
+        return StatusCode(result.StatusCode, result);
     }
 
     [HttpGet("school/{schoolId}")]
     public async Task<IActionResult> GetEnrollmentsBySchoolId(string schoolId)
     {
         var result = await _enrollService.GetEnrollmentsBySchoolId(schoolId);
-        if (result == null) return NotFound();
-        return Ok(result);
+        return StatusCode(result.StatusCode, result);
     }
 
     [HttpGet("certificate/{userId}/{schoolId}")]
     public async Task<IActionResult> GetEnrollmentByUserIdAndSchoolId(string userId, string schoolId)
     {
         var result = await _enrollService.GetEnrollmentByUserIdAndSchoolId(userId, schoolId);
-        if (result == null) return NotFound();
-        return Ok(result);
+        return StatusCode(result.StatusCode, result);
     }
 
     [HttpGet("{enrollId}")]
@@ -93,7 +89,6 @@ public class EnrollmentsController : ControllerBase, IEnrollmentsController
     public async Task<IActionResult> DeleteEnrollment(string enrollId)
     {
         var result = await _enrollService.DeleteEnrollment(enrollId);
-        if (!result.Flag) return BadRequest();
-        return Ok(result);
+        return StatusCode(result.StatusCode, result);
     }
 }
