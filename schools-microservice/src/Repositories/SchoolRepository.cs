@@ -22,6 +22,13 @@ public class SchoolRepository : ISchoolRepository
         return _context.Schools.Find(school => school.Id == id).FirstOrDefault();
     }
 
+    public string GetSchoolNameById(int id)
+    {
+        var filter = Builders<School>.Filter.Eq(s => s.Id, id);
+        var school = _context.Schools.Find(filter).FirstOrDefault();
+        return school != null ? school.Name : null;
+    }
+
     public void AddSchool(School school)
     {
         _context.Schools.InsertOne(school);

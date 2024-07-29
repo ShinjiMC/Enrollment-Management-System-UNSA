@@ -25,6 +25,11 @@ public class SchoolService : ISchoolService
         return _schoolRepository.GetSchoolById(id);
     }
 
+    public string GetSchoolNameById(int id)
+    {
+        return _schoolRepository.GetSchoolNameById(id);
+    }
+
     public void AddSchool(School school)
     {
         _schoolRepository.AddSchool(school);

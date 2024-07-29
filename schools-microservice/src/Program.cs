@@ -1,4 +1,4 @@
-using SchoolsMicroservice.Repositories;
+using Microsoft.OpenApi.Models;
 using SchoolsMicroservice.Repositories.Data;
 using SchoolsMicroservice.Service;
 
@@ -24,34 +24,56 @@ builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IStudyPlanCourseRepository, StudyPlanCourseRepository>(); // Nuevo repositorio
 
-// Register the Swagger generator, defining 1 or more Swagger documents
-builder.Services.AddEndpointsApiExplorer();
+// Enable Swagger
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "School API", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Version = "v1",
-        Title = "School Management Microservice API",
-        Description = "An API to manage schools, courses, teachers, and departments",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
     });
 });
 
+// CORS Configuration
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
+
+
+// App
 var app = builder.Build();
 
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "School Management Microservice API V1");
-        c.RoutePrefix = string.Empty; // Serve the Swagger UI at the app's root
-    });
+    app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-app.UseRouting();
-app.UseAuthorization();
 app.MapControllers();
+app.MapGet("/", () => "This is SCHOOL Microservice !!!");
 
-app.Run();
+app.Urls.Add("http://localhost:8005");
+
+// Run
+await app.RunAsync();

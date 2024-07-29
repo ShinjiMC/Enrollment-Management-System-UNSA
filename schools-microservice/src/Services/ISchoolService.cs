@@ -14,6 +14,8 @@ public interface ISchoolService
     Este método recupera una escuela específica por su identificador (id).
     */
     School GetSchoolById(int id);
+
+    string GetSchoolNameById(int id);
     
     /*
     Agregar una nueva escuela al sistema.

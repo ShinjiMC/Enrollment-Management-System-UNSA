@@ -62,4 +62,15 @@ public class SchoolController : ControllerBase
         _schoolService.DeleteSchool(id);
         return NoContent();//caso exitoso
     }
+
+    [HttpGet("{id}/schoolName")]//api/schools/{id}
+    public ActionResult<string> GetSchoolNameById(int id)
+    {
+        var nameSchool = _schoolService.GetSchoolNameById(id);
+        if (nameSchool == null)
+        {
+            return NotFound();
+        }
+        return Ok(nameSchool);
+    }
 }
