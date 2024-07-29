@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;//para desarrollar aplicaciones ASP.NET MVC
+using SchoolsMicroservice.Models;
+using SchoolsMicroservice.Service;
 
 [ApiController] //controlador de API web
 [Route("api/[controller]")] //ruta base api/schools

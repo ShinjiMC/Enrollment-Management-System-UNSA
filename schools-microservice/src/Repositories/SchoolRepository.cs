@@ -1,44 +1,39 @@
+using MongoDB.Driver;
+using SchoolsMicroservice.Models;
+using SchoolsMicroservice.Repositories.Data;
+namespace SchoolsMicroservice.Service;
 
-/*
- implementando la interfaz ISchoolRepository
-*/
 public class SchoolRepository : ISchoolRepository
 {
-    
-    //para almacenar todas las escuelas del sistema
-    private readonly List<School> _schools = new();
+    private readonly MongoDbContext _context;
+
+    public SchoolRepository(MongoDbContext context)
+    {
+        _context = context;
+    }
 
     public IEnumerable<School> GetAllSchools()
     {
-        return _schools;
+        return _context.Schools.Find(school => true).ToList();
     }
 
     public School GetSchoolById(int id)
     {
-        return _schools.FirstOrDefault(s => s.Id == id);
+        return _context.Schools.Find(school => school.Id == id).FirstOrDefault();
     }
 
     public void AddSchool(School school)
     {
-        _schools.Add(school);
+        _context.Schools.InsertOne(school);
     }
 
     public void UpdateSchool(School school)
     {
-        var existingSchool = GetSchoolById(school.Id);
-        if (existingSchool != null)
-        {
-            existingSchool.Name = school.Name;
-            existingSchool.Location = school.Location;
-        }
+        _context.Schools.ReplaceOne(s => s.Id == school.Id, school);
     }
 
     public void DeleteSchool(int id)
     {
-        var school = GetSchoolById(id);
-        if (school != null)
-        {
-            _schools.Remove(school);
-        }
+        _context.Schools.DeleteOne(school => school.Id == id);
     }
 }

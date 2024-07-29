@@ -1,20 +1,28 @@
-var builder = WebApplication.CreateBuilder(args);//builder de la app
+using SchoolsMicroservice.Repositories;
+using SchoolsMicroservice.Repositories.Data;
+using SchoolsMicroservice.Service;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();//controladores para manejar solicitudes HTTP y dar rptas
+builder.Services.AddControllers();
 
-// servicios para interactuar
+// Register MongoDB context
+builder.Services.AddSingleton<MongoDbContext>();
+
+// Register services
 builder.Services.AddScoped<ISchoolService, SchoolService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IStudyPlanCourseService, StudyPlanCourseService>();
 
 // Register repositories
 builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-
+builder.Services.AddScoped<IStudyPlanCourseRepository, StudyPlanCourseRepository>(); // Nuevo repositorio
 
 // Register the Swagger generator, defining 1 or more Swagger documents
 builder.Services.AddEndpointsApiExplorer();
@@ -28,12 +36,8 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-var app = builder.Build();//construye nuestra app
+var app = builder.Build();
 
-/*
-Habilito página de errores de desarrollo que proporciona 
-información detallada sobre cualquier excepción que ocurra.
-*/
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();

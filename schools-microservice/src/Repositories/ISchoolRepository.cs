@@ -1,5 +1,5 @@
-
-//Solo métodos
+using SchoolsMicroservice.Models;
+namespace SchoolsMicroservice.Service;
 public interface ISchoolRepository
 {
     IEnumerable<School> GetAllSchools();

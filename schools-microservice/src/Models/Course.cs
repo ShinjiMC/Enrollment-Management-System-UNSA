@@ -1,3 +1,4 @@
+namespace SchoolsMicroservice.Models;
 public class Course
 {
     public int Id { get; set; }

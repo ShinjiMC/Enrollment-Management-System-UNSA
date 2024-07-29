@@ -1,3 +1,6 @@
+using SchoolsMicroservice.Models;
+namespace SchoolsMicroservice.Service;
+
 public class TeacherService : ITeacherService
 {
     private readonly ITeacherRepository _teacherRepository;

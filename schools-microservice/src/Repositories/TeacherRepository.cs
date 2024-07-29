@@ -1,39 +1,38 @@
-// Repositories/TeacherRepository.cs
+using MongoDB.Driver;
+using SchoolsMicroservice.Models;
+using SchoolsMicroservice.Repositories.Data;
+namespace SchoolsMicroservice.Service;
 public class TeacherRepository : ITeacherRepository
 {
-    private readonly List<Teacher> _teachers = new();
+    private readonly MongoDbContext _context;
+
+    public TeacherRepository(MongoDbContext context)
+    {
+        _context = context;
+    }
 
     public IEnumerable<Teacher> GetAllTeachers()
     {
-        return _teachers;
+        return _context.Teachers.Find(teacher => true).ToList();
     }
 
     public Teacher GetTeacherById(int id)
     {
-        return _teachers.FirstOrDefault(t => t.Id == id);
+        return _context.Teachers.Find(teacher => teacher.Id == id).FirstOrDefault();
     }
 
     public void AddTeacher(Teacher teacher)
     {
-        _teachers.Add(teacher);
+        _context.Teachers.InsertOne(teacher);
     }
 
     public void UpdateTeacher(Teacher teacher)
     {
-        var existingTeacher = GetTeacherById(teacher.Id);
-        if (existingTeacher != null)
-        {
-            existingTeacher.Name = teacher.Name;
-            existingTeacher.Department = teacher.Department;
-        }
+        _context.Teachers.ReplaceOne(t => t.Id == teacher.Id, teacher);
     }
 
     public void DeleteTeacher(int id)
     {
-        var teacher = GetTeacherById(id);
-        if (teacher != null)
-        {
-            _teachers.Remove(teacher);
-        }
+        _context.Teachers.DeleteOne(teacher => teacher.Id == id);
     }
 }

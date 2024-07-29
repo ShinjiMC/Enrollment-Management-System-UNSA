@@ -1,37 +1,40 @@
+using MongoDB.Driver;
+using SchoolsMicroservice.Models;
+using SchoolsMicroservice.Repositories.Data;
+namespace SchoolsMicroservice.Service;
+using System.Collections.Generic;
+using System.Linq;
 public class DepartmentRepository : IDepartmentRepository
 {
-    private readonly List<Department> _departments = new();
+    private readonly MongoDbContext _context;
+
+    public DepartmentRepository(MongoDbContext context)
+    {
+        _context = context;
+    }
 
     public IEnumerable<Department> GetAllDepartments()
     {
-        return _departments;
+        return _context.Departments.Find(department => true).ToList();
     }
 
     public Department GetDepartmentById(int id)
     {
-        return _departments.FirstOrDefault(d => d.Id == id);
+        return _context.Departments.Find(department => department.Id == id).FirstOrDefault();
     }
 
     public void AddDepartment(Department department)
     {
-        _departments.Add(department);
+        _context.Departments.InsertOne(department);
     }
 
     public void UpdateDepartment(Department department)
     {
-        var existingDepartment = GetDepartmentById(department.Id);
-        if (existingDepartment != null)
-        {
-            existingDepartment.Name = department.Name;
-        }
+        _context.Departments.ReplaceOne(d => d.Id == department.Id, department);
     }
 
     public void DeleteDepartment(int id)
     {
-        var department = GetDepartmentById(id);
-        if (department != null)
-        {
-            _departments.Remove(department);
-        }
+        _context.Departments.DeleteOne(department => department.Id == id);
     }
 }

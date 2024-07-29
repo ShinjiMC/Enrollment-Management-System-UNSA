@@ -1,7 +1,6 @@
+using SchoolsMicroservice.Models;
+namespace SchoolsMicroservice.Service;
 
-/*
-Esta clase implementa la interfaz ISchoolService
-*/
 public class SchoolService : ISchoolService
 {
     //de Repositories

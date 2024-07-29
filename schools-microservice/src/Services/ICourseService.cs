@@ -1,3 +1,6 @@
+using SchoolsMicroservice.Models;
+namespace SchoolsMicroservice.Service;
+
 public interface ICourseService
 {
     IEnumerable<Course> GetAllCourses();

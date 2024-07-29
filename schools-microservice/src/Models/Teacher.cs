@@ -1,3 +1,5 @@
+namespace SchoolsMicroservice.Models;
+
 public class Teacher
 {
     public int Id { get; set; }

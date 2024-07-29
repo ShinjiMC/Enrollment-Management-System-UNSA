@@ -1,3 +1,6 @@
+using SchoolsMicroservice.Models;
+namespace SchoolsMicroservice.Service;
+
 public interface IDepartmentService
 {
     IEnumerable<Department> GetAllDepartments();

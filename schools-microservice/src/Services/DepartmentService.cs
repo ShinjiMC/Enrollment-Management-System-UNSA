@@ -1,4 +1,7 @@
 // Services/DepartmentService.cs
+using SchoolsMicroservice.Models;
+namespace SchoolsMicroservice.Service;
+
 public class DepartmentService : IDepartmentService
 {
     private readonly IDepartmentRepository _departmentRepository;

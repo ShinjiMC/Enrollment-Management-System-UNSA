@@ -1,5 +1,7 @@
 
-/*INTERFAZ SCHOOLSERVICE*/
+using SchoolsMicroservice.Models;
+namespace SchoolsMicroservice.Service;
+
 public interface ISchoolService
 {
     /*

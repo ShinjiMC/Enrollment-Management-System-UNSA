@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using SchoolsMicroservice.Models;
+using SchoolsMicroservice.Service;
 
 [ApiController]
 [Route("api/[controller]")]
