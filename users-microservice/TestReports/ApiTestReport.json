@@ -1,0 +1,960 @@
+{
+	"id": "8fdca7c1-8731-4105-b2ef-8a8fb7c6a6c4",
+	"name": "UsersMicroservice",
+	"timestamp": "2024-07-29T20:32:08.898Z",
+	"collection_id": "29543065-653c3e36-4a61-44c5-9d74-971f945337d3",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 64,
+	"delay": 0,
+	"persist": true,
+	"status": "error",
+	"startedAt": "2024-07-29T20:31:16.701Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "8cc1c6b0-7365-4940-8576-630fbdeea355",
+			"name": "Obtener todos los estudiantes",
+			"url": "http://localhost:8002/api/Student/all",
+			"time": 1387,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should be JSON": true,
+				"Response should be an array": true,
+				"Each item in the array contains expected keys": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be an array": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Each item in the array contains expected keys": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1387
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should be JSON": true,
+					"Response should be an array": true,
+					"Each item in the array contains expected keys": true
+				}
+			]
+		},
+		{
+			"id": "f0adce90-7f74-4a73-9885-0757cf4768a2",
+			"name": "Obtener estudiante existente",
+			"url": "http://localhost:8002/api/Student/3",
+			"time": 1357,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should be JSON": true,
+				"Response contains expected keys": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains expected keys": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1357
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should be JSON": true,
+					"Response contains expected keys": true
+				}
+			]
+		},
+		{
+			"id": "83fde6b7-4f3f-4c55-91a5-08619d982c58",
+			"name": "Obtener estudiante inexistente",
+			"url": "http://localhost:8002/api/Student/10000",
+			"time": 1332,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response should be JSON": true,
+				"Message is 'Not Found'": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message is 'Not Found'": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1332
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response should be JSON": true,
+					"Message is 'Not Found'": true
+				}
+			]
+		},
+		{
+			"id": "0d7623c6-6543-4315-a522-54a93ab9de7b",
+			"name": "Obtener cursos de un estudiante existente.",
+			"url": "http://localhost:8002/api/Student/3/courses",
+			"time": 1683,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should be JSON": true,
+				"Response contains expected keys": true,
+				"courseIds is an array of strings": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains expected keys": {
+					"pass": 1,
+					"fail": 0
+				},
+				"courseIds is an array of strings": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1683
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should be JSON": true,
+					"Response contains expected keys": true,
+					"courseIds is an array of strings": true
+				}
+			]
+		},
+		{
+			"id": "6f9212bb-b546-4dca-ba71-a56c99974a9e",
+			"name": "Obtener cursos de un estudiante inexistente",
+			"url": "http://localhost:8002/api/Student/1000/courses",
+			"time": 1647,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response should be JSON": true,
+				"Message is 'Not Found'": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message is 'Not Found'": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1647
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response should be JSON": true,
+					"Message is 'Not Found'": true
+				}
+			]
+		},
+		{
+			"id": "1b6969d3-4d4c-4816-a8a2-e0b8112cd828",
+			"name": "Obtener exitosamente datos de cursos del estudiante",
+			"url": "http://localhost:8002/api/ExternalService/student/3",
+			"time": 1667,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should be JSON": true,
+				"Response contains expected keys": true,
+				"CourseIds is an array of strings": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains expected keys": {
+					"pass": 1,
+					"fail": 0
+				},
+				"CourseIds is an array of strings": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1667
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should be JSON": true,
+					"Response contains expected keys": true,
+					"CourseIds is an array of strings": true
+				}
+			]
+		},
+		{
+			"id": "269ac784-3a30-4a66-b1ec-77d8fe29e55c",
+			"name": "Solicitar con ID de estudiante no válido",
+			"url": "http://localhost:8002/api/ExternalService/student/100000",
+			"time": 1648,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response should be JSON": true,
+				"Message is 'Not Found'": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message is 'Not Found'": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1648
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response should be JSON": true,
+					"Message is 'Not Found'": true
+				}
+			]
+		},
+		{
+			"id": "92f0378a-e5ff-4d70-8e8a-05e922eb74d6",
+			"name": "Fallar al registrar debido a datos invalidos",
+			"url": "http://localhost:8002/api/Admin/register/student",
+			"time": 1001,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Status code is 400": true,
+				"Response should be JSON": true,
+				"Message is 'One or more validation errors occurred.'": true
+			},
+			"testPassFailCounts": {
+				"Status code is 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message is 'One or more validation errors occurred.'": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1001
+			],
+			"allTests": [
+				{
+					"Status code is 400": true,
+					"Response should be JSON": true,
+					"Message is 'One or more validation errors occurred.'": true
+				}
+			]
+		},
+		{
+			"id": "9b1e5efe-05a5-4b85-88d9-bc50d921c5eb",
+			"name": "Registrar exitosamente un usuario administrador",
+			"url": "http://localhost:8002/api/Admin/register/admin",
+			"time": 2357,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Message is 'Admin user created successfully'": true,
+				"Flag is true": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message is 'Admin user created successfully'": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Flag is true": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2357
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Message is 'Admin user created successfully'": true,
+					"Flag is true": true
+				}
+			]
+		},
+		{
+			"id": "58adeb08-f232-4a4e-8a06-36f303376d14",
+			"name": "Actualizar exitosamente datos de un administrador",
+			"url": "http://localhost:8002/api/Admin/admin/21",
+			"time": 2342,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Message is 'User updated successfully'": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message is 'User updated successfully'": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2342
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Message is 'User updated successfully'": true
+				}
+			]
+		},
+		{
+			"id": "1edd3c5d-6380-47c9-a408-9c9cb0706c16",
+			"name": "Fallar en la actualización debido a ID inexistente",
+			"url": "http://localhost:8002/api/Admin/admin/100000000",
+			"time": 1848,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Message is 'User not found'": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message is 'User not found'": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1848
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Message is 'User not found'": true
+				}
+			]
+		},
+		{
+			"id": "c362d2ba-7635-493f-8dc9-92c70d8702b8",
+			"name": "Obtener administrador existente",
+			"url": "http://localhost:8002/api/Admin/admin/7",
+			"time": 1346,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should be JSON": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be JSON": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1346
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should be JSON": true
+				}
+			]
+		},
+		{
+			"id": "5608fc64-474a-4795-b989-8a3f1be6b717",
+			"name": "Error por administrador inexistente",
+			"url": "http://localhost:8002/api/Admin/admin/100000",
+			"time": 1323,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response should be JSON": true,
+				"Message is 'Not Found'": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message is 'Not Found'": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1323
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response should be JSON": true,
+					"Message is 'Not Found'": true
+				}
+			]
+		},
+		{
+			"id": "5c916b06-1474-4b7c-bd8d-d698ae2052ae",
+			"name": "Eliminar exitosamente un administrador",
+			"url": "http://localhost:8002/api/Admin/admin/22",
+			"time": 2313,
+			"responseCode": {
+				"code": 204,
+				"name": "No Content"
+			},
+			"tests": {
+				"Status code is 204": true,
+				"Admin should not exist": true
+			},
+			"testPassFailCounts": {
+				"Status code is 204": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Admin should not exist": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2313
+			],
+			"allTests": [
+				{
+					"Status code is 204": true,
+					"Admin should not exist": true
+				}
+			]
+		},
+		{
+			"id": "de692ccb-8700-4d55-b1a1-877b20973874",
+			"name": "Eliminar un administrador inexistente",
+			"url": "http://localhost:8002/api/Admin/admin/1000000000",
+			"time": 1316,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response should be in JSON format": true,
+				"Response should contain error details": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be in JSON format": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should contain error details": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1316
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response should be in JSON format": true,
+					"Response should contain error details": true
+				}
+			]
+		},
+		{
+			"id": "6cea61db-e439-49de-bf2c-0d082d178030",
+			"name": "Obtener todos los administradores",
+			"url": "http://localhost:8002/api/Admin/admin/all",
+			"time": 1341,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should be JSON": true,
+				"Response should be an array": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be an array": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1341
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should be JSON": true,
+					"Response should be an array": true
+				}
+			]
+		},
+		{
+			"id": "44cb3e62-278b-44fb-a052-633a0174c71b",
+			"name": "Obtener estudiante existente",
+			"url": "http://localhost:8002/api/Admin/student/3",
+			"time": 1674,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should be JSON": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be JSON": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1674
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should be JSON": true
+				}
+			]
+		},
+		{
+			"id": "9f1359eb-a919-4495-b90c-0f191add75ed",
+			"name": "Obtener estudiante inexistente",
+			"url": "http://localhost:8002/api/Admin/student/1000000",
+			"time": 1322,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response should be JSON": true,
+				"Message is 'Not Found'": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message is 'Not Found'": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1322
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response should be JSON": true,
+					"Message is 'Not Found'": true
+				}
+			]
+		},
+		{
+			"id": "75465539-c846-4501-8e09-0ba5b3dcbed8",
+			"name": "Registrar exitoso de un estudiante",
+			"url": "http://localhost:8002/api/Admin/register/student",
+			"time": 3352,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Response should be JSON": true,
+				"Message is 'Student created successfully'": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message is 'Student created successfully'": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				3352
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Response should be JSON": true,
+					"Message is 'Student created successfully'": true
+				}
+			]
+		},
+		{
+			"id": "64a37d29-ef99-49d6-8481-5aa588af955d",
+			"name": "Fallar debido a datos inválidos",
+			"url": "http://localhost:8002/api/Admin/register/student",
+			"time": 1006,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Status code is 400": true,
+				"Response should be JSON": true,
+				"Message is 'One or more validation errors occurred.'": true
+			},
+			"testPassFailCounts": {
+				"Status code is 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message is 'One or more validation errors occurred.'": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1006
+			],
+			"allTests": [
+				{
+					"Status code is 400": true,
+					"Response should be JSON": true,
+					"Message is 'One or more validation errors occurred.'": true
+				}
+			]
+		},
+		{
+			"id": "c2fa59f6-8b21-435f-897a-449427465539",
+			"name": "Eliminar exitosamente un estudiante",
+			"url": "http://localhost:8002/api/Admin/student/24",
+			"time": 2173,
+			"responseCode": {
+				"code": 204,
+				"name": "No Content"
+			},
+			"tests": {
+				"Status code is 204": true,
+				"Admin should not exist": true
+			},
+			"testPassFailCounts": {
+				"Status code is 204": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Admin should not exist": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2173
+			],
+			"allTests": [
+				{
+					"Status code is 204": true,
+					"Admin should not exist": true
+				}
+			]
+		},
+		{
+			"id": "2fd014fc-2012-400d-a1e3-9fe67e13044f",
+			"name": "Eliminar un estudiante inexistente",
+			"url": "http://localhost:8002/api/Admin/student/1000000",
+			"time": 1328,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true,
+				"Response should be in JSON format": true,
+				"Response should contain 'Not Found'": true,
+				"Response should contain error details": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be in JSON format": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should contain 'Not Found'": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should contain error details": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1328
+			],
+			"allTests": [
+				{
+					"Status code is 404": true,
+					"Response should be in JSON format": true,
+					"Response should contain 'Not Found'": true,
+					"Response should contain error details": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 36763,
+	"collection": {
+		"requests": [
+			{
+				"id": "8cc1c6b0-7365-4940-8576-630fbdeea355",
+				"method": "GET"
+			},
+			{
+				"id": "f0adce90-7f74-4a73-9885-0757cf4768a2",
+				"method": "GET"
+			},
+			{
+				"id": "83fde6b7-4f3f-4c55-91a5-08619d982c58",
+				"method": "GET"
+			},
+			{
+				"id": "0d7623c6-6543-4315-a522-54a93ab9de7b",
+				"method": "GET"
+			},
+			{
+				"id": "6f9212bb-b546-4dca-ba71-a56c99974a9e",
+				"method": "GET"
+			},
+			{
+				"id": "1b6969d3-4d4c-4816-a8a2-e0b8112cd828",
+				"method": "GET"
+			},
+			{
+				"id": "269ac784-3a30-4a66-b1ec-77d8fe29e55c",
+				"method": "GET"
+			},
+			{
+				"id": "92f0378a-e5ff-4d70-8e8a-05e922eb74d6",
+				"method": "POST"
+			},
+			{
+				"id": "9b1e5efe-05a5-4b85-88d9-bc50d921c5eb",
+				"method": "POST"
+			},
+			{
+				"id": "58adeb08-f232-4a4e-8a06-36f303376d14",
+				"method": "PUT"
+			},
+			{
+				"id": "1edd3c5d-6380-47c9-a408-9c9cb0706c16",
+				"method": "PUT"
+			},
+			{
+				"id": "c362d2ba-7635-493f-8dc9-92c70d8702b8",
+				"method": "GET"
+			},
+			{
+				"id": "5608fc64-474a-4795-b989-8a3f1be6b717",
+				"method": "GET"
+			},
+			{
+				"id": "5c916b06-1474-4b7c-bd8d-d698ae2052ae",
+				"method": "DELETE"
+			},
+			{
+				"id": "de692ccb-8700-4d55-b1a1-877b20973874",
+				"method": "DELETE"
+			},
+			{
+				"id": "6cea61db-e439-49de-bf2c-0d082d178030",
+				"method": "GET"
+			},
+			{
+				"id": "44cb3e62-278b-44fb-a052-633a0174c71b",
+				"method": "GET"
+			},
+			{
+				"id": "9f1359eb-a919-4495-b90c-0f191add75ed",
+				"method": "GET"
+			},
+			{
+				"id": "75465539-c846-4501-8e09-0ba5b3dcbed8",
+				"method": "POST"
+			},
+			{
+				"id": "64a37d29-ef99-49d6-8481-5aa588af955d",
+				"method": "POST"
+			},
+			{
+				"id": "c2fa59f6-8b21-435f-897a-449427465539",
+				"method": "DELETE"
+			},
+			{
+				"id": "2fd014fc-2012-400d-a1e3-9fe67e13044f",
+				"method": "DELETE"
+			},
+			{
+				"id": "03032934-26ca-4e2f-893c-f20d75f755d8",
+				"method": "PUT"
+			}
+		]
+	}
+}
