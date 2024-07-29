@@ -5,7 +5,7 @@ using PaymentsMicroservice.Application.Services.Interfaces;
 namespace PaymentsMicroservice.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class PaymentController : ControllerBase
     {
         private readonly IPaymentService _paymentService;
@@ -18,20 +18,23 @@ namespace PaymentsMicroservice.API.Controllers
         [HttpPost] // Route: POST api/payment
         public async Task<ActionResult<PaymentDto>> CreatePayment(PaymentDto paymentDto)
         {
-            var createdPayment = await _paymentService.CreatePayment(paymentDto);
-            return Ok(createdPayment);
-             
+            try {
+                var createdPayment = await _paymentService.CreatePayment(paymentDto);
+                return CreatedAtAction(nameof(GetPaymentById), new { paymentId = createdPayment.PaymentId }, createdPayment);
+            } catch (Exception ex) {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpGet("{paymentId}")] // Route: GET api/payment/{paymentId}
         public async Task<ActionResult<PaymentDto>> GetPaymentById(string paymentId)
         {
-            var payment = await _paymentService.GetPaymentById(paymentId);
-            if (payment == null)
-            {
-                return NotFound("Payment not found");
+            try {
+                var payment = await _paymentService.GetPaymentById(paymentId);
+                return Ok(payment);
+            } catch (Exception ex) {
+                return NotFound(new { message = ex.Message });
             }
-            return Ok(payment);
         }
 
         [HttpPut("{paymentId}/status")] // Route: PUT api/payment/{paymentId}/status
@@ -40,9 +43,9 @@ namespace PaymentsMicroservice.API.Controllers
             var updated = await _paymentService.UpdatePaymentStatus(paymentId, status);
             if (!updated)
             {
-                return NotFound("Cannot update payment status");
+                return NotFound(new { message = "No se puede actualizar el estado del pago" });
             }
-            return Ok("Payment status updated");
+            return Ok(new { message = "Estado del pago actualizado" });
         }
     }
 }

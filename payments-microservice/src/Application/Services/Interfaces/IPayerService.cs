@@ -1,8 +1,8 @@
 using PaymentsMicroservice.Domain.Entities;
 
-namespace PaymentsMicroservice.Domain.Repositories
+namespace PaymentsMicroservice.Application.Services.Interfaces
 {
-    public interface IPayerRepository
+    public interface IPayerService
     {
         Task<List<Payer>> GetPayers();
         Task<Payer> GetPayerById(string payerId);

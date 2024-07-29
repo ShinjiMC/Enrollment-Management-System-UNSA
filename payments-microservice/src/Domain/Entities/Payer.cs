@@ -10,12 +10,12 @@ namespace PaymentsMicroservice.Domain.Entities
         public string? PayerId { get; set; }
 
         [BsonElement("name"), BsonRepresentation(BsonType.String)]
-        public string? Name { get; set; }
+        public required string Name { get; set; }
         
         [BsonElement("email"), BsonRepresentation(BsonType.String)]
-        public string Email { get; set; }
+        public required string Email { get; set; }
         
         [BsonElement("phone_number"), BsonRepresentation(BsonType.String)]
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
     }
 }

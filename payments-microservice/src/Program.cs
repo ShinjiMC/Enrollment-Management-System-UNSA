@@ -19,6 +19,7 @@ builder.Services.AddSingleton<MongoDbContext>();
 builder.Services.AddScoped<IElectronicBillService, ElectronicBillService>();
 builder.Services.AddScoped<IPaymentCodeService, PaymentCodeService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IPayerService, PayerService>();
 
 // Register domain services
 builder.Services.AddScoped<IElectronicBillDomainService, ElectronicBillDomainService>();
@@ -34,7 +35,7 @@ builder.Services.AddScoped<IPayerRepository, PayerRepository>();
 // Enable Swagger
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Payments API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Payments Microservice API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -55,7 +56,7 @@ builder.Services.AddSwaggerGen(c =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            Array.Empty<string>()
         }
     });
 });
@@ -65,6 +66,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
+
+// Configure Kestrel to listen on all network interfaces
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(8007); // This will listen on all network interfaces
+});
+
 
 
 // App
@@ -80,7 +88,7 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 app.MapGet("/", () => "This is Payments Microservice !!!");
 
-app.Urls.Add("http://localhost:8007");
+// app.Urls.Add("http://localhost:8007");
 
 // Run
 await app.RunAsync();
