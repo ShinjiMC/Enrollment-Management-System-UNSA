@@ -61,3 +61,15 @@
     dotnet ef migrations add InitialMigration -p src/Infrastructure -s src/Web.API -o Persistence/Migrations --verbose
     dotnet ef database update -p src/Infrastructure -s src/Web.API/
     ```
+9. **Reporte Owasp**
+    ```bash
+    docker run --network host -v $(pwd)/zap-wrk:/zap/wrk -v $(pwd)/zap-reports:/zap/reports -t zaproxy/zap-stable zap-baseline.py -t http://localhost:8003 -r SecurityTestReport.html > SecurityTestReport.txt
+
+    mv zap-wrk/SecurityTestReport.html TestReports/SecurityTestReport/SecurityTestReport.html
+    mv SecurityTestReport.txt TestReports/SecurityTestReport/SecurityTestReport.txt
+
+    # Delete the directories
+    rm -rf zap-wrk
+    rm -rf zap-reports
+
+    ```
