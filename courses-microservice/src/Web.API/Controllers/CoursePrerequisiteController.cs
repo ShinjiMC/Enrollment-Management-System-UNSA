@@ -9,7 +9,7 @@ using Application.CoursesPrerequisite.GetAll;
 
 namespace Web.API.Controllers;
 
-[Route("course/prerequisite")]
+[Route("api/v1/course/prerequisite")]
 public class CoursePrerequisite : ApiController
 {
     private readonly ISender _mediator;
@@ -36,16 +36,16 @@ public class CoursePrerequisite : ApiController
         var createResult = await _mediator.Send(command);
 
         return createResult.Match(
-            customerId => Ok(customerId),
-            errors => Problem(errors)
+        courseId => CreatedAtAction(nameof(GetById), new { id = courseId }, courseId),
+        errors => Problem(errors)
         );
     }
 
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(Guid id)
+    [HttpDelete("{courseId}/{prerequisiteCourseId}")]
+    public async Task<IActionResult> Delete(Guid courseId, Guid prerequisiteCourseId)
     {
-        var deleteResult = await _mediator.Send(new DeleteCoursePrerequisiteCommand(id));
+        var deleteResult = await _mediator.Send(new DeleteCoursePrerequisiteCommand(courseId, prerequisiteCourseId));
 
         return deleteResult.Match(
             customerId => NoContent(),
