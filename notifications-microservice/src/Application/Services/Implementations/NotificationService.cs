@@ -44,6 +44,8 @@ namespace NotificationsMicroservice.Application.Services.Implementations
         public async Task<List<NotificationDto>> GetByRecipientIdAsync(int recipientId)
         {
             var notifications = await _notificationDomainService.GetByRecipientIdAsync(recipientId);
+            if (notifications == null || !notifications.Any())
+                return null;
             return notifications.Select(notification => new NotificationDto
             {
                 Id = notification.Id,

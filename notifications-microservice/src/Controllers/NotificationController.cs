@@ -38,6 +38,8 @@ namespace NotificationsMicroservice.Controllers
         public async Task<IActionResult> GetByRecipientId(int recipientId)
         {
             var notifications = await _notificationService.GetByRecipientIdAsync(recipientId);
+            if (notifications == null || !notifications.Any())
+                return NotFound("No notifications found.");
             return Ok(notifications);
         }
 
@@ -46,7 +48,7 @@ namespace NotificationsMicroservice.Controllers
         {
             var userDto = await _userService.GetUserByIdAsync(notificationDto.RecipientId);
             if (userDto == null)
-                return BadRequest("User does not have configured notifications");
+                return NotFound("User does not have configured notifications");
         
             if (!userDto.IsActive)
                 return BadRequest("User does not have notifications activated");
