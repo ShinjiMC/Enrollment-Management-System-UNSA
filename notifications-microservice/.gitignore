@@ -1,3 +1,4 @@
 .scannerwork/
 sonar-project.properties
 .TestReports/PerformanceTestReport/
+TestReports/PerformanceTestReport/
