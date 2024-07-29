@@ -7,5 +7,5 @@ public record CourseResponse(
     int Hours,
     bool Active,
     string Semester,
-    int SchoolId
+    string SchoolId
 );

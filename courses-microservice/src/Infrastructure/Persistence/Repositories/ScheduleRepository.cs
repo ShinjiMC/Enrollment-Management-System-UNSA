@@ -1,6 +1,4 @@
-using Domain.Courses;
 using Domain.Schedules;
-using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories

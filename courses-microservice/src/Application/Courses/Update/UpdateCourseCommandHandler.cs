@@ -5,6 +5,9 @@ using Domain.Schedules;
 using Domain.ValueObjects;
 using ErrorOr;
 using MediatR;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Application.Courses.Update;
 
@@ -12,11 +15,13 @@ internal sealed class UpdateCourseCommandHandler : IRequestHandler<UpdateCourseC
 {
     private readonly ICourseRepository _courseRepository;
     private readonly IUnitOfWork _unitOfWork;
-    public UpdateCourseCommandHandler(ICourseRepository CourseRepository, IUnitOfWork unitOfWork)
+
+    public UpdateCourseCommandHandler(ICourseRepository courseRepository, IUnitOfWork unitOfWork)
     {
-        _courseRepository = CourseRepository ?? throw new ArgumentNullException(nameof(CourseRepository));
+        _courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository));
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
+
     public async Task<ErrorOr<Unit>> Handle(UpdateCourseCommand command, CancellationToken cancellationToken)
     {
         // Validar semestre
@@ -25,8 +30,25 @@ internal sealed class UpdateCourseCommandHandler : IRequestHandler<UpdateCourseC
             return Errors.Course.InvalidSemester;
         }
 
+        if (command.Hours == 0)
+        {
+            return Errors.Course.InvalidHours;
+        }
+        if (command.Credits == 0)
+        {
+            return Errors.Course.InvalidCredits;
+        }
+
+        // Verificar si el curso existe
+        var existingCourse = await _courseRepository.GetByIdAsync(command.Id);
+        if (existingCourse is null)
+        {
+            return Error.NotFound("Course.NotFound", "The Course with the provide Id was not found.");
+        }
+
+        // Actualizar el curso
         Course course = Course.UpdateCourse(
-            command.Id, 
+            command.Id,
             command.Name,
             command.Credits,
             command.Hours,
@@ -34,7 +56,7 @@ internal sealed class UpdateCourseCommandHandler : IRequestHandler<UpdateCourseC
             semester,
             command.SchoolId);
 
-        _courseRepository.Update(course);
+        await _courseRepository.Update(course);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

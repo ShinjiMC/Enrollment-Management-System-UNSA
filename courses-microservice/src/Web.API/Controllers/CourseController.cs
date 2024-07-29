@@ -11,7 +11,7 @@ using Application.Courses.Delete;
 
 namespace Web.API.Controllers;
 
-[Route("courses")]
+[Route("api/v1/courses")]
 public class Courses : ApiController
 {
     private readonly ISender _mediator;
@@ -49,9 +49,9 @@ public class Courses : ApiController
         var createResult = await _mediator.Send(command);
 
         return createResult.Match(
-            customerId => Ok(customerId),
-            errors => Problem(errors)
-        );
+        courseId => CreatedAtAction(nameof(GetById), new { id = courseId }, courseId),
+        errors => Problem(errors)
+    );
     }
 
     [HttpPut("{id}")]
@@ -65,9 +65,7 @@ public class Courses : ApiController
             };
             return Problem(errors);
         }
-
         var updateResult = await _mediator.Send(command);
-
         return updateResult.Match(
             customerId => NoContent(),
             errors => Problem(errors)

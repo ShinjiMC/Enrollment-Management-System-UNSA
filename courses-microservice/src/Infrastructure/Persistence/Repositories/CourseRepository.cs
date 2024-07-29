@@ -12,8 +12,13 @@ namespace Infrastructure.Persistence.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public void Add(Course course) =>_context.Courses.Add(course);
-        public void Update(Course course) =>_context.Courses.Update(course);
+        public void Add(Course course) => _context.Courses.Add(course);
+        public async Task<bool> Update(Course course)
+        {
+            _context.Courses.Update(course);
+            var result = await _context.SaveChangesAsync();
+            return result > 0;
+        }
         public void Delete(Course course) => _context.Courses.Remove(course);
 
         public async Task<bool> ExistsAsync(Guid id) => await _context.Courses.AnyAsync(course => course.CourseId == id);

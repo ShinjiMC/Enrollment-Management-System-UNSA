@@ -6,10 +6,11 @@ using Application.Schedules.GetAll;
 using Application.Schedules.GetById;
 using Application.Schedules.Update;
 using Application.Schedules.GetByYearSemesterSchool;
+using Application.Schedules.GetByCourseIdQuery;
 
 namespace Web.API.Controllers;
 
-[Route("schedules")]
+[Route("api/v1/schedules")]
 public class Schedules : ApiController
 {
     private readonly ISender _mediator;
@@ -79,6 +80,16 @@ public class Schedules : ApiController
 
         return searchResult.Match(
             schedules => Ok(schedules),
+            errors => Problem(errors)
+        );
+    }
+    [HttpGet("course/{id}")]
+    public async Task<IActionResult> GetSchedulesByCourseId(Guid id)
+    {
+        var customerResult = await _mediator.Send(new GetByCourseIdQuery(id));
+
+        return customerResult.Match(
+            customer => Ok(customer),
             errors => Problem(errors)
         );
     }
