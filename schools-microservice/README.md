@@ -116,6 +116,864 @@ Estas herramientas y tecnologías no solo facilitan la creación de pruebas deta
 
 En esta sección se detallan los escenarios de prueba para el servicio de gestión de escuelas, los cuales han sido diseñados para validar el correcto funcionamiento de las diferentes operaciones del API.
 
+<details open>
+  <summary><b><i>Obtener todos los cursos</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Obtener todos los cursos con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Course" está accesible
+    And el sistema contiene cursos en la base de datos
+    When se envía una solicitud GET a "/api/Course"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener una lista de cursos
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Obtener todos los cursos cuando no hay cursos</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Course" está accesible
+    And el sistema no contiene cursos en la base de datos
+    When se envía una solicitud GET a "/api/Course"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener una lista vacía
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Obtener un curso por ID</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Obtener un curso por ID con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Course/{id}" está accesible
+    And el sistema contiene un curso con ID "1"
+    When se envía una solicitud GET a "/api/Course/1"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener el curso con ID "1"
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Obtener un curso por ID cuando el curso no existe</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Course/{id}" está accesible
+    And el sistema no contiene un curso con ID "999"
+    When se envía una solicitud GET a "/api/Course/999"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "Course not found"
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Agregar un curso</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Agregar un curso con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Course" está accesible
+    And el cuerpo de la solicitud es:
+    {
+        "Id": 1,
+        "Name": "Mathematics",
+        "Credits": 3
+    }
+    When se envía una solicitud POST a "/api/Course"
+    Then el código de estado de la respuesta debe ser 201
+    And el cuerpo de la respuesta debe contener "Course created successfully"
+    And el recurso creado debe estar accesible en "/api/Course/1"
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Agregar un curso con datos inválidos</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Course" está accesible
+    And el cuerpo de la solicitud es:
+    {
+        "Id": 1,
+        "Name": "",
+        "Credits": -1
+    }
+    When se envía una solicitud POST a "/api/Course"
+    Then el código de estado de la respuesta debe ser 400
+    And el cuerpo de la respuesta debe contener "Invalid course data"
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Actualizar un curso</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Actualizar un curso con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Course/{id}" está accesible
+    And el sistema contiene un curso con ID "1"
+    And el cuerpo de la solicitud es:
+    {
+        "Id": 1,
+        "Name": "Advanced Mathematics",
+        "Credits": 4
+    }
+    When se envía una solicitud PUT a "/api/Course/1"
+    Then el código de estado de la respuesta debe ser 204
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Actualizar un curso cuando el ID no coincide</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Course/{id}" está accesible
+    And el sistema contiene un curso con ID "1"
+    And el cuerpo de la solicitud es:
+    {
+        "Id": 2,
+        "Name": "Advanced Mathematics",
+        "Credits": 4
+    }
+    When se envía una solicitud PUT a "/api/Course/1"
+    Then el código de estado de la respuesta debe ser 400
+    And el cuerpo de la respuesta debe contener "Course ID mismatch"
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Eliminar un curso</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Eliminar un curso con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Course/{id}" está accesible
+    And el sistema contiene un curso con ID "1"
+    When se envía una solicitud DELETE a "/api/Course/1"
+    Then el código de estado de la respuesta debe ser 204
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Eliminar un curso cuando el curso no existe</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Course/{id}" está accesible
+    And el sistema no contiene un curso con ID "999"
+    When se envía una solicitud DELETE a "/api/Course/999"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "Course not found"
+    ```
+
+  </details>
+
+</details>
+
+
+<details open>
+  <summary><b><i>Obtener todos los departamentos</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Obtener todos los departamentos con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Department" está accesible
+    And el sistema contiene departamentos en la base de datos
+    When se envía una solicitud GET a "/api/Department"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener una lista de departamentos
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Obtener todos los departamentos cuando no hay departamentos</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Department" está accesible
+    And el sistema no contiene departamentos en la base de datos
+    When se envía una solicitud GET a "/api/Department"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener una lista vacía
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Obtener un departamento por ID</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Obtener un departamento por ID con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Department/{id}" está accesible
+    And el sistema contiene un departamento con ID "1"
+    When se envía una solicitud GET a "/api/Department/1"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener el departamento con ID "1"
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Obtener un departamento por ID cuando el departamento no existe</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Department/{id}" está accesible
+    And el sistema no contiene un departamento con ID "999"
+    When se envía una solicitud GET a "/api/Department/999"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "Department not found"
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Agregar un departamento</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Agregar un departamento con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Department" está accesible
+    And el cuerpo de la solicitud es:
+    {
+        "Id": 1,
+        "Name": "Computer Science"
+    }
+    When se envía una solicitud POST a "/api/Department"
+    Then el código de estado de la respuesta debe ser 201
+    And el cuerpo de la respuesta debe contener "Department created successfully"
+    And el recurso creado debe estar accesible en "/api/Department/1"
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Agregar un departamento con datos inválidos</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Department" está accesible
+    And el cuerpo de la solicitud es:
+    {
+        "Id": 1,
+        "Name": ""
+    }
+    When se envía una solicitud POST a "/api/Department"
+    Then el código de estado de la respuesta debe ser 400
+    And el cuerpo de la respuesta debe contener "Invalid department data"
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Actualizar un departamento</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Actualizar un departamento con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Department/{id}" está accesible
+    And el sistema contiene un departamento con ID "1"
+    And el cuerpo de la solicitud es:
+    {
+        "Id": 1,
+        "Name": "Advanced Computer Science"
+    }
+    When se envía una solicitud PUT a "/api/Department/1"
+    Then el código de estado de la respuesta debe ser 204
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Actualizar un departamento cuando el ID no coincide</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Department/{id}" está accesible
+    And el sistema contiene un departamento con ID "1"
+    And el cuerpo de la solicitud es:
+    {
+        "Id": 2,
+        "Name": "Advanced Computer Science"
+    }
+    When se envía una solicitud PUT a "/api/Department/1"
+    Then el código de estado de la respuesta debe ser 400
+    And el cuerpo de la respuesta debe contener "Department ID mismatch"
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Eliminar un departamento</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Eliminar un departamento con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Department/{id}" está accesible
+    And el sistema contiene un departamento con ID "1"
+    When se envía una solicitud DELETE a "/api/Department/1"
+    Then el código de estado de la respuesta debe ser 204
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Eliminar un departamento cuando el departamento no existe</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/Department/{id}" está accesible
+    And el sistema no contiene un departamento con ID "999"
+    When se envía una solicitud DELETE a "/api/Department/999"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "Department not found"
+    ```
+
+  </details>
+
+</details>
+
+
+<details open>
+  <summary><b><i>Obtener todas las escuelas</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Obtener todas las escuelas con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/schools" está accesible
+    And el sistema contiene escuelas en la base de datos
+    When se envía una solicitud GET a "/api/schools"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener una lista de escuelas
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Obtener todas las escuelas cuando no hay escuelas</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/schools" está accesible
+    And el sistema no contiene escuelas en la base de datos
+    When se envía una solicitud GET a "/api/schools"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener una lista vacía
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Obtener una escuela por ID</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Obtener una escuela por ID con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/schools/{id}" está accesible
+    And el sistema contiene una escuela con ID "1"
+    When se envía una solicitud GET a "/api/schools/1"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener la escuela con ID "1"
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Obtener una escuela por ID cuando la escuela no existe</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/schools/{id}" está accesible
+    And el sistema no contiene una escuela con ID "999"
+    When se envía una solicitud GET a "/api/schools/999"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "School not found"
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Agregar una escuela</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Agregar una escuela con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/schools" está accesible
+    And el cuerpo de la solicitud es:
+    {
+        "Id": 1,
+        "Name": "Greenwood High",
+        "Location": "New York"
+    }
+    When se envía una solicitud POST a "/api/schools"
+    Then el código de estado de la respuesta debe ser 201
+    And el cuerpo de la respuesta debe contener "School created successfully"
+    And el recurso creado debe estar accesible en "/api/schools/1"
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Agregar una escuela con datos inválidos</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/schools" está accesible
+    And el cuerpo de la solicitud es:
+    {
+        "Id": 1,
+        "Name": "",
+        "Location": ""
+    }
+    When se envía una solicitud POST a "/api/schools"
+    Then el código de estado de la respuesta debe ser 400
+    And el cuerpo de la respuesta debe contener "Invalid school data"
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Actualizar una escuela</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Actualizar una escuela con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/schools/{id}" está accesible
+    And el sistema contiene una escuela con ID "1"
+    And el cuerpo de la solicitud es:
+    {
+        "Id": 1,
+        "Name": "Greenwood High School",
+        "Location": "New York"
+    }
+    When se envía una solicitud PUT a "/api/schools/1"
+    Then el código de estado de la respuesta debe ser 204
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Actualizar una escuela cuando el ID no coincide</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/schools/{id}" está accesible
+    And el sistema contiene una escuela con ID "1"
+    And el cuerpo de la solicitud es:
+    {
+        "Id": 2,
+        "Name": "Greenwood High School",
+        "Location": "New York"
+    }
+    When se envía una solicitud PUT a "/api/schools/1"
+    Then el código de estado de la respuesta debe ser 400
+    And el cuerpo de la respuesta debe contener "School ID mismatch"
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Eliminar una escuela</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Eliminar una escuela con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/schools/{id}" está accesible
+    And el sistema contiene una escuela con ID "1"
+    When se envía una solicitud DELETE a "/api/schools/1"
+    Then el código de estado de la respuesta debe ser 204
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Eliminar una escuela cuando la escuela no existe</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/schools/{id}" está accesible
+    And el sistema no contiene una escuela con ID "999"
+    When se envía una solicitud DELETE a "/api/schools/999"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "School not found"
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Obtener el nombre de una escuela por ID</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Obtener el nombre de una escuela por ID con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/schools/{id}/schoolName" está accesible
+    And el sistema contiene una escuela con ID "1" y nombre "Greenwood High"
+    When se envía una solicitud GET a "/api/schools/1/schoolName"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener el nombre "Greenwood High"
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Obtener el nombre de una escuela por ID cuando la escuela no existe</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/schools/{id}/schoolName" está accesible
+    And el sistema no contiene una escuela con ID "999"
+    When se envía una solicitud GET a "/api/schools/999/schoolName"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "School not found"
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Agregar un plan de estudio para una escuela</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Agregar un plan de estudio con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/studyPlanSchool" está accesible
+    And el cuerpo de la solicitud es:
+    {
+        "Id": 1,
+        "Name": "Science Plan",
+        "Courses": [
+            {"Id": "course1", "Group": "A"},
+            {"Id": "course2", "Group": "B"}
+        ]
+    }
+    When se envía una solicitud POST a "/api/studyPlanSchool"
+    Then el código de estado de la respuesta debe ser 200
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Agregar un plan de estudio con datos inválidos</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/studyPlanSchool" está accesible
+    And el cuerpo de la solicitud es:
+    {
+        "Id": 1,
+        "Name": "",
+        "Courses": []
+    }
+    When se envía una solicitud POST a "/api/studyPlanSchool"
+    Then el código de estado de la respuesta debe ser 400
+    And el cuerpo de la respuesta debe contener "Invalid study plan data"
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Obtener un plan de estudio por nombre de escuela</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Obtener un plan de estudio por nombre de escuela con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/studyPlanSchool/{schoolName}" está accesible
+    And el sistema contiene un plan de estudio para la escuela con nombre "Greenwood High" con el cuerpo:
+    {
+        "Id": 1,
+        "Name": "Science Plan",
+        "Courses": [
+            {"Id": "course1", "Group": "A"},
+            {"Id": "course2", "Group": "B"}
+        ]
+    }
+    When se envía una solicitud GET a "/api/studyPlanSchool/Greenwood%20High"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener el plan de estudio correspondiente
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Obtener un plan de estudio por nombre de escuela cuando el plan no existe</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/studyPlanSchool/{schoolName}" está accesible
+    And el sistema no contiene un plan de estudio para la escuela con nombre "Nonexistent School"
+    When se envía una solicitud GET a "/api/studyPlanSchool/Nonexistent%20School"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "Study plan not found"
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Obtener un plan de estudio por ID de escuela</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Obtener un plan de estudio por ID de escuela con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/studyPlanSchool/byId/{schoolId}" está accesible
+    And el sistema contiene un plan de estudio con ID "1" con el cuerpo:
+    {
+        "Id": 1,
+        "Name": "Science Plan",
+        "Courses": [
+            {"Id": "course1", "Group": "A"},
+            {"Id": "course2", "Group": "B"}
+        ]
+    }
+    When se envía una solicitud GET a "/api/studyPlanSchool/byId/1"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener el plan de estudio correspondiente
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Obtener un plan de estudio por ID de escuela cuando el plan no existe</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/studyPlanSchool/byId/{schoolId}" está accesible
+    And el sistema no contiene un plan de estudio con ID "999"
+    When se envía una solicitud GET a "/api/studyPlanSchool/byId/999"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "Study plan not found"
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Obtener todos los profesores</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Obtener todos los profesores con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/teacher" está accesible
+    And el sistema contiene una lista de profesores:
+    [
+        {"Id": 1, "Name": "John Doe", "Department": "Mathematics"},
+        {"Id": 2, "Name": "Jane Smith", "Department": "Science"}
+    ]
+    When se envía una solicitud GET a "/api/teacher"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener la lista de todos los profesores
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Obtener un profesor por ID</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Obtener un profesor por ID con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/teacher/{id}" está accesible
+    And el sistema contiene un profesor con ID "1" con el cuerpo:
+    {
+        "Id": 1,
+        "Name": "John Doe",
+        "Department": "Mathematics"
+    }
+    When se envía una solicitud GET a "/api/teacher/1"
+    Then el código de estado de la respuesta debe ser 200
+    And el cuerpo de la respuesta debe contener el profesor con ID 1
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Obtener un profesor por ID cuando el profesor no existe</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/teacher/{id}" está accesible
+    And el sistema no contiene un profesor con ID "999"
+    When se envía una solicitud GET a "/api/teacher/999"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "Teacher not found"
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Agregar un nuevo profesor</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Agregar un profesor con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/teacher" está accesible
+    And el cuerpo de la solicitud es:
+    {
+        "Id": 3,
+        "Name": "Alice Johnson",
+        "Department": "History"
+    }
+    When se envía una solicitud POST a "/api/teacher"
+    Then el código de estado de la respuesta debe ser 201
+    And el cuerpo de la respuesta debe contener el profesor creado con ID 3
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Agregar un profesor con datos inválidos</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/teacher" está accesible
+    And el cuerpo de la solicitud es:
+    {
+        "Id": 0,
+        "Name": "",
+        "Department": ""
+    }
+    When se envía una solicitud POST a "/api/teacher"
+    Then el código de estado de la respuesta debe ser 400
+    And el cuerpo de la respuesta debe contener "Invalid teacher data"
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Actualizar un profesor</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Actualizar un profesor con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/teacher/{id}" está accesible
+    And el sistema contiene un profesor con ID "1" con el cuerpo:
+    {
+        "Id": 1,
+        "Name": "John Doe",
+        "Department": "Mathematics"
+    }
+    And el cuerpo de la solicitud de actualización es:
+    {
+        "Id": 1,
+        "Name": "Johnathan Doe",
+        "Department": "Mathematics"
+    }
+    When se envía una solicitud PUT a "/api/teacher/1"
+    Then el código de estado de la respuesta debe ser 204
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Actualizar un profesor con ID incorrecto</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/teacher/{id}" está accesible
+    And el sistema contiene un profesor con ID "1" con el cuerpo:
+    {
+        "Id": 1,
+        "Name": "John Doe",
+        "Department": "Mathematics"
+    }
+    And el cuerpo de la solicitud de actualización es:
+    {
+        "Id": 2,
+        "Name": "Johnathan Doe",
+        "Department": "Mathematics"
+    }
+    When se envía una solicitud PUT a "/api/teacher/1"
+    Then el código de estado de la respuesta debe ser 400
+    And el cuerpo de la respuesta debe contener "ID mismatch"
+    ```
+
+  </details>
+
+</details>
+
+<details open>
+  <summary><b><i>Eliminar un profesor</i></b></summary>
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Eliminar un profesor con éxito</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/teacher/{id}" está accesible
+    And el sistema contiene un profesor con ID "1"
+    When se envía una solicitud DELETE a "/api/teacher/1"
+    Then el código de estado de la respuesta debe ser 204
+    ```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Eliminar un profesor cuando el profesor no existe</summary>
+
+    ```gherkin
+    Given que el endpoint "/api/teacher/{id}" está accesible
+    And el sistema no contiene un profesor con ID "999"
+    When se envía una solicitud DELETE a "/api/teacher/999"
+    Then el código de estado de la respuesta debe ser 404
+    And el cuerpo de la respuesta debe contener "Teacher not found"
+    ```
+
+  </details>
+
+</details>
 
 ### 3.3. Pruebas de Seguridad
 
