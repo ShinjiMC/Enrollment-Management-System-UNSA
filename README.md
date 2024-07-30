@@ -164,17 +164,17 @@ Descripción general de la arquitectura de microservicios.
 ### 3.1. Diagrama General
 
 <p align="center">
-  <img src="resources/arquitecturav1.png" alt="Arquitectura" width="720px" />
+  <img src="resources/arquitecturav2.png" alt="Arquitectura" width="720px" />
 </p>
 
 
 ### 3.2. Lista de Microservicios
 - [Microservicio de Autenticación](./payments-microservice/README.md)
-- [Microservicio de Usuarios](./payments-microservice/README.md)
-- [Microservicio de Cursos](./payments-microservice/README.md)
-- [Microservicio de Matrícula](./payments-microservice/README.md)
-- [Microservicio de Escuelas](./payments-microservice/README.md)
-- [Microservicio de Notificaciones](./payments-microservice/README.md)
+- [Microservicio de Usuarios](./users-microservice/README.md)
+- [Microservicio de Cursos](./courses-microservice//README.md)
+- [Microservicio de Matrícula](./enrollments-microservice/README.md)
+- [Microservicio de Escuelas](./schools-microservice/README.md)
+- [Microservicio de Notificaciones](./notifications-microservice/README.md)
 - [Microservicio de Pagos](./payments-microservice/README.md)
 
 ## 4. Implementación
@@ -225,7 +225,7 @@ El diseño del sistema sigue los principios SOLID para garantizar una arquitectu
 
       public void AddUser(User user)
       {
-          // Lógica para añadir un usuario
+          // ...
       }
   }
   ```
@@ -243,7 +243,7 @@ El diseño del sistema sigue los principios SOLID para garantizar una arquitectu
   {
       public void ProcessPayment(Payment payment)
       {
-          // Lógica para procesar pagos con tarjeta de crédito
+          // ...
       }
   }
   ```
@@ -252,93 +252,251 @@ El diseño del sistema sigue los principios SOLID para garantizar una arquitectu
   Las clases derivadas deben ser sustituibles por sus clases base. Las clases hijas deben implementar completamente la funcionalidad esperada por la clase padre.
 
   ```csharp
-  public class Rectangle
+  namespace users_microservice.Domain.ValueObjects
   {
-      public virtual int Width { get; set; }
-      public virtual int Height { get; set; }
-
-      public int Area => Width * Height;
-  }
-
-  public class Square : Rectangle
-  {
-      public override int Width
+      public class StudentInfo
       {
-          set { base.Width = base.Height = value; }
+          // Details related to student information
       }
 
-      public override int Height
+      public class AcademicPerformance
       {
-          set { base.Width = base.Height = value; }
+          // Details related to academic performance
+      }
+
+      public class CourseModel
+      {
+          // Details related to course model
       }
   }
+
+  namespace users_microservice.Domain.Entities
+  {
+      public class UserModel
+      {
+          public string? Username { get; set; }
+          public string? Email { get; set; }
+
+          public virtual void DisplayInfo()
+          {
+              Console.WriteLine($"Username: {Username}, Email: {Email}");
+          }
+      }
+
+      public class StudentModel : UserModel
+      {
+          public StudentInfo? StudentData { get; set; }
+          public int? Credit { get; set; }
+          public AcademicPerformance? AcademicPerformance { get; set; }
+          public List<CourseModel>? StudentCourses { get; set; }
+
+          public StudentModel() { }
+
+          public override void DisplayInfo()
+          {
+              base.DisplayInfo();
+              Console.WriteLine("Student Data and additional information.");
+          }
+      }
+
+      public class AdminModel : UserModel
+      {
+          public string? PhoneNumber { get; set; }
+
+          public AdminModel() { }
+
+          public override void DisplayInfo()
+          {
+              base.DisplayInfo();
+              Console.WriteLine($"Phone Number: {PhoneNumber}");
+          }
+      }
+  }
+
+  namespace users_microservice.Application.Services
+  {
+      public interface IUserService
+      {
+          void AddUser(UserModel user);
+          UserModel GetUser(string username);
+          List<UserModel> GetAllUsers();
+      }
+
+      public class UserService : IUserService
+      {
+          private readonly List<UserModel> _users = new List<UserModel>();
+
+          public void AddUser(UserModel user)
+          {
+              _users.Add(user);
+          }
+
+          public UserModel GetUser(string username)
+          {
+              return _users.FirstOrDefault(user => user.Username == username);
+          }
+
+          public List<UserModel> GetAllUsers()
+          {
+              return _users;
+          }
+      }
+  }
+
   ```
+  - Ejemplo de uso:
+  ```csharp
+  IUserService userService = new UserService();
+
+  // Crear instancias de StudentModel y AdminModel
+  UserModel student = new StudentModel
+  {
+      Username = "john_doe",
+      Email = "john@example.com",
+      StudentData = new StudentInfo(),
+      Credit = 30,
+      AcademicPerformance = new AcademicPerformance(),
+      StudentCourses = new List<CourseModel>()
+  };
+
+  UserModel admin = new AdminModel
+  {
+      Username = "admin_user",
+      Email = "admin@example.com",
+      PhoneNumber = "123-456-7890"
+  };
+
+  // Agregar usuarios al servicio
+  userService.AddUser(student);
+  userService.AddUser(admin);
+
+  ```
+
 
 - **I - Principio de Segregación de Interfaces (Interface Segregation Principle):**
   Una clase no debería estar forzada a implementar interfaces que no usa. Dividimos las interfaces grandes en otras más pequeñas y específicas.
 
   ```csharp
-  public interface IPrint
+  // Interfaces Segregadas
+  public interface IStudentService
   {
-      void Print();
+      void AddStudent(StudentModel student);
+      StudentModel GetStudent(string username);
+      List<StudentModel> GetAllStudents();
   }
 
-  public interface IScan
+  public interface IAdminService
   {
-      void Scan();
+      void AddAdmin(AdminModel admin);
+      AdminModel GetAdmin(string username);
+      List<AdminModel> GetAllAdmins();
   }
 
-  public class MultiFunctionPrinter : IPrint, IScan
+  // StudentService
+  public class StudentService : IStudentService
   {
-      public void Print()
+      private readonly List<StudentModel> _students = new List<StudentModel>();
+
+      public void AddStudent(StudentModel student)
       {
-          // Implementación de imprimir
+          _students.Add(student);
       }
 
-      public void Scan()
+      public StudentModel GetStudent(string username)
       {
-          // Implementación de escanear
+          return _students.FirstOrDefault(student => student.Username == username);
+      }
+
+      public List<StudentModel> GetAllStudents()
+      {
+          return _students;
       }
   }
+
+  // AdminService
+  public class AdminService : IAdminService
+  {
+      private readonly List<AdminModel> _admins = new List<AdminModel>();
+
+      public void AddAdmin(AdminModel admin)
+      {
+          _admins.Add(admin);
+      }
+
+      public AdminModel GetAdmin(string username)
+      {
+          return _admins.FirstOrDefault(admin => admin.Username == username);
+      }
+
+      public List<AdminModel> GetAllAdmins()
+      {
+          return _admins;
+      }
+  }
+
   ```
 
 - **D - Principio de Inversión de Dependencia (Dependency Inversion Principle):**
   Las dependencias deben ir desde los módulos de alto nivel hacia los módulos de bajo nivel. Utilizamos la inyección de dependencias para implementar este principio.
-
+  - Inyeccion de dependencias desde `Program.cs`:
   ```csharp
-  public interface IElectronicBillService
+  // Builder
+  var builder = WebApplication.CreateBuilder(args);
+  builder.Services.AddControllers();
+  builder.Services.AddEndpointsApiExplorer();
+
+  // Register database context
+  builder.Services.AddSingleton<MongoDbContext>();
+
+  // Register application services
+  builder.Services.AddScoped<IElectronicBillService, ElectronicBillService>();
+  builder.Services.AddScoped<IPaymentCodeService, PaymentCodeService>();
+  builder.Services.AddScoped<IPaymentService, PaymentService>();
+  builder.Services.AddScoped<IPayerService, PayerService>();
+
+  // Register domain services
+  builder.Services.AddScoped<IElectronicBillDomainService, ElectronicBillDomainService>();
+  builder.Services.AddScoped<IPaymentCodeDomainService, PaymentCodeDomainService>();
+  builder.Services.AddScoped<IPaymentDomainService, PaymentDomainService>();
+
+  // Register repositories
+  builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+  builder.Services.AddScoped<IElectronicBillRepository, ElectronicBillRepository>();
+  builder.Services.AddScoped<IPaymentCodeRepository, PaymentCodeRepository>();
+  builder.Services.AddScoped<IPayerRepository, PayerRepository>();
+  ```
+  - Uso en controladores:
+  ```csharp
+  public interface IAdminController
   {
-      Task<ElectronicBillDto> CreateElectronicBill(ElectronicBillDto electronicBillDto);
-      Task<ElectronicBillDto> GetElectronicBillById(string electronicBillId);
-      Task<List<ElectronicBillDto>> GetElectronicBills();
-      Task<bool> UpdateElectronicBillStatus(string electronicBillId, string status);
+      Task<IActionResult> GetAllStudents();
   }
 
-  public class ElectronicBillService : IElectronicBillService
+
+  [Route("api/[controller]")]
+  [ApiController]
+  public class AdminController : ControllerBase, IAdminController
   {
-    private readonly IElectronicBillDomainService _electronicBillDomainService;
+      private readonly IAdminService _adminService; // inyeccion de dependencia
 
-    public ElectronicBillService(IElectronicBillDomainService electronicBillDomainService)
-    {
-        _electronicBillDomainService = electronicBillDomainService;
-    }
+      public AdminController(IAdminService adminService)
+      {
+          _adminService = adminService;
+      }
 
-    public async Task<ElectronicBillDto> CreateElectronicBill(ElectronicBillDto electronicBillDto)
-    {
-        var electronicBill = await _electronicBillDomainService.CreateElectronicBill(
-            electronicBillDto.StudentId,
-            new Money(electronicBillDto.TotalAmount.Amount, electronicBillDto.TotalAmount.Currency),
-            electronicBillDto.DueDate,
-            electronicBillDto.Items?.ConvertAll(item => new ElectronicBillItem
-            {
-                ElectronicBillItemId = item.ElectronicBillItemId,
-                Description = item.Description,
-                Amount = new Money(item.Amount.Amount, item.Amount.Currency)
-            }) ?? new List<ElectronicBillItem>()
-        );
-
-        return ElectronicBillMapper.ToDto(electronicBill);
-    }
+      [HttpPost("register/student")]
+      public async Task<IActionResult> RegisterStudent([FromBody] StudentDto student)
+      {
+          var createdStudent = await _adminService.CreateStudentAsync(student);
+          return StatusCode(createdStudent.StatusCode, createdStudent);
+      }
+      
+      [HttpPost("register/admin")]
+      public async Task<IActionResult> RegisterAdmin([FromBody] AdminDto userDTO)
+      {
+          var response = await _adminService.CreateAdminAccountAsync(userDTO);
+          return StatusCode(response.StatusCode, response);
+      }
   }
   ```
 
@@ -653,14 +811,48 @@ Ejecuta:
 docker-compose -f docker-compose.prod.yml up --build -d
 ```
 
-## 8. Licencia
+## 8. Integración Continua
+La integración continua se gestiona a través de Jenkins, automatizando la construcción, pruebas y análisis del código. El pipeline está configurado para ejecutar las siguientes etapas de manera paralela para cada microservicio:
+
+### ***a) Construcción Automática con .NET***
+
+- **Compilación**: Se utiliza `dotnet build` para compilar el código de cada microservicio.
+- **Publicación**: `dotnet publish` genera los artefactos necesarios para el despliegue.
+
+### ***b) Análisis de Código con SonarCloud***
+
+- **Análisis Estático**: Realiza un análisis de calidad del código, cobertura, y detecta vulnerabilidades mediante SonarCloud.
+
+### ***c) Pruebas de API con Postman***
+
+- **Ejecución de Pruebas**: Las colecciones de Postman se ejecutan con Newman CLI para validar los endpoints de cada microservicio.
+
+### ***d) Pruebas de Rendimiento con JMeter***
+
+- **Evaluación de Carga**: Ejecuta planes de prueba de JMeter para medir el rendimiento y detectar cuellos de botella.
+
+### ***e) Pruebas de Seguridad con OWASP ZAP***
+
+- **Escaneo de Vulnerabilidades**: Utiliza OWASP ZAP para identificar problemas de seguridad en las aplicaciones.
+
+### ***f) Dockerización***
+
+- **Construcción y Despliegue**: Se crean imágenes Docker para cada microservicio y se gestionan los contenedores para desarrollo, pruebas y producción.
+
+Cada etapa del pipeline se ejecuta en paralelo para los diferentes microservicios, asegurando un proceso de integración continua eficiente.
+
+<p align="center">
+  <img src="resources/pipeline.png" alt="Arquitectura" width="720px" />
+</p>
+
+## 9. Licencia
 This project is licensed under [Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional](http://creativecommons.org/licenses/by-nc-sa/4.0/):
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
   <img alt="Licencia Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" />
 </a>
 
-## 9. Referencias
+## 10. Referencias
 
 [1] W. by Iamprovidence, **“Backend side architecture evolution (N-layered, DDD, Hexagon, Onion, Clean Architecture)”**, Medium, 27-jun-2023. [En línea]. Disponible en: [https://medium.com/@iamprovidence/backend-side-architecture-evolution-n-layered-ddd-hexagon-onion-clean-architecture-643d72444ce4](https://medium.com/@iamprovidence/backend-side-architecture-evolution-n-layered-ddd-hexagon-onion-clean-architecture-643d72444ce4).
 
