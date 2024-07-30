@@ -1,3 +1,4 @@
+using Messaging;
 using Microsoft.OpenApi.Models;
 using PaymentsMicroservice.Application.Services.Implementations;
 using PaymentsMicroservice.Application.Services.Interfaces;
@@ -31,6 +32,10 @@ builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IElectronicBillRepository, ElectronicBillRepository>();
 builder.Services.AddScoped<IPaymentCodeRepository, PaymentCodeRepository>();
 builder.Services.AddScoped<IPayerRepository, PayerRepository>();
+
+// Register messaging services
+builder.Services.AddTransient<Publisher>(); // Use AddTransient if instances don't need to be shared
+builder.Services.AddTransient<Consumer>();  // Use AddTransient if instances don't need to be shared
 
 // Enable Swagger
 builder.Services.AddSwaggerGen(c =>
