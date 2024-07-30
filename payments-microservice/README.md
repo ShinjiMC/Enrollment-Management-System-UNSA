@@ -1,7 +1,7 @@
 # Arquitectura DDD y Pruebas del Microservicio de Pagos
 
 ## 1. Descripcion
-El microservicio de pagos se encarga de gestionar todas las transacciones financieras relacionadas con los pagos de los estudiantes, incluyendo la creación, actualización, obtención y eliminación de pagos.
+El microservicio de pagos se encarga de gestionar todas las transacciones financieras relacionadas con los pagos de los estudiantes, incluyendo la creación, actualización, obtención de pagos, y la generacion de códigos de pago.
 - **Contexto Delimitado:** Gestión de Pagos
 
 ## 2. Arquitectura DDD
@@ -120,9 +120,18 @@ El microservicio de pagos se encarga de gestionar todas las transacciones financ
 ### 3.1. Pruebas de API
 
 #### 3.1.1. Herramientas y Tecnologías
-Descripción de las herramientas utilizadas para las pruebas de API (por ejemplo, Postman, Swagger, etc.).
+
+Para llevar a cabo las pruebas de nuestra API, hemos utilizado una serie de herramientas y tecnologías clave que facilitan la evaluación exhaustiva y efectiva de las funcionalidades expuestas por la API. A continuación se describen las herramientas principales empleadas:
+
+- **Postman:** Esta herramienta es ampliamente utilizada para el diseño, prueba y documentación de APIs. Permite realizar solicitudes HTTP a los endpoints de la API, definir y gestionar colecciones de pruebas, y verificar respuestas con gran detalle. Postman también proporciona funcionalidades avanzadas como la ejecución de scripts pre y post solicitud, así como la integración con sistemas de CI/CD para automatizar las pruebas.
+
+- **Swagger:** Swagger, ahora conocido como OpenAPI, es una herramienta poderosa para documentar y probar APIs. Permite generar documentación interactiva que facilita la comprensión y el uso de los endpoints de la API. Con Swagger, es posible visualizar y probar los endpoints directamente desde la documentación, lo que ayuda a identificar problemas y validar el comportamiento de la API de manera eficiente.
 
 #### 3.1.2. Escenarios de Prueba de API
+
+En esta sección se detallan los escenarios de prueba para el servicio de matrículas, los cuales han sido diseñados para validar el correcto funcionamiento de las diferentes operaciones del API. Los detalles de los escenarios de prueba están disponibles en el archivo `enrollments-microservice.postman_collection.json`, el cual contiene las solicitudes y configuraciones para ejecutar los tests en Postman.
+
+Además, los resultados de la ejecución de estos tests se encuentran en el archivo `enrollments-microservice.postman_test_run.json`. Este archivo proporciona un resumen de las pruebas realizadas y los resultados obtenidos, facilitando la verificación del comportamiento esperado del API según los casos de prueba definidos.
 
 ```gherkin
 Background: 
