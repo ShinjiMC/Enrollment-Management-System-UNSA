@@ -88,7 +88,6 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 app.MapGet("/", () => "This is Payments Microservice !!!");
 
-// app.Urls.Add("http://localhost:8007");
 
 // Run
 await app.RunAsync();
