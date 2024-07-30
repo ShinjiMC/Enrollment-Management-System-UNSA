@@ -99,11 +99,16 @@ Descripción de las herramientas utilizadas para las pruebas de API (por ejemplo
 
 #### 3.1.2. Escenarios de Prueba de API
 
+```gherkin
+Background: 
+  Dado que el endpoint "api/v1/electronicbill/{electronicBillId}" está disponible
+```
+
 <details open>
-  <summary><b><i>Escenario 1:</i></b> Verificación de la creación de un pago.</summary>
+  <summary><b><i>Escenario 1:</i></b> Verificar la creación de un pago.</summary>
   
   ```gherkin
-  Escenario: Verificación de la creación de un pago
+  Scenario: Verificación de la creación de un pago
     Given el endpoint "api/payments/" está disponible
     When se envía una solicitud POST con los datos del pago
     Then la respuesta debe ser 201 Created
@@ -112,20 +117,32 @@ Descripción de las herramientas utilizadas para las pruebas de API (por ejemplo
 </details>
 
 <details open>
-  <summary><b><i>Escenario 2:</i></b> Verificación de la obtención de detalles de un pago.</summary>
+  <summary><b><i>Escenario 2:</i></b> Verificar la obtención de detalles de un pago.</summary>
   
   ```gherkin
-  Given el endpoint "api/payments/{id}" está disponible
+  Scenario: Verificar la obtención de detalles de un pago
+    Given el endpoint "api/payments/{id}" está disponible
     When se envía una solicitud GET con un ID de pago válido
     Then la respuesta debe ser 200 OK
     And los detalles del pago deben ser correctos
   ```
 </details>
 
+```gherkin
+Background: 
+  Dado que el endpoint "endpoint aqui" está disponible
+```
+
 <details open>
-  <summary><b><i>Escenario 3:</i></b> Verificación de la actualización de un pago.</summary>
+  <summary><b><i>Escenario 3:</i></b> Verificar la creación de un pago.</summary>
   
-  <span>gherkin aqui</span>
+  ```gherkin
+  Scenario: Verificación de la creación de un pago
+    Given el endpoint "api/payments/" está disponible
+    When se envía una solicitud POST con los datos del pago
+    Then la respuesta debe ser 201 Created
+    And el pago debe estar registrado en el sistema
+  ```
 </details>
 
 ---
@@ -133,7 +150,9 @@ Descripción de las herramientas utilizadas para las pruebas de API (por ejemplo
 ### 3.2. Pruebas de Rendimiento
 
 #### 3.2.1. Herramientas y Tecnologías
-Descripción de las herramientas utilizadas para las pruebas de rendimiento (por ejemplo, Apache JMeter, k6, etc.).
+
+**Apache JMeter** es una herramienta de código abierto ampliamente utilizada para realizar pruebas de rendimiento y carga en aplicaciones. Diseñada para evaluar el rendimiento de servicios web y aplicaciones en una variedad de protocolos, JMeter permite simular múltiples usuarios concurrentes para medir el comportamiento del sistema bajo diferentes cargas. Con su interfaz gráfica intuitiva, JMeter facilita la creación de planes de prueba personalizados, la definición de escenarios de carga y la configuración de métricas detalladas. Esta herramienta también ofrece capacidades para generar reportes detallados y gráficos, proporcionando una visión integral del rendimiento del sistema y ayudando a identificar cuellos de botella y áreas de mejora. Su flexibilidad y extensibilidad la convierten en una opción ideal para evaluar la capacidad de respuesta y la estabilidad de aplicaciones en entornos de producción.
+
 
 #### 3.2.2. Escenarios de Prueba de Rendimiento
 
@@ -143,12 +162,12 @@ Background:
 ```
 
 <details open>
-  <summary><b><i>Escenario 1:</i></b> Obtener detalles de una factura electrónica con 10 peticiones concurrentes.</summary>
+  <summary><b><i>Escenario 1:</i></b> Obtener detalles de una factura electrónica con 10 peticiones simultáneas.</summary>
   
   ```gherkin
-  Scenario: Obtener detalles de una factura electrónica con 10 peticiones concurrentes
+  Scenario: Obtener detalles de una factura electrónica con 10 peticiones simultáneas
     Given existe una factura electrónica con el ID "12345"
-    When se envían 10 peticiones GET concurrentes al endpoint "api/v1/electronicbill/12345"
+    When se envían 10 peticiones GET simultáneas al endpoint "api/v1/electronicbill/12345"
     Then todas las respuestas deben ser 200 OK
     And el tiempo de respuesta promedio debe ser menor a 300 ms
   ```
@@ -156,12 +175,12 @@ Background:
 </details>
 
 <details open>
-  <summary><b><i>Escenario 2:</i></b> Obtener detalles de una factura electrónica con 25 peticiones concurrentes.</summary>
+  <summary><b><i>Escenario 2:</i></b> Obtener detalles de una factura electrónica con 25 peticiones simultáneas.</summary>
   
   ```gherkin
-  Escenario: Obtener detalles de una factura electrónica con 25 peticiones concurrentes
+  Scenario: Obtener detalles de una factura electrónica con 25 peticiones simultáneas
     Given existe una factura electrónica con el ID "12345"
-    When se envían 25 peticiones GET concurrentes al endpoint "api/v1/electronicbill/12345"
+    When se envían 25 peticiones GET simultáneas al endpoint "api/v1/electronicbill/12345"
     Then todas las respuestas deben ser 200 OK
     And el tiempo de respuesta promedio debe ser menor a 600 ms
   ```
@@ -169,12 +188,12 @@ Background:
 </details>
 
 <details open>
-  <summary><b><i>Escenario 3:</i></b> Obtener detalles de una factura electrónica con 50 peticiones concurrentes.</summary>
+  <summary><b><i>Escenario 3:</i></b> Obtener detalles de una factura electrónica con 50 peticiones simultáneas.</summary>
   
   ```gherkin
-  Escenario: Obtener detalles de una factura electrónica con 50 peticiones concurrentes
+  Scenario: Obtener detalles de una factura electrónica con 50 peticiones simultáneas
     Given existe una factura electrónica con el ID "12345"
-    When se envían 50 peticiones GET concurrentes al endpoint "api/v1/electronicbill/12345"
+    When se envían 50 peticiones GET simultáneas al endpoint "api/v1/electronicbill/12345"
     Then todas las respuestas deben ser 200 OK
     And el tiempo de respuesta promedio debe ser menor a 1000 ms
   ```
@@ -188,12 +207,12 @@ Background:
 ```
 
 <details open>
-  <summary><b><i>Escenario 4:</i></b> Verificar la obtención de todas las facturas electrónicas con 10 peticiones concurrentes.</summary>
+  <summary><b><i>Escenario 4:</i></b> Verificar la obtención de todas las facturas electrónicas con 10 peticiones simultáneas.</summary>
   
   ```gherkin
-  Escenario: Verificar la obtención de todas las facturas electrónicas con 10 peticiones concurrentes
+  Scenario: Verificar la obtención de todas las facturas electrónicas con 10 peticiones simultáneas
     Given existen varias facturas electrónicas en el sistema
-    When se envían 10 peticiones GET concurrentes al endpoint "api/v1/electronicbill"
+    When se envían 10 peticiones GET simultáneas al endpoint "api/v1/electronicbill"
     Then todas las respuestas deben ser 200 OK
     And el tiempo de respuesta promedio debe ser menor a 300 ms
   ```
@@ -201,12 +220,12 @@ Background:
 </details>
 
 <details open>
-  <summary><b><i>Escenario 5:</i></b> Verificar la obtención de todas las facturas electrónicas con 25 peticiones concurrentes.</summary>
+  <summary><b><i>Escenario 5:</i></b> Verificar la obtención de todas las facturas electrónicas con 25 peticiones simultáneas.</summary>
   
   ```gherkin
-  Escenario: Verificar la obtención de todas las facturas electrónicas con 25 peticiones concurrentes
+  Scenario: Verificar la obtención de todas las facturas electrónicas con 25 peticiones simultáneas
     Given existen varias facturas electrónicas en el sistema
-    When se envían 25 peticiones GET concurrentes al endpoint "api/v1/electronicbill"
+    When se envían 25 peticiones GET simultáneas al endpoint "api/v1/electronicbill"
     Then todas las respuestas deben ser 200 OK
     And el tiempo de respuesta promedio debe ser menor a 600 ms
   ```
@@ -214,17 +233,151 @@ Background:
 </details>
 
 <details open>
-  <summary><b><i>Escenario 6:</i></b> Verificar la obtención de todas las facturas electrónicas con 50 peticiones concurrentes.</summary>
+  <summary><b><i>Escenario 6:</i></b> Verificar la obtención de todas las facturas electrónicas con 50 peticiones simultáneas.</summary>
   
   ```gherkin
-  Escenario: Verificar la obtención de todas las facturas electrónicas con 50 peticiones concurrentes
+  Scenario: Verificar la obtención de todas las facturas electrónicas con 50 peticiones simultáneas
     Given existen varias facturas electrónicas en el sistema
-    When se envían 50 peticiones GET concurrentes al endpoint "api/v1/electronicbill"
+    When se envían 50 peticiones GET simultáneas al endpoint "api/v1/electronicbill"
     Then todas las respuestas deben ser 200 OK
     And el tiempo de respuesta promedio debe ser menor a 1000 ms
   ```
   
 </details>
+
+```gherkin
+Background: 
+  Dado que el endpoint "api/v1/payer" está disponible
+```
+
+<details open>
+  <summary><b><i>Escenario 7:</i></b> Verificación de la obtención de todos los pagantes con 10 peticiones simultáneas.</summary>
+  
+  ```gherkin
+  Scenario: Verificación de la obtención de todos los pagantes con 10 peticiones simultáneas
+    Given existen varios pagantes en el sistema
+    When se envían 10 peticiones GET simultáneas al endpoint "api/v1/payer"
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 200 ms
+  ```
+  
+</details>
+
+<details open>
+  <summary><b><i>Escenario 8:</i></b> Verificación de la obtención de todos los pagantes con 25 peticiones simultáneas.</summary>
+  
+  ```gherkin
+  Scenario: Verificación de la obtención de todos los pagantes con 25 peticiones simultáneas
+    Given existen varios pagantes en el sistema
+    When se envían 25 peticiones GET simultáneas al endpoint "api/v1/payer"
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 200 ms
+  ```
+  
+</details>
+
+<details open>
+  <summary><b><i>Escenario 9:</i></b> Verificación de la obtención de todos los pagantes con 50 peticiones simultáneas.</summary>
+  
+  ```gherkin
+  Scenario: Verificación de la obtención de todos los pagantes con 50 peticiones simultáneas
+    Given existen varios pagantes en el sistema
+    When se envían 50 peticiones GET simultáneas al endpoint "api/v1/payer"
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 200 ms
+  ```
+  
+</details>
+
+```gherkin
+Background: 
+  Dado que el endpoint "api/v1/payer/12345" está disponible
+```
+
+<details open>
+  <summary><b><i>Escenario 10:</i></b> Verificación de la obtención de un pagante por ID con 10 peticiones simultáneas.</summary>
+  
+  ```gherkin
+  Scenario: Verificación de la obtención de un pagante por ID con 10 peticiones simultáneas
+    Given existe un pagante con el ID "12345"
+    When se envían 10 peticiones GET simultáneas al endpoint "api/v1/payer/12345"
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 200 ms
+  ```
+  
+</details>
+
+<details open>
+  <summary><b><i>Escenario 11:</i></b> Verificación de la obtención de un pagante por ID con 25 peticiones simultáneas.</summary>
+  
+  ```gherkin
+  Scenario: Verificación de la obtención de un pagante por ID con 25 peticiones simultáneas
+    Given existe un pagante con el ID "12345"
+    When se envían 25 peticiones GET simultáneas al endpoint "api/v1/payer/12345"
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 200 ms
+  ```
+  
+</details>
+
+<details open>
+  <summary><b><i>Escenario 12:</i></b> Verificación de la obtención de un pagante por ID con 50 peticiones simultáneas.</summary>
+  
+  ```gherkin
+  Scenario: Verificación de la obtención de un pagante por ID con 50 peticiones simultáneas
+    Given existe un pagante con el ID "12345"
+    When se envían 50 peticiones GET simultáneas al endpoint "api/v1/payer/12345"
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 200 ms
+  ```
+  
+</details>
+
+
+```gherkin
+Background: 
+  Dado que el endpoint "api/v1/payment" está disponible
+```
+
+<details open>
+  <summary><b><i>Escenario 13:</i></b> Verificación de la obtención de un pago por ID con 10 peticiones simultáneas.</summary>
+  
+  ```gherkin
+  Scenario: Verificación de la obtención de un pago por ID con 10 peticiones simultáneas
+    Given existe un pago con el ID "12345"
+    When se envían 10 peticiones GET simultáneas al endpoint "api/v1/payment/12345"
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 200 ms
+  ```
+  
+</details>
+
+<details open>
+  <summary><b><i>Escenario 14:</i></b> Verificación de la obtención de un pago por ID con 25 peticiones simultáneas.</summary>
+  
+  ```gherkin
+  Scenario: Verificación de la obtención de un pago por ID con 25 peticiones simultáneas
+    Given existe un pago con el ID "12345"
+    When se envían 25 peticiones GET simultáneas al endpoint "api/v1/payment/12345"
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 200 ms
+  ```
+  
+</details>
+
+<details open>
+  <summary><b><i>Escenario 15:</i></b> Verificación de la obtención de un pago por ID con 50 peticiones simultáneas.</summary>
+  
+  ```gherkin
+  Scenario: Verificación de la obtención de un pago por ID con 50 peticiones simultáneas
+    Given existe un pago con el ID "12345"
+    When se envían 50 peticiones GET simultáneas al endpoint "api/v1/payment/12345"
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 200 ms
+  ```
+
+</details>
+
 
 
 
@@ -232,37 +385,152 @@ Background:
 ### 3.3. Pruebas de Seguridad
 
 #### 3.3.1. Herramientas y Tecnologías
-Descripción de las herramientas utilizadas para las pruebas de seguridad (por ejemplo, OWASP ZAP, Burp Suite, etc.).
+
+**OWASP ZAP (Zed Attack Proxy)** es una herramienta de código abierto diseñada para realizar pruebas de seguridad en aplicaciones web. Desarrollada por el Open Web Application Security Project (OWASP), ZAP proporciona una amplia gama de funciones para identificar vulnerabilidades y evaluar la seguridad de aplicaciones durante el ciclo de desarrollo. Su interfaz intuitiva permite a los usuarios realizar escaneos automatizados, así como llevar a cabo pruebas manuales de seguridad, como la exploración de aplicaciones y la identificación de puntos débiles. ZAP es particularmente útil para detectar problemas de seguridad comunes, como inyecciones SQL, ataques de cross-site scripting (XSS) y configuraciones incorrectas. Además, ZAP ofrece soporte para integraciones con otras herramientas de desarrollo y pruebas, lo que facilita la inclusión de prácticas de seguridad en el proceso de desarrollo ágil. Su capacidad para generar reportes detallados ayuda a los equipos de desarrollo a abordar las vulnerabilidades de manera efectiva y mejorar la seguridad general de sus aplicaciones.
 
 #### 3.3.2. Escenarios de Prueba de Seguridad
-<details open>
-  <summary><b><i>Escenario 1:</i></b> Verificación de la autenticación y autorización.</summary>
 
-  ```gherkin
-  Scenario: Verificación de la autenticación y autorización
-    Given el endpoint "api/payments/" requiere autenticación
-    When un usuario no autenticado intenta acceder al endpoint
-    Then la respuesta debe ser 401 Unauthorized
-  ```
+```gherkin
+Background:
+    Given que el endpoint "http://localhost:8007" está accesible
+```
+
+<details open>
+  <summary><b><i>Escenario 1:</i></b> Verificación de encabezados de seguridad HTTP.</summary>
+
+```gherkin
+Scenario: Verificación de encabezados de seguridad HTTP
+  Given el sitio web "http://localhost:8004" debe incluir varios encabezados de seguridad HTTP
+  When se realiza un análisis de encabezados HTTP
+  Then los encabezados esperados deben estar presentes, incluyendo "Strict-Transport-Security", "Content-Security-Policy", y "X-Content-Type-Options"
+```
+
 </details>
 
 <details open>
-  <summary><b><i>Escenario 2:</i></b> Prueba de inyección SQL.</summary>
+  <summary><b><i>Escenario 2:</i></b> Verificación de vulnerabilidades en bibliotecas JavaScript.</summary>
 
-  <span>gherkin aqui</span>
+```gherkin
+Scenario: Verificación de vulnerabilidades en bibliotecas JavaScript
+  Given el sitio web "http://localhost:8004" utiliza bibliotecas JavaScript de terceros
+  When se realiza un análisis de bibliotecas JavaScript
+  Then no se deben encontrar bibliotecas vulnerables, como aquellas indicadas por Retire.js
+```
+
 </details>
 
 <details open>
-  <summary><b><i>Escenario 3:</i></b> Prueba de XSS (Cross-Site Scripting).</summary>
+  <summary><b><i>Escenario 3:</i></b> Verificación de la configuración de cookies.</summary>
 
-  <span>gherkin aqui</span>
+```gherkin
+Scenario: Verificación de la configuración de cookies
+  Given el sitio web "http://localhost:8004" utiliza cookies para el manejo de sesiones
+  When se realiza un análisis de cookies
+  Then todas las cookies deben estar configuradas con las banderas adecuadas, incluyendo "HttpOnly" y "Secure"
+```
+
 </details>
 
 <details open>
-  <summary><b><i>Escenario 4:</i></b> Prueba de CSRF (Cross-Site Request Forgery).</summary>
-  
-  <span>gherkin aqui</span>
+  <summary><b><i>Escenario 4:</i></b> Verificación de la protección contra ataques XSS.</summary>
+
+```gherkin
+Scenario: Verificación de la protección contra ataques XSS
+  Given el sitio web "http://localhost:8004" permite la entrada de usuarios
+  When se realiza un análisis de entrada para detectar vulnerabilidades XSS
+  Then no se deben encontrar puntos de entrada vulnerables a ataques de cross-site scripting (XSS)
+```
+
 </details>
+
+<details open>
+  <summary><b><i>Escenario 5:</i></b> Verificación de la política de seguridad de contenido (CSP).</summary>
+
+```gherkin
+Scenario: Verificación de la política de seguridad de contenido (CSP)
+  Given el sitio web "http://localhost:8004" debe tener una política de seguridad de contenido configurada
+  When se realiza un análisis de la política de seguridad de contenido
+  Then la política debe estar correctamente configurada y debe incluir directivas como "default-src" y "script-src"
+```
+
+</details>
+
+<details open>
+  <summary><b><i>Escenario 6:</i></b> Verificación de la protección contra el clickjacking.</summary>
+
+```gherkin
+Scenario: Verificación de la protección contra el clickjacking
+  Given el sitio web "http://localhost:8004" debe protegerse contra ataques de clickjacking
+  When se realiza un análisis de encabezados HTTP
+  Then debe estar presente el encabezado "X-Frame-Options" con una configuración segura
+```
+
+</details>
+
+<details open>
+  <summary><b><i>Escenario 7:</i></b> Verificación de redirecciones abiertas.</summary>
+
+```gherkin
+Scenario: Verificación de redirecciones abiertas
+  Given el sitio web "http://localhost:8004" debe manejar las redirecciones de forma segura
+  When se realiza un análisis para detectar redirecciones abiertas
+  Then no deben encontrarse vulnerabilidades de redirección abierta
+```
+
+</details>
+
+<details open>
+  <summary><b><i>Escenario 8:</i></b> Verificación de exposición de información sensible.</summary>
+
+```gherkin
+Scenario: Verificación de exposición de información sensible
+  Given el sitio web "http://localhost:8004" debe proteger la información sensible
+  When se realiza un análisis para detectar la exposición de información sensible
+  Then no se debe encontrar información sensible expuesta en encabezados HTTP o mensajes de error
+```
+
+</details>
+
+<details open>
+  <summary><b><i>Escenario 9:</i></b> Verificación de configuraciones de seguridad en la administración de sesiones.</summary>
+
+```gherkin
+Scenario: Verificación de configuraciones de seguridad en la administración de sesiones
+  Given el sitio web "http://localhost:8004" gestiona sesiones de usuario
+  When se realiza un análisis de la gestión de sesiones
+  Then la sesión debe estar protegida contra ataques como el secuestro de sesión y el manejo inseguro de IDs de sesión
+```
+
+</details>
+
+<details open>
+  <summary><b><i>Escenario 10:</i></b> Verificación de la protección contra ataques de CSRF.</summary>
+
+```gherkin
+Scenario: Verificación de la protección contra ataques de CSRF
+  Given el sitio web "http://localhost:8004" debe protegerse contra ataques de falsificación de solicitudes entre sitios (CSRF)
+  When se realiza un análisis para detectar la protección contra CSRF
+  Then deben encontrarse y validarse tokens anti-CSRF en formularios y solicitudes
+```
+
+</details>
+
+<details open>
+  <summary><b><i>Escenario 11:</i></b> Verificación de vulnerabilidades de exposición de información.</summary>
+
+```gherkin
+Scenario: Verificación de vulnerabilidades de exposición de información
+  Given el sitio web "http://localhost:8004" debe manejar la exposición de información con cuidado
+  When se realiza un análisis para detectar la divulgación de información sensible
+  Then no deben encontrarse vulnerabilidades de divulgación de información, como mensajes de error o encabezados de respuesta que revelen detalles internos
+```
+
+</details>
+
+<p align="center">
+  <img src="resources/securitytest_scanning_report.png" alt="Performance Test" />
+</p>
+
 
 ## 4. Referencias
 
