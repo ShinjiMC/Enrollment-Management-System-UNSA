@@ -439,6 +439,13 @@ Escenario: Verificación de la creación de un usuario con datos incompletos
 
 </details>
 
+<p align="center">
+  <img src="resources/swag1.png" alt="Performance Test" />
+</p>
+<p align="center">
+  <img src="resources/swag2.png" alt="Performance Test" />
+</p>
+
 </details>
 
 ### 3.2. Pruebas de Rendimiento
