@@ -1,8 +1,8 @@
 # Arquitectura DDD y Pruebas del Microservicio de Usuarios
 
 ## 1. Descripción
-El microservicio de usarios se encarga de gestionar todas las transacciones financieras relacionadas con los pagos de los estudiantes, incluyendo la creación, actualización, obtención y eliminación de pagos.
-- **Contexto Delimitado:** Gestión de Pagos
+El microservicio de gestión de usuarios se encarga de manejar todas las operaciones relacionadas con la administración de usuarios en el sistema. Esto incluye la creación, actualización, consulta y eliminación de usuarios. 
+- **Contexto Delimitado:**  Gestión de Usuarios
 
 ## 2. Arquitectura DDD
 
