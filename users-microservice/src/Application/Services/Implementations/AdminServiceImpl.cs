@@ -209,19 +209,31 @@ namespace users_microservice.Application.Service.Implementations
             return result;
         }
 
-        public async Task<GeneralResponse> DeleteStudentAsync(string id)
+       public async Task<GeneralResponse> DeleteStudentAsync(string id)
+{
+    try
+    {
+        if (string.IsNullOrEmpty(id))
         {
-            
-            if (string.IsNullOrEmpty(id))
-            {
-                return new GeneralResponse(false,"ERROR", 204,"-");
-            }
-
-            int studentId = int.Parse(id);
-
-            var result = await _adminServiceDomain.DeleteStudent(studentId);
-            return result;
+            return new GeneralResponse(false, "ERROR: ID is null or empty", 204, "-");
         }
+
+        if (!int.TryParse(id, out int studentId))
+        {
+            return new GeneralResponse(false, "ERROR: Invalid ID format", 400, "-");
+        }
+
+        var result = await _adminServiceDomain.DeleteStudent(studentId);
+        return result;
+    }
+    catch (Exception ex)
+    {
+        // Log the exception (assuming you have a logger)
+        
+
+        return new GeneralResponse(false, ex.ToString() , 500, "-");
+    }
+}
 
         public async Task<StudentDto?> GetStudentAsync(string id)
         {

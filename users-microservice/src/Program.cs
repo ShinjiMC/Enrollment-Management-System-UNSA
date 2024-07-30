@@ -107,7 +107,7 @@ app.MapGet("/", () => "This is Users Microservice !!!");
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<MySqlIdentityContext>();
-    dbContext.Database.Migrate();
+    // dbContext.Database.Migrate();
 }
 
 app.Run();
