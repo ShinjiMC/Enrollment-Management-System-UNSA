@@ -979,6 +979,16 @@ En esta sección se detallan los escenarios de prueba para el servicio de gesti�
 
 Swagger facilita la comprensión de los endpoints disponibles y cómo interactuar con ellos. Además, se incluye información sobre el archivo `requests/enroll.http`, que contiene los comandos cURL necesarios para ejecutar las pruebas de la API de manera eficiente. Este archivo permite realizar las solicitudes directamente desde la línea de comandos, complementando el uso de Swagger para una experiencia de prueba completa.
 
+<p align="center">
+  <img src="./src/Resources/Swagger_part1.png" alt="Performance Test" />
+</p>
+<p align="center">
+  <img src="./src/Resources/Swagger_part2.png" alt="Performance Test" />
+</p>
+<p align="center">
+  <img src="./src/Resources/Swagger_part3.png" alt="Performance Test" />
+</p>
+
 
 ### 3.2. Pruebas de Rendimiento
 
