@@ -52,4 +52,3 @@ app.MapControllers();
 app.MapGet("/", () => "Welcome to Notifications Microservice!");
 
 app.Run();
-
