@@ -27,7 +27,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Define the new endpoint directly
 app.MapGet("/", () => Results.Ok("Hola este es el microservicio de Cursos :)"));
 
 app.Run();
