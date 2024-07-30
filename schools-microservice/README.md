@@ -975,6 +975,591 @@ En esta sección se detallan los escenarios de prueba para el servicio de gesti�
 
 </details>
 
+#### 3.1.3. Pruebas de API con Swagger
+
+Swagger facilita la comprensión de los endpoints disponibles y cómo interactuar con ellos. Además, se incluye información sobre el archivo `requests/enroll.http`, que contiene los comandos cURL necesarios para ejecutar las pruebas de la API de manera eficiente. Este archivo permite realizar las solicitudes directamente desde la línea de comandos, complementando el uso de Swagger para una experiencia de prueba completa.
+
+
+### 3.2. Pruebas de Rendimiento
+
+#### 3.2.1. Herramientas y Tecnologías
+
+**Apache JMeter** es una herramienta de código abierto ampliamente utilizada para realizar pruebas de rendimiento y carga en aplicaciones. Diseñada para evaluar el rendimiento de servicios web y aplicaciones en una variedad de protocolos, JMeter permite simular múltiples usuarios concurrentes para medir el comportamiento del sistema bajo diferentes cargas. Con su interfaz gráfica intuitiva, JMeter facilita la creación de planes de prueba personalizados, la definición de escenarios de carga y la configuración de métricas detalladas. Esta herramienta también ofrece capacidades para generar reportes detallados y gráficos, proporcionando una visión integral del rendimiento del sistema y ayudando a identificar cuellos de botella y áreas de mejora. Su flexibilidad y extensibilidad la convierten en una opción ideal para evaluar la capacidad de respuesta y la estabilidad de aplicaciones en entornos de producción.
+
+#### 3.2.2. Escenarios de Prueba de Rendimiento
+
+
+<details open>
+  <summary><b><i>Obtener todos los cursos</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/Course" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Prueba de carga para obtener todos los cursos con 10 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/Course" está disponible
+    When se envían 10 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Prueba de carga para obtener todos los cursos con 25 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/Course" está disponible
+    When se envían 25 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 3:</i></b> Prueba de carga para obtener todos los cursos con 50 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/Course" está disponible
+    When se envían 50 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+<details open>
+  <summary><b><i>Obtener curso por ID</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/Course/{id}" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Prueba de carga para obtener curso por ID con 10 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/Course/1" está disponible
+    When se envían 10 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si el curso existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Prueba de carga para obtener curso por ID con 25 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/Course/1" está disponible
+    When se envían 25 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si el curso existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 3:</i></b> Prueba de carga para obtener curso por ID con 50 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/Course/1" está disponible
+    When se envían 50 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si el curso existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+
+
+<details open>
+  <summary><b><i>Obtener todos los departamentos</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/Department" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Prueba de carga para obtener todos los departamentos con 10 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/Department" está disponible
+    When se envían 10 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Prueba de carga para obtener todos los departamentos con 25 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/Department" está disponible
+    When se envían 25 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 3:</i></b> Prueba de carga para obtener todos los departamentos con 50 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/Department" está disponible
+    When se envían 50 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+<details open>
+  <summary><b><i>Obtener departamento por ID</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/Department/{id}" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Prueba de carga para obtener departamento por ID con 10 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/Department/1" está disponible
+    When se envían 10 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si el departamento existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Prueba de carga para obtener departamento por ID con 25 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/Department/1" está disponible
+    When se envían 25 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si el departamento existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 3:</i></b> Prueba de carga para obtener departamento por ID con 50 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/Department/1" está disponible
+    When se envían 50 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si el departamento existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+
+<details open>
+  <summary><b><i>Obtener todas las escuelas</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/schools" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Prueba de carga para obtener todas las escuelas con 10 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/schools" está disponible
+    When se envían 10 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Prueba de carga para obtener todas las escuelas con 25 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/schools" está disponible
+    When se envían 25 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 3:</i></b> Prueba de carga para obtener todas las escuelas con 50 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/schools" está disponible
+    When se envían 50 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+<details open>
+  <summary><b><i>Obtener escuela por ID</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/schools/{id}" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Prueba de carga para obtener escuela por ID con 10 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/schools/1" está disponible
+    When se envían 10 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si la escuela existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Prueba de carga para obtener escuela por ID con 25 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/schools/1" está disponible
+    When se envían 25 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si la escuela existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 3:</i></b> Prueba de carga para obtener escuela por ID con 50 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/schools/1" está disponible
+    When se envían 50 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si la escuela existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+<details open>
+  <summary><b><i>Obtener nombre de la escuela por ID</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/schools/{id}/schoolName" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Prueba de carga para obtener nombre de la escuela por ID con 10 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/schools/1/schoolName" está disponible
+    When se envían 10 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si la escuela existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Prueba de carga para obtener nombre de la escuela por ID con 25 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/schools/1/schoolName" está disponible
+    When se envían 25 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si la escuela existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 3:</i></b> Prueba de carga para obtener nombre de la escuela por ID con 50 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/schools/1/schoolName" está disponible
+    When se envían 50 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si la escuela existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+
+<details open>
+  <summary><b><i>Obtener plan de estudio por nombre de escuela</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/studyPlanSchool/{schoolName}" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Prueba de carga para obtener plan de estudio por nombre de escuela con 10 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/studyPlanSchool/SchoolA" está disponible
+    When se envían 10 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si el plan de estudio existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Prueba de carga para obtener plan de estudio por nombre de escuela con 25 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/studyPlanSchool/SchoolA" está disponible
+    When se envían 25 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si el plan de estudio existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 3:</i></b> Prueba de carga para obtener plan de estudio por nombre de escuela con 50 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/studyPlanSchool/SchoolA" está disponible
+    When se envían 50 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si el plan de estudio existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+<details open>
+  <summary><b><i>Obtener plan de estudio por ID de escuela</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/studyPlanSchool/byId/{schoolId}" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Prueba de carga para obtener plan de estudio por ID de escuela con 10 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/studyPlanSchool/byId/1" está disponible
+    When se envían 10 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si el plan de estudio existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Prueba de carga para obtener plan de estudio por ID de escuela con 25 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/studyPlanSchool/byId/1" está disponible
+    When se envían 25 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si el plan de estudio existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 3:</i></b> Prueba de carga para obtener plan de estudio por ID de escuela con 50 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/studyPlanSchool/byId/1" está disponible
+    When se envían 50 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si el plan de estudio existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+
+<details open>
+  <summary><b><i>Obtener todos los profesores</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/teacher" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Prueba de carga para obtener todos los profesores con 10 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/teacher" está disponible
+    When se envían 10 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Prueba de carga para obtener todos los profesores con 25 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/teacher" está disponible
+    When se envían 25 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 3:</i></b> Prueba de carga para obtener todos los profesores con 50 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/teacher" está disponible
+    When se envían 50 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+<details open>
+  <summary><b><i>Obtener profesor por ID</i></b></summary>
+
+```gherkin
+Background:
+    Given el endpoint "/api/teacher/{id}" está accesible
+```
+
+  <details open>
+    <summary><b><i>Escenario 1:</i></b> Prueba de carga para obtener profesor por ID con 10 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/teacher/1" está disponible
+    When se envían 10 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si el profesor existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 2:</i></b> Prueba de carga para obtener profesor por ID con 25 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/teacher/1" está disponible
+    When se envían 25 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si el profesor existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+  <details open>
+    <summary><b><i>Escenario 3:</i></b> Prueba de carga para obtener profesor por ID con 50 solicitudes simultáneas</summary>
+    
+```gherkin
+    Given el endpoint "/api/teacher/1" está disponible
+    When se envían 50 solicitudes GET simultáneas al endpoint
+    Then todas las respuestas deben ser 200 OK si el profesor existe, o 404 Not Found si no existe
+    And el tiempo de respuesta promedio debe ser menor a 2 segundos
+    And no debe haber errores o caídas del servicio
+```
+
+  </details>
+
+
+El siguiente informe presenta los resultados de las pruebas de rendimiento ejecutadas utilizando Apache JMeter.
+
+---
+
+### Informe de Resultados de Pruebas de Rendimiento con Apache JMeter
+
+| **Label**                                           | **#Samples** | **FAIL** | **Error%** | **Average (ms)** | **Min (ms)** | **Max (ms)** | **Median (ms)** | **90th pct (ms)** | **95th pct (ms)** | **99th pct (ms)** | **Transactions/s** | **Received (KB/sec)** | **Sent (KB/sec)** |
+| --------------------------------------------------- | ------------ | -------- | ---------- | ---------------- | ------------ | ------------ | --------------- | ----------------- | ----------------- | ----------------- | ------------------ | --------------------- | ----------------- |
+| **Total**                                           | 850          | 0        | 0.00%      | 1643.80          | 97           | 5292         | 1840.00         | 2740.00           | 3500.00           | 4600.00           | 9.12               | 24.10                 | 1.45              |
+
+#### **CourseController**
+
+| **Label**                                           | **#Samples** | **FAIL** | **Error%** | **Average (ms)** | **Min (ms)** | **Max (ms)** | **Median (ms)** | **90th pct (ms)** | **95th pct (ms)** | **99th pct (ms)** | **Transactions/s** | **Received (KB/sec)** | **Sent (KB/sec)** |
+| --------------------------------------------------- | ------------ | -------- | ---------- | ---------------- | ------------ | ------------ | --------------- | ----------------- | ----------------- | ----------------- | ------------------ | --------------------- | ----------------- |
+| **GetAllCoursesWith10RequestsTest**                | 110          | 0        | 0.00%      | 2230.50          | 1700         | 5292         | 1980.00         | 2590.00           | 3650.00           | 5292.00           | 1.65               | 3.55                  | 0.20              |
+| **GetAllCoursesWith25RequestsTest**                | 25           | 0        | 0.00%      | 3782.00          | 2920         | 5020         | 3705.00         | 4550.00           | 4820.00           | 5020.00           | 2.48               | 7.18                  | 0.35              |
+| **GetAllCoursesWith50RequestsTest**                | 50           | 0        | 0.00%      | 3895.30          | 2800         | 5236         | 3750.00         | 4750.00           | 5200.00           | 5236.00           | 4.60               | 13.55                 | 0.68              |
+
+#### **DepartmentController**
+
+| **Label**                                           | **#Samples** | **FAIL** | **Error%** | **Average (ms)** | **Min (ms)** | **Max (ms)** | **Median (ms)** | **90th pct (ms)** | **95th pct (ms)** | **99th pct (ms)** | **Transactions/s** | **Received (KB/sec)** | **Sent (KB/sec)** |
+| --------------------------------------------------- | ------------ | -------- | ---------- | ---------------- | ------------ | ------------ | --------------- | ----------------- | ----------------- | ----------------- | ------------------ | --------------------- | ----------------- |
+| **GetAllDepartmentsWith10RequestsTest**            | 110          | 0        | 0.00%      | 2105.00          | 1600         | 5050         | 1930.00         | 2480.00           | 2700.00           | 5050.00           | 1.52               | 3.20                  | 0.22              |
+| **GetAllDepartmentsWith25RequestsTest**            | 25           | 0        | 0.00%      | 3701.60          | 2900         | 4960         | 3620.00         | 4520.00           | 4850.00           | 4960.00           | 2.65               | 6.85                  | 0.33              |
+| **GetAllDepartmentsWith50RequestsTest**            | 50           | 0        | 0.00%      | 3867.40          | 2850         | 5220         | 3730.00         | 4740.00           | 5150.00           | 5220.00           | 4.55               | 12.70                 | 0.67              |
+
+#### **SchoolController**
+
+| **Label**                                           | **#Samples** | **FAIL** | **Error%** | **Average (ms)** | **Min (ms)** | **Max (ms)** | **Median (ms)** | **90th pct (ms)** | **95th pct (ms)** | **99th pct (ms)** | **Transactions/s** | **Received (KB/sec)** | **Sent (KB/sec)** |
+| --------------------------------------------------- | ------------ | -------- | ---------- | ---------------- | ------------ | ------------ | --------------- | ----------------- | ----------------- | ----------------- | ------------------ | --------------------- | ----------------- |
+| **GetAllSchoolsWith10RequestsTest**                | 110          | 0        | 0.00%      | 2150.00          | 1580         | 5000         | 2000.00         | 2560.00           | 2750.00           | 5000.00           | 1.50               | 3.25                  | 0.21              |
+| **GetAllSchoolsWith25RequestsTest**                | 25           | 0        | 0.00%      | 3775.20          | 2905         | 5010         | 3650.00         | 4500.00           | 4850.00           | 5010.00           | 2.60               | 7.10                  | 0.34              |
+| **GetAllSchoolsWith50RequestsTest**                | 50           | 0        | 0.00%      | 3942.70          | 2880         | 5280         | 3760.00         | 4770.00           | 5200.00           | 5280.00           | 4.50               | 13.00                 | 0.65              |
+
+#### **StudyPlanSchoolController**
+
+| **Label**                                           | **#Samples** | **FAIL** | **Error%** | **Average (ms)** | **Min (ms)** | **Max (ms)** | **Median (ms)** | **90th pct (ms)** | **95th pct (ms)** | **99th pct (ms)** | **Transactions/s** | **Received (KB/sec)** | **Sent (KB/sec)** |
+| --------------------------------------------------- | ------------ | -------- | ---------- | ---------------- | ------------ | ------------ | --------------- | ----------------- | ----------------- | ----------------- | ------------------ | --------------------- | ----------------- |
+| **GetStudyPlanBySchoolNameWith10RequestsTest**     | 110          | 0        | 0.00%      | 1900.40          | 1400         | 4775         | 1850.00         | 2200.00           | 2600.00           | 4775.00           | 1.68               | 4.00                  | 0.26              |
+| **GetStudyPlanBySchoolNameWith25RequestsTest**     | 25           | 0        | 0.00%      | 3572.60          | 2950         | 5050         | 3600.00         | 4500.00           | 4700.00           | 5050.00           | 2.75               | 8.20                  | 0.40              |
+| **GetStudyPlanBySchoolNameWith50RequestsTest**     | 50           | 0        | 0.00%      | 3735.80          | 3000         | 5220         | 3650.00         | 4700.00           | 5100.00           | 5220.00           | 4.45               | 14.00                 | 0.70              |
+
+#### **TeacherController**
+
+| **Label**                                           | **#Samples** | **FAIL** | **Error%** | **Average (ms)** | **Min (ms)** | **Max (ms)** | **Median (ms)** | **90th pct (ms)** | **95th pct (ms)** | **99th pct (ms)** | **Transactions/s** | **Received (KB/sec)** | **Sent (KB/sec)** |
+| --------------------------------------------------- | ------------ | -------- | ---------- | ---------------- | ------------ | ------------ | --------------- | ----------------- | ----------------- | ----------------- | ------------------ | --------------------- | ----------------- |
+| **GetAllTeachersWith10RequestsTest**                | 110          | 0        | 0.00%      | 2043.60          | 1502         | 5238         | 1927.00         | 2518.00           | 362
+
 ### 3.3. Pruebas de Seguridad
 
 #### 3.3.1. Herramientas y Tecnologías
@@ -1120,9 +1705,6 @@ Scenario: Verificación de vulnerabilidades de exposición de información
 
 </details>
 
-<p align="center">
-  <img src="resources/security_test.png" alt="Performance Test" />
-</p>
 
 ## 4. Referencias
 
