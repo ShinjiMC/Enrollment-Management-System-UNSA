@@ -1,0 +1,224 @@
+{
+	"info": {
+		"_postman_id": "6004a002-eabd-4eec-b5a3-d6ccb98d0c35",
+		"name": "Auth-microservice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37301883",
+		"_collection_link": "https://dinamite-5979.postman.co/workspace/69e32c5a-13a3-421b-8cc8-90f9f08929e3/collection/37160356-6004a002-eabd-4eec-b5a3-d6ccb98d0c35?action=share&source=collection_link&creator=37301883"
+	},
+	"item": [
+		{
+			"name": "Resgistrar exitosamente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response should have flag true and message 'Account Created'\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('flag', true);",
+							"    pm.expect(jsonData).to.have.property('message', 'Account Created');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Name\": \"Teriyak12\",\n    \"Email\": \"Teriya2k@example.com\",\n    \"Password\": \"Password@123\",\n    \"ConfirmPassword\": \"Password@123\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/api/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Resgistrar fallidamente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Response should contain validation error messages\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('type', \"https://tools.ietf.org/html/rfc9110#section-15.5.1\");",
+							"    pm.expect(jsonData).to.have.property('title', \"One or more validation errors occurred.\");",
+							"    pm.expect(jsonData).to.have.property('status', 400);",
+							"    pm.expect(jsonData).to.have.property('errors');",
+							"    pm.expect(jsonData.errors).to.have.property('Password');",
+							"    pm.expect(jsonData.errors.Password[0]).to.equal(\"The Password field is required.\");",
+							"    pm.expect(jsonData.errors).to.have.property('ConfirmPassword');",
+							"    pm.expect(jsonData.errors.ConfirmPassword[0]).to.equal(\"'ConfirmPassword' and 'Password' do not match.\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Name\": \"Jo1h3n Doe\",\n    \"Email\": \"j1o3hndoe@example.com\",\n    \"ConfirmPassword\": \"Password123!\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/api/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logeo exitoso",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response should have flag true, a token and message 'Login completed'\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('flag', true);",
+							"    pm.expect(jsonData).to.have.property('token');",
+							"    pm.expect(jsonData.token).to.be.a('string');",
+							"    pm.expect(jsonData).to.have.property('message', 'Login completed');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Email\": \"johndoe@example.com\",\n    \"Password\": \"Password123!\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logeo fallido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response should have flag false, token null, and message 'Invalid email/password'\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('flag', false);",
+							"    pm.expect(jsonData).to.have.property('token', null);",
+							"    pm.expect(jsonData).to.have.property('message', 'Invalid email/password');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Email\": \"johndoe@example.com\",\n    \"Password\": \"Password124!\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
