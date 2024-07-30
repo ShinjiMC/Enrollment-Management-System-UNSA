@@ -20,7 +20,7 @@ public static class CourseMapping
         return new CourseModel
         {
             Id = int.TryParse(courseDto.Id, out var id) ? id : 0,
-            CourseId = int.TryParse(courseDto.Id, out var courseId) ? courseId : 0,
+            CourseId = courseDto.Id ?? string.Empty,
             Group = courseDto.Group
         };
     }

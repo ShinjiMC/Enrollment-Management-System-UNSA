@@ -9,9 +9,12 @@ using enrollments_microservice.Repositories.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
 var mongoDbSettings = builder.Configuration.GetSection("MongoDb").Get<MongoDbSettings>();
 
-if (string.IsNullOrEmpty(mongoDbSettings?.ConnectionString) || string.IsNullOrEmpty(mongoDbSettings?.DatabaseName))
+if (string.IsNullOrEmpty(mongoDbSettings?.ConnectionString) || string.IsNullOrEmpty(mongoDbSettings.DatabaseName))
     throw new InvalidOperationException("MongoDB configuration is missing in appsettings.");
 
 builder.Services.AddControllers();
@@ -33,6 +36,11 @@ builder.Services.AddScoped<IEnrollRepository, EnrollRepository>();
 
 builder.Services.AddSwaggerGen();
 
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(8004); // This will listen on all network interfaces
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -44,4 +52,4 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 app.MapGet("/", () => "This is Enrollment Microservice !!!");
 
-app.Run();
+await app.RunAsync();

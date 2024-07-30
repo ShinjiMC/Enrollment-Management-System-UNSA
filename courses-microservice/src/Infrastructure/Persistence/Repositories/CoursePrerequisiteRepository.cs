@@ -17,8 +17,22 @@ public class CoursePrerequisiteRepository : ICoursePrerequisiteRepository
             .Where(cp => cp.CourseId == courseId)
             .ToListAsync();
     }
-    public void Add(CoursePrerequisite course) =>_context.CoursePrerequisites.Add(course);
-    public void Update(CoursePrerequisite course) =>_context.CoursePrerequisites.Update(course);
-    public void Delete(CoursePrerequisite course) =>_context.CoursePrerequisites.Remove(course);
-    public async Task<CoursePrerequisite?> GetByIdAsync(Guid courseId) => await _context.CoursePrerequisites.SingleOrDefaultAsync(c => c.CourseId == courseId);
+    public void Add(CoursePrerequisite course) => _context.CoursePrerequisites.Add(course);
+    public void Update(CoursePrerequisite course) => _context.CoursePrerequisites.Update(course);
+    public async Task<bool> DeleteAsync(Guid courseId, Guid prerequisiteCourseId)
+    {
+        var coursePrerequisite = await _context.CoursePrerequisites
+            .FindAsync(courseId, prerequisiteCourseId);
+
+        if (coursePrerequisite == null)
+        {
+            return false; 
+        }
+
+        _context.CoursePrerequisites.Remove(coursePrerequisite);
+        await _context.SaveChangesAsync();
+
+        return true; 
+    }
+    public async Task<CoursePrerequisite?> GetByIdAsync(Guid courseId, Guid coursePrerequisiteId) => await _context.CoursePrerequisites.FindAsync(courseId, coursePrerequisiteId);
 }

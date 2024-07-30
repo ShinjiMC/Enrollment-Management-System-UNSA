@@ -1,5 +1,6 @@
 using MediatR;
 using ErrorOr;
+using Application.Schedules.Common;
 
 namespace Application.Schedules.Create
 {
@@ -7,16 +8,16 @@ namespace Application.Schedules.Create
         string CourseId,
         int Year,
         string SchoolId,
-        ScheduleDetailsDto Details,
-        List<ScheduleEntryDto> Entries
-    ) : IRequest<ErrorOr<Unit>>;
+        ScheduleDetailsCreate Details,
+        IEnumerable<ScheduleEntryCreate> Entries
+    ) : IRequest<ErrorOr<ScheduleResponse>>;
     
-    public record ScheduleDetailsDto(
+    public record ScheduleDetailsCreate(
         string Group,
         string ProfessorId
     );
 
-    public record ScheduleEntryDto(
+    public record ScheduleEntryCreate(
         DayOfWeek DayOfWeek,
         TimeSpan StartTime,
         TimeSpan EndTime

@@ -1,0 +1,1592 @@
+{
+	"info": {
+		"_postman_id": "653c3e36-4a61-44c5-9d74-971f945337d3",
+		"name": "UsersMicroservice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29543065"
+	},
+	"item": [
+		{
+			"name": "StudentController",
+			"item": [
+				{
+					"name": "Get all student",
+					"item": [
+						{
+							"name": "Obtener todos los estudiantes",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response should be JSON\", function () {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response should be an array\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData).to.be.an('array');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Each item in the array contains expected keys\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    jsonData.forEach(function(item) {\r",
+											"        pm.expect(item).to.have.property('id');\r",
+											"        pm.expect(item).to.have.property('fullName');\r",
+											"        pm.expect(item).to.have.property('email');\r",
+											"        pm.expect(item).to.have.property('cui');\r",
+											"        pm.expect(item).to.have.property('academicPerformance');\r",
+											"        pm.expect(item).to.have.property('credit');\r",
+											"        pm.expect(item).to.have.property('courseIds');\r",
+											"        pm.expect(item).to.have.property('schoolId');\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8002/api/Student/all",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8002",
+									"path": [
+										"api",
+										"Student",
+										"all"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get student",
+					"item": [
+						{
+							"name": "Obtener estudiante existente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response should be JSON\", function () {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response contains expected keys\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData).to.have.property('id');\r",
+											"    pm.expect(jsonData).to.have.property('fullName');\r",
+											"    pm.expect(jsonData).to.have.property('email');\r",
+											"    pm.expect(jsonData).to.have.property('cui');\r",
+											"    pm.expect(jsonData).to.have.property('academicPerformance');\r",
+											"    pm.expect(jsonData).to.have.property('credit');\r",
+											"    pm.expect(jsonData).to.have.property('courseIds');\r",
+											"    pm.expect(jsonData).to.have.property('schoolId');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8002/api/Student/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8002",
+									"path": [
+										"api",
+										"Student",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener estudiante inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response should be JSON\", function () {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"pm.test(\"Message is 'Not Found'\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.title).to.eql(\"Not Found\");\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8002/api/Student/10000",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8002",
+									"path": [
+										"api",
+										"Student",
+										"10000"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get cursos de student",
+					"item": [
+						{
+							"name": "Obtener cursos de un estudiante existente.",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Verificar que el código de estado sea 200\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"// Verificar que la respuesta sea JSON\r",
+											"pm.test(\"Response should be JSON\", function () {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"\r",
+											"// Verificar que la respuesta contenga las claves esperadas\r",
+											"pm.test(\"Response contains expected keys\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData).to.have.property('id');\r",
+											"    pm.expect(jsonData).to.have.property('fullName');\r",
+											"    pm.expect(jsonData).to.have.property('email');\r",
+											"    pm.expect(jsonData).to.have.property('cui');\r",
+											"    pm.expect(jsonData).to.have.property('academicPerformance');\r",
+											"    pm.expect(jsonData).to.have.property('credit');\r",
+											"    pm.expect(jsonData).to.have.property('courseIds');\r",
+											"    pm.expect(jsonData).to.have.property('schoolId');\r",
+											"});\r",
+											"\r",
+											"// Verificar que courseIds sea un array de strings\r",
+											"pm.test(\"courseIds is an array of strings\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.courseIds).to.be.an('array');\r",
+											"    jsonData.courseIds.forEach(function(courseId) {\r",
+											"        pm.expect(courseId).to.be.a('string');\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8002/api/Student/3/courses",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8002",
+									"path": [
+										"api",
+										"Student",
+										"3",
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener cursos de un estudiante inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response should be JSON\", function () {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"pm.test(\"Message is 'Not Found'\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.title).to.eql(\"Not Found\");\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8002/api/Student/1000/courses",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8002",
+									"path": [
+										"api",
+										"Student",
+										"1000",
+										"courses"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "ExternalService",
+			"item": [
+				{
+					"name": "Obtener exitosamente datos de cursos del estudiante",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be JSON\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Response contains expected keys\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('fullName');\r",
+									"    pm.expect(jsonData).to.have.property('academicPerformance');\r",
+									"    pm.expect(jsonData).to.have.property('credit');\r",
+									"    pm.expect(jsonData).to.have.property('courseIds');\r",
+									"});\r",
+									"\r",
+									"// Verificar que courseIds sea un array de strings\r",
+									"pm.test(\"CourseIds is an array of strings\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.courseIds).to.be.an('array');\r",
+									"    jsonData.courseIds.forEach(function(courseId) {\r",
+									"        pm.expect(courseId).to.be.a('string');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8002/api/ExternalService/student/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"api",
+								"ExternalService",
+								"student",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Solicitar con ID de estudiante no válido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be JSON\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Message is 'Not Found'\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.title).to.eql(\"Not Found\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8002/api/ExternalService/student/100000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"api",
+								"ExternalService",
+								"student",
+								"100000"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AdminController",
+			"item": [
+				{
+					"name": "Admin services",
+					"item": [
+						{
+							"name": "Create admin",
+							"item": [
+								{
+									"name": "Fallar al registrar debido a datos invalidos",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should be JSON\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Message is 'One or more validation errors occurred.'\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData.title).to.eql(\"One or more validation errors occurred.\");\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"fullName\": \"as\",\r\n  \"userData\": {\r\n    \"userName\": \"\",\r\n    \"password\": \"123\",\r\n    \"confirmPassword\": \"456\",\r\n    \"role\": \"STUDENT\"\r\n  },\r\n  \"email\": \"aldechi001example.com\",\r\n  \"cui\": \"\",\r\n  \"courseIds\": [],\r\n  \"academicPerformance\": -1,\r\n  \"credit\": 1,\r\n  \"schoolId\": \"\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/register/student",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"register",
+												"student"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Registrar exitosamente un usuario administrador",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Message is 'Admin user created successfully'\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData.message).to.eql(\"Admin user created successfully\");\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Flag is true\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData.flag).to.eql(true);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"fullName\": \"Aldo Benito Martinez\",\r\n  \"userData\": {\r\n    \"userName\": \"bananon\",\r\n    \"password\": \"Aldechi@123\",\r\n    \"confirmPassword\": \"Aldechi@123\",\r\n    \"role\": \"ADMIN\"\r\n  },\r\n  \"email\": \"aldechi001@example.com\",\r\n  \"phoneNumber\": \"123456789\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/register/admin",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"register",
+												"admin"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Update admin data",
+							"item": [
+								{
+									"name": "Actualizar exitosamente datos de un administrador",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Message is 'User updated successfully'\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData.message).to.eql(\"User updated successfully\");\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// Definir la URL del endpoint de creación de administrador\r",
+													"const createAdminUrl = 'http://localhost:8002/api/Admin/register/admin';\r",
+													"\r",
+													"// Definir los datos del nuevo administrador\r",
+													"const newAdminData = {\r",
+													"  \"fullName\": \"Aldo Benito Martinez\",\r",
+													"  \"userData\": {\r",
+													"    \"userName\": \"bananon\",\r",
+													"    \"password\": \"Aldechi@123\",\r",
+													"    \"confirmPassword\": \"Aldechi@123\",\r",
+													"    \"role\": \"ADMIN\"\r",
+													"  },\r",
+													"  \"email\": \"aldechi001@example.com\",\r",
+													"  \"phoneNumber\": \"123456789\"\r",
+													"};\r",
+													"\r",
+													"// Realizar la solicitud POST para crear el administrador\r",
+													"pm.sendRequest({\r",
+													"    url: createAdminUrl,\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Content-Type': 'application/json'\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify(newAdminData)\r",
+													"    }\r",
+													"}, function (err, res) {\r",
+													"    if (err) {\r",
+													"        console.log('Error creating admin:', err);\r",
+													"    } else {\r",
+													"        const jsonResponse = res.json();\r",
+													"        console.log('Full Response:', jsonResponse); // Imprimir respuesta completa\r",
+													"        // Verificar que se ha creado el administrador y guardar el ID en una variable de entorno\r",
+													"        if (jsonResponse && jsonResponse.id) {\r",
+													"            console.log('Admin ID:', jsonResponse.id);\r",
+													"            pm.environment.set('id', jsonResponse.id); // Guardar el ID en una variable de entorno\r",
+													"        } else {\r",
+													"            console.log('No admin ID found in the response.');\r",
+													"        }\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\":\"{{id}}\",\r\n  \"fullName\": \"Aldo Martinez\",\r\n  \"userData\": {\r\n    \"userName\": \"bananon\",\r\n    \"password\": \"Aldechi@123\",\r\n    \"confirmPassword\": \"Aldechi@123\",\r\n    \"role\": \"ADMIN\"\r\n  },\r\n  \"email\": \"aldechi001@example.com\",\r\n  \"phoneNumber\": \"1234asdad56789\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/admin/{{id}}",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"admin",
+												"{{id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Fallar en la actualización debido a ID inexistente",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Message is 'User not found'\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData.message).to.eql(\"User not found\");\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\":\"100000000\",\r\n  \"fullName\": \"Aldo Martinez\",\r\n  \"userData\": {\r\n    \"userName\": \"bananon\",\r\n    \"password\": \"Aldechi@123\",\r\n    \"confirmPassword\": \"Aldechi@123\",\r\n    \"role\": \"ADMIN\"\r\n  },\r\n  \"email\": \"aldechi001@example.com\",\r\n  \"phoneNumber\": \"123456789\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/admin/100000000",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"admin",
+												"100000000"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get admin data",
+							"item": [
+								{
+									"name": "Obtener administrador existente",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should be JSON\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/admin/7",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"admin",
+												"7"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Error por administrador inexistente",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should be JSON\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"pm.test(\"Message is 'Not Found'\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData.title).to.eql(\"Not Found\");\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/admin/100000",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"admin",
+												"100000"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Delete admin",
+							"item": [
+								{
+									"name": "Eliminar exitosamente un administrador",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// Definir la URL del endpoint de creación de administrador\r",
+													"const createAdminUrl = 'http://localhost:8002/api/Admin/register/admin';\r",
+													"\r",
+													"// Definir los datos del nuevo administrador\r",
+													"const newAdminData = {\r",
+													"  \"fullName\": \"Test\",\r",
+													"  \"userData\": {\r",
+													"    \"userName\": \"testUser\",\r",
+													"    \"password\": \"testUser@123\",\r",
+													"    \"confirmPassword\": \"testUser@123\",\r",
+													"    \"role\": \"ADMIN\"\r",
+													"  },\r",
+													"  \"email\": \"testUser@example.com\",\r",
+													"  \"phoneNumber\": \"123456789\"\r",
+													"};\r",
+													"\r",
+													"// Realizar la solicitud POST para crear el administrador\r",
+													"pm.sendRequest({\r",
+													"    url: createAdminUrl,\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Content-Type': 'application/json'\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify(newAdminData)\r",
+													"    }\r",
+													"}, function (err, res) {\r",
+													"    if (err) {\r",
+													"        console.log('Error creating admin:', err);\r",
+													"    } else {\r",
+													"        const jsonResponse = res.json();\r",
+													"        console.log('Full Response:', jsonResponse); // Imprimir respuesta completa\r",
+													"        // Verificar que se ha creado el administrador y guardar el ID en una variable de entorno\r",
+													"        if (jsonResponse && jsonResponse.id) {\r",
+													"            console.log('Admin ID:', jsonResponse.id);\r",
+													"            pm.environment.set('id', jsonResponse.id); // Guardar el ID en una variable de entorno\r",
+													"        } else {\r",
+													"            console.log('No admin ID found in the response.');\r",
+													"        }\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {\r",
+													"    pm.response.to.have.status(204); // Verifica que el estado sea 204 No Content\r",
+													"});\r",
+													"\r",
+													"\r",
+													"// Verificar que el curso ha sido eliminado (opcional, si deseas hacer una verificación adicional)\r",
+													"pm.sendRequest({\r",
+													"    url: 'http://localhost:8002/api/Admin/admin/' + pm.environment.get('id'),\r",
+													"    method: 'GET'\r",
+													"}, function (err, res) {\r",
+													"    pm.test(\"Admin should not exist\", function () {\r",
+													"        pm.expect(res).to.have.status(404); // Verifica que el curso ya no exista\r",
+													"    });\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/admin/{{id}}",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"admin",
+												"{{id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eliminar un administrador inexistente",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should be in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should contain error details\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData).to.have.property(\"status\", 404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/admin/1000000000",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"admin",
+												"1000000000"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get all admin",
+							"item": [
+								{
+									"name": "Obtener todos los administradores",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should be JSON\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should be an array\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData).to.be.an('array');\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/admin/all",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"admin",
+												"all"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Student services",
+					"item": [
+						{
+							"name": "Get student data",
+							"item": [
+								{
+									"name": "Obtener estudiante existente",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should be JSON\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/student/3",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"student",
+												"3"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Obtener estudiante inexistente",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should be JSON\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"pm.test(\"Message is 'Not Found'\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData.title).to.eql(\"Not Found\");\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/student/1000000",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"student",
+												"1000000"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Create student",
+							"item": [
+								{
+									"name": "Registrar exitoso de un estudiante",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should be JSON\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"\r",
+													"pm.test(\"Message is 'Student created successfully'\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData.message).to.eql(\"Student created successfully\");\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"id\": \"\",\r\n    \"fullName\": \"John Doe2\",\r\n    \"userData\": {\r\n        \"userName\": \"bananon\",\r\n        \"password\": \"Aldechi@123\",\r\n        \"confirmPassword\": \"Aldechi@123\",\r\n        \"role\": \"STUDENT\"\r\n    },\r\n    \"cui\": \"1234562\",\r\n    \"email\": \"john.doe@example.com\",\r\n    \"courseIds\": [\r\n        \"course1\",\r\n        \"ccourse2\"\r\n    ],\r\n    \"academicPerformance\": 1,\r\n    \"credit\": 1,\r\n    \"schoolId\": \"school123\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/register/student",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"register",
+												"student"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Fallar debido a datos inválidos",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"//\"title\": \"One or more validation errors occurred.\",\r",
+													"\r",
+													"pm.test(\"Response should be JSON\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Message is 'One or more validation errors occurred.'\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData.title).to.eql(\"One or more validation errors occurred.\");\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"fullName\": \"as\",\r\n  \"userData\": {\r\n    \"userName\": \"\",\r\n    \"password\": \"123\",\r\n    \"confirmPassword\": \"456\",\r\n    \"role\": \"STUDENT\"\r\n  },\r\n  \"email\": \"aldechi001example.com\",\r\n  \"cui\": \"\",\r\n  \"courseIds\": [],\r\n  \"academicPerformance\": -1,\r\n  \"credit\": 1,\r\n  \"schoolId\": \"\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/register/student",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"register",
+												"student"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Delete student",
+							"item": [
+								{
+									"name": "Eliminar exitosamente un estudiante",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {\r",
+													"    pm.response.to.have.status(204); // Verifica que el estado sea 204 No Content\r",
+													"});\r",
+													"\r",
+													"\r",
+													"// Verificar que el curso ha sido eliminado (opcional, si deseas hacer una verificación adicional)\r",
+													"pm.sendRequest({\r",
+													"    url: 'http://localhost:8002/api/Admin/student/' + pm.environment.get('id'),\r",
+													"    method: 'GET'\r",
+													"}, function (err, res) {\r",
+													"    pm.test(\"Admin should not exist\", function () {\r",
+													"        pm.expect(res).to.have.status(404); // Verifica que el curso ya no exista\r",
+													"    });\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// Definir la URL del endpoint de creación de administrador\r",
+													"const createAdminUrl = 'http://localhost:8002/api/Admin/register/student';\r",
+													"\r",
+													"// Definir los datos del nuevo administrador\r",
+													"const newAdminData = {\r",
+													"  \"id\": \"\",\r",
+													"    \"fullName\": \"John Doe2\",\r",
+													"    \"userData\": {\r",
+													"        \"userName\": \"bananon\",\r",
+													"        \"password\": \"Aldechi@123\",\r",
+													"        \"confirmPassword\": \"Aldechi@123\",\r",
+													"        \"role\": \"STUDENT\"\r",
+													"    },\r",
+													"    \"cui\": \"1234562\",\r",
+													"    \"email\": \"john.doe@example.com\",\r",
+													"    \"courseIds\": [\r",
+													"        \"08b34482-e007-4ab5-a66d-c2765f31aa94\",\r",
+													"        \"207f058b-b9e7-4a7b-b516-346320d3d512\",\r",
+													"        \"37302ffc-5432-4431-9eb2-d23d52b9a5bd\"\r",
+													"    ],\r",
+													"    \"academicPerformance\": 1,\r",
+													"    \"credit\": 30,\r",
+													"    \"schoolId\": \"school123\"\r",
+													"};\r",
+													"\r",
+													"// Realizar la solicitud POST para crear el administrador\r",
+													"pm.sendRequest({\r",
+													"    url: createAdminUrl,\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Content-Type': 'application/json'\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify(newAdminData)\r",
+													"    }\r",
+													"}, function (err, res) {\r",
+													"    if (err) {\r",
+													"        console.log('Error creating admin:', err);\r",
+													"    } else {\r",
+													"        const jsonResponse = res.json();\r",
+													"        console.log('Full Response:', jsonResponse); // Imprimir respuesta completa\r",
+													"        // Verificar que se ha creado el administrador y guardar el ID en una variable de entorno\r",
+													"        if (jsonResponse && jsonResponse.id) {\r",
+													"            console.log('Admin ID:', jsonResponse.id);\r",
+													"            pm.environment.set('id', jsonResponse.id); // Guardar el ID en una variable de entorno\r",
+													"        } else {\r",
+													"            console.log('No admin ID found in the response.');\r",
+													"        }\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/student/{{id}}",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"student",
+												"{{id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eliminar un estudiante inexistente",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should be in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should contain 'Not Found'\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData.title).eq(\"Not Found\");\r",
+													"});\r",
+													"pm.test(\"Response should contain error details\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData).to.have.property(\"status\", 404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/student/1000000",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"student",
+												"1000000"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Update student",
+							"item": [
+								{
+									"name": "http://localhost:8001/api/Admin/student/{id}",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8001/api/Admin/student/{id}",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8001",
+											"path": [
+												"api",
+												"Admin",
+												"student",
+												"{id}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get student courses",
+							"item": [
+								{
+									"name": "Obtener cursos de un estudiante existente",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should be JSON\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"pm.test(\"Response contains expected keys\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData).to.have.property('fullName');\r",
+													"    pm.expect(jsonData).to.have.property('academicPerformance');\r",
+													"    pm.expect(jsonData).to.have.property('credit');\r",
+													"    pm.expect(jsonData).to.have.property('courseIds');\r",
+													"});\r",
+													"\r",
+													"// Verificar que courseIds sea un array de strings\r",
+													"pm.test(\"CourseIds is an array of strings\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData.courseIds).to.be.an('array');\r",
+													"    jsonData.courseIds.forEach(function(courseId) {\r",
+													"        pm.expect(courseId).to.be.a('string');\r",
+													"    });\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/student/3/courses",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"student",
+												"3",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Obtener cursos de un estudiante inexistente",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should be JSON\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Message is 'Not Found'\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData.title).to.eql(\"Not Found\");\r",
+													"});\r",
+													"\r",
+													"\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/student/300000/courses",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"student",
+												"300000",
+												"courses"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get all students",
+							"item": [
+								{
+									"name": "http://localhost:8001/api/Admin/student",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should be JSON\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should be an array\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData).to.be.an('array');\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8002/api/Admin/student/all",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8002",
+											"path": [
+												"api",
+												"Admin",
+												"student",
+												"all"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

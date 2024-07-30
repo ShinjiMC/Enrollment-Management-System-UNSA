@@ -31,7 +31,9 @@ public class SchoolExternalService : ISchoolExternalService
             var school = JsonSerializer.Deserialize<UserExternalDto>(content);
             return school ?? new SchoolExternalDto();
         }*/
-        return "Tokyo-3";
+        if (id == "1")
+            return "Tokyo-1";
+        return null;
     }
 
     public async Task<SchoolExternalDto?> GetCurriculumByIdAsync(string id)
@@ -43,35 +45,78 @@ public class SchoolExternalService : ISchoolExternalService
             var school = JsonSerializer.Deserialize<SchoolExternalDto>(content);
             return school ?? new SchoolExternalDto();
         }*/
-        return new SchoolExternalDto
-        {
-            FullName = "Tokyo-3",
-            Curriculum = new List<PreCoursesExternalDto>
+        if (id == "1")
+            return new SchoolExternalDto
+            {
+                FullName = "Tokyo-1",
+                Curriculum = new List<PreCoursesExternalDto>
                 {
                     new PreCoursesExternalDto
                     {
-                        Id = "1",
+                        Id = "course1",
                         PreRequeriments = new List<string>()
                     },
                     new PreCoursesExternalDto
                     {
-                        Id = "2",
+                        Id = "course2",
                         PreRequeriments = new List<string>()
                     },
                     new PreCoursesExternalDto
                     {
-                        Id = "3",
+                        Id = "course3",
                         PreRequeriments = new List<string>{
-                            "1",
-                            "2"
+                            "course1",
+                            "course2"
                         }
                     },
                     new PreCoursesExternalDto
                     {
-                        Id = "4",
+                        Id = "course4",
                         PreRequeriments = new List<string>()
                     }
                 }
-        };
+            };
+        else if (id == "2")
+            return new SchoolExternalDto
+            {
+                FullName = "Tokyo-2",
+                Curriculum = []
+            };
+        else if (id == "3")
+            return new SchoolExternalDto
+            {
+                FullName = "Tokyo-2",
+                Curriculum = [
+                    new PreCoursesExternalDto
+                    {
+                        Id = "course1",
+                        PreRequeriments = new List<string>()
+                    },
+                    new PreCoursesExternalDto
+                    {
+                        Id = "course2",
+                        PreRequeriments = new List<string>()
+                    },
+                    new PreCoursesExternalDto
+                    {
+                        Id = "course3",
+                        PreRequeriments = new List<string>{
+                            "course1",
+                            "course2"
+                        }
+                    },
+                    new PreCoursesExternalDto
+                    {
+                        Id = "course4",
+                        PreRequeriments = new List<string>()
+                    },
+                    new PreCoursesExternalDto
+                    {
+                        Id = "course5",
+                        PreRequeriments = new List<string>()
+                    }
+                ]
+            };
+        return null;
     }
 }

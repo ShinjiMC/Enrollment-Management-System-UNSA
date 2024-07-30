@@ -12,7 +12,7 @@ public sealed class Course : AggregateRoot
     public int Hours { get; private set; }
     public bool Active { get; private set; }
     public Semester Semester { get; private set; }
-    public int SchoolId { get; private set; }
+    public string SchoolId { get; private set; }
     private Course(){}
     public Course(
             Guid courseId,
@@ -21,7 +21,7 @@ public sealed class Course : AggregateRoot
             int hours,
             bool active,
             Semester semester,
-            int schoolId)
+            string schoolId)
     {
         CourseId = courseId;
         Name = name;
@@ -37,7 +37,7 @@ public sealed class Course : AggregateRoot
             int hours,
             bool active,
             Semester semester,
-            int schoolId)
+            string schoolId)
     {
         return new Course(id, name, credits, hours,active, semester, schoolId);
     }

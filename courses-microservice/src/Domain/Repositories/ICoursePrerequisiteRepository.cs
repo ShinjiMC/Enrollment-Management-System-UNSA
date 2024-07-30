@@ -5,7 +5,7 @@ namespace Domain.Courses
         Task<List<CoursePrerequisite>> GetPrerequisitesByCourseIdAsync(Guid courseId);
         void Add(CoursePrerequisite course);
         void Update(CoursePrerequisite course);
-        void Delete(CoursePrerequisite course);
-        Task<CoursePrerequisite?> GetByIdAsync(Guid courseId);
+        Task<bool> DeleteAsync(Guid courseId, Guid prerequisiteCourseId);
+        Task<CoursePrerequisite?> GetByIdAsync(Guid courseId, Guid coursePrerequisiteId);
     }
 }

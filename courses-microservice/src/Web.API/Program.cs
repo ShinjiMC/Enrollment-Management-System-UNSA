@@ -27,4 +27,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapGet("/", () => Results.Ok("Hola este es el microservicio de Cursos :)"));
+
 app.Run();

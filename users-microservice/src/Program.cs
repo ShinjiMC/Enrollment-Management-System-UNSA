@@ -1,19 +1,24 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
-using users_microservice.context;
-using users_microservice.DTOs;
-using users_microservice.repositories;
-using users_microservice.services;
+using users_microservice.Repository.Data;
+using users_microservice.Domain.Repository;
+using users_microservice.Repository.Mysql;
+using users_microservice.Repository.ExternalService;
+using users_microservice.Application.Service.Interface;
+using users_microservice.Application.Service.Implementations;
+using users_microservice.Domain.Services.Interfaces;
+using users_microservice.Domain.Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+// Register HttpClient
+builder.Services.AddHttpClient();
 
 // Context
 var connectionString = builder.Configuration.GetConnectionString("MySqlConnection") ??
@@ -24,11 +29,6 @@ builder.Services.AddDbContext<MySqlIdentityContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
 
-// Identity settings
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<MySqlIdentityContext>()
-    .AddSignInManager()
-    .AddRoles<IdentityRole>();
 
 // JWT settings
 builder.Services.AddAuthentication(options =>
@@ -73,25 +73,18 @@ builder.Services.AddCors(options =>
     });
 });
 
-// CORS settings with allow all origins
-// builder.Services.AddCors(options =>
-// {
-//     options.AddDefaultPolicy(builder =>
-//     {
-//         builder.AllowAnyOrigin()
-//             .AllowAnyHeader()
-//             .AllowAnyMethod();
-//     });
-// });
-
 
 // Repositories
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepositoryImpl>();
 
-builder.Services.AddScoped<IAuthService, AuthService>();
+
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IAdminServiceDomain, AdminServiceDomainImpl>();
+builder.Services.AddScoped<IStudentServiceDomain, StudentServiceDomainImpl>();
+builder.Services.AddScoped<IExternalService, ExternalServiceImpl>();
+builder.Services.AddScoped<IExternalServiceAuth, ExternalServiceAuthImpl>();
 
 
 
@@ -114,7 +107,7 @@ app.MapGet("/", () => "This is Users Microservice !!!");
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<MySqlIdentityContext>();
-    //dbContext.Database.Migrate();
+    dbContext.Database.Migrate();
 }
 
 app.Run();

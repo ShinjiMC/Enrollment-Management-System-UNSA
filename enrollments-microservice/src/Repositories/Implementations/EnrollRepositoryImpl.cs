@@ -14,18 +14,18 @@ public class EnrollRepository : IEnrollRepository
         _context = context;
     }
 
-    public async Task<GeneralResponse> CreateEnroll(EnrollModel enrollModel)
+    public async Task<EnrollModel?> CreateEnroll(EnrollModel enrollModel)
     {
         try
         {
             var nextId = _context.GetNextSequenceValue("enroll_model_id");
             enrollModel.Id = nextId;
             await _context.EnrollModel.InsertOneAsync(enrollModel);
-            return new GeneralResponse(true, "Enroll created successfully", 201);
+            return enrollModel;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return new GeneralResponse(false, ex.Message, 403);
+            return null;
         }
     }
 
@@ -36,18 +36,18 @@ public class EnrollRepository : IEnrollRepository
 
     public async Task<List<EnrollModel>> GetEnrollsByUserId(int userId)
     {
-        var filter = Builders<EnrollModel>.Filter.Eq(enroll => enroll.Student.StudentID, userId);
-        return await _context.EnrollModel.Find(filter).ToListAsync();
+        var enrolls = await _context.EnrollModel.Find(_ => true).ToListAsync();
+        return enrolls.Where(e => e.Student != null && e.Student.StudentID == userId).ToList();
     }
 
-    public async Task<EnrollModel> GetEnrollByUserIdAndSchoolId(int userId, int schoolId)
+    public async Task<List<EnrollModel>> GetEnrollByUserIdAndSchoolId(int userId, int schoolId)
     {
         var filter = Builders<EnrollModel>.Filter.And(
             Builders<EnrollModel>.Filter.Exists("Student"),
             Builders<EnrollModel>.Filter.Eq("Student.StudentID", userId),
-            Builders<EnrollModel>.Filter.Eq("SchoolID", schoolId)
+            Builders<EnrollModel>.Filter.Eq("School.SchoolID", schoolId)
         );
-        return await _context.EnrollModel.Find(filter).FirstOrDefaultAsync();
+        return await _context.EnrollModel.Find(filter).ToListAsync();
     }
 
     public async Task<List<EnrollModel>> GetEnrolls()
