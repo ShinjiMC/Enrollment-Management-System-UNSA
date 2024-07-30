@@ -83,7 +83,7 @@ pipeline {
                     steps {
                         dir("${PROJECT_DIR}/client") {
                             sh "pwd"
-                            sh "npm install"
+                            // sh "npm install"
                             // sh "npm run build"
                         }
                     }
@@ -336,7 +336,7 @@ pipeline {
                         script {
                             dir(AUTH_MCSV_DIR) {
                                 sh "pwd"
-                                sh "zap.sh -version"
+                                // sh "zap.sh -version"
                                 // sh "zap.sh -daemon -port 7000 -quickurl http://localhost:8080 -quickout ${SECURITY_TESTING_RESULTS}/auth_microservice_zaproxy_report.html -quickprogress"
                             }
                         }
@@ -347,7 +347,7 @@ pipeline {
                         script {
                             dir(USERS_MCSV_DIR) {
                                 sh "pwd"
-                                sh "zap.sh -version"
+                                // sh "zap.sh -version"
                                 // sh "zap.sh -daemon -port 7000 -quickurl http://localhost:8080 -quickout ${SECURITY_TESTING_RESULTS}/users_microservice_zaproxy_report.html -quickprogress"
                             }
                         }
@@ -358,8 +358,8 @@ pipeline {
                         script {
                             dir(COURSES_MCSV_DIR) {
                                 sh "pwd"
-                                sh "zap.sh -version"
-                                sh "zap.sh -daemon -port 7000 -quickurl http://localhost:8080 -quickout ${SECURITY_TESTING_RESULTS}/courses_microservice_zaproxy_report.html -quickprogress"
+                                // sh "zap.sh -version"
+                                // sh "zap.sh -daemon -port 7000 -quickurl http://localhost:8080 -quickout ${SECURITY_TESTING_RESULTS}/courses_microservice_zaproxy_report.html -quickprogress"
                             }
                         }
                     }
@@ -369,7 +369,7 @@ pipeline {
                         script {
                             dir(ENROLLMENTS_MCSV_DIR) {
                                 sh "pwd"
-                                sh "zap.sh -version"
+                                // sh "zap.sh -version"
                                 // sh "zap.sh -daemon -port 7000 -quickurl http://localhost:8080 -quickout ${SECURITY_TESTING_RESULTS}/matriculate_microservice_zaproxy_report.html -quickprogress"
                             }
                         }
@@ -380,7 +380,7 @@ pipeline {
                         script {
                             dir(SCHOOLS_MCSV_DIR) {
                                 sh "pwd"
-                                sh "zap.sh -version"
+                                // sh "zap.sh -version"
                                 // sh "zap.sh -daemon -port 7000 -quickurl http://localhost:8080 -quickout ${SECURITY_TESTING_RESULTS}/schools_microservice_zaproxy_report.html -quickprogress"
                             }
                         }
@@ -391,7 +391,7 @@ pipeline {
                         script {
                             dir(NOTIFICATIONS_MCSV_DIR) {
                                 sh "pwd"
-                                sh "zap.sh -version"
+                                // sh "zap.sh -version"
                                 // sh "zap.sh -daemon -port 7000 -quickurl http://localhost:8080 -quickout ${SECURITY_TESTING_RESULTS}/notifications_microservice_zaproxy_report.html -quickprogress"
                             }
                         }
@@ -402,7 +402,7 @@ pipeline {
                         script {
                             dir(PAYMENTS_MCSV_DIR) {
                                 sh "pwd"
-                                sh "zap.sh -version"
+                                // sh "zap.sh -version"
                                 // sh "zap.sh -daemon -port 7000 -quickurl http://localhost:8080 -quickout ${SECURITY_TESTING_RESULTS}/payments_microservice_zaproxy_report.html -quickprogress"
                             }
                         }

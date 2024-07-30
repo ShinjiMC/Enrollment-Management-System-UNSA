@@ -33,19 +33,26 @@
 
 </div>
 
-***Dexo Corp Members:***
-
-- Mogollon Caceres Sergio Daniel
-- Davis Coropuna Leon Felipe
-- Apaza Apaza Nelzon Jorge
-- Lupo Condori Avelino
-- Maldonado Casilla Braulio Nayap
-- Parizaca Mozo Paul Antony
-- Huaman Coaquira Luciana Julissa
-
 
 ## 1. Descripción
-El Sistema de Gestión de Matrículas (SGM) es una aplicación web desarrollada por **Dexo Corp** para la **Universidad Nacional de San Agustín (UNSA)** con el objetivo de agilizar y optimizar los procesos de inscripción y gestión de matrículas de los estudiantes. El sistema está diseñado para ser escalable, seguro y fácil de usar, y se basa en una arquitectura moderna de microservicios.
+
+### Equipo de Desarrollo
+- **Nombre del Equipo:** _Dexo Corp_
+- **Integrantes:**
+  - Mogollon Caceres Sergio Daniel
+  - Davis Coropuna Leon Felipe
+  - Apaza Apaza Nelzon Jorge
+  - Lupo Condori Avelino
+  - Maldonado Casilla Braulio Nayap
+  - Parizaca Mozo Paul Antony
+  - Huaman Coaquira Luciana Julissa
+
+### Cliente
+- **Organización:** Universidad Nacional de San Agustín (UNSA)
+
+### Propósito del Proyecto
+El propósito de este proyecto es desarrollar un Sistema de Gestión de Matrículas (SGM) que optimice los procesos de inscripción y gestión de matrículas de los estudiantes de la Universidad Nacional de San Agustín (UNSA). Este sistema tiene como objetivo ser escalable, seguro y fácil de usar, basado en una arquitectura moderna de microservicios.
+
 
 ## 2. Requisitos y Features
 
@@ -170,7 +177,9 @@ Descripción general de la arquitectura de microservicios.
 - [Microservicio de Notificaciones](./payments-microservice/README.md)
 - [Microservicio de Pagos](./payments-microservice/README.md)
 
-## 4. Tecnologías Utilizadas
+## 4. Implementación
+
+### 4.1. Tecnologías Utilizadas
 
 - **Backend:**
   - `.NET`: Framework de desarrollo para la implementación de los microservicios backend.
@@ -185,8 +194,153 @@ Descripción general de la arquitectura de microservicios.
 - **Mensajería:**
   - `RabbitMQ`: Sistema de mensajería asíncrona para la comunicación entre microservicios.
 - **Base de Datos:**
-  - `Mysql`: Sistema de gestión de bases de datos relacionales
-  - `Mongodb`: Base de datos NoSQL de código abierto
+  - `Mysql`: Sistema de gestión de bases de datos relacionales.
+  - `Mongodb`: Base de datos NoSQL de código abierto.
+
+### 4.2. Clean Code
+
+El código ha sido desarrollado siguiendo las mejores prácticas de clean code para asegurar su mantenibilidad, legibilidad y escalabilidad. Algunos de los principios aplicados incluyen:
+
+- **Nombres significativos:** Uso de nombres claros y descriptivos para variables, funciones y clases.
+- **Funciones pequeñas:** Funciones que realizan una única tarea específica.
+- **Comentarios útiles:** Comentarios que explican el "por qué" detrás de una decisión de código.
+- **Manejo de errores:** Manejo adecuado de excepciones y errores para prevenir fallos inesperados.
+
+### 4.3. Principios SOLID
+
+El diseño del sistema sigue los principios SOLID para garantizar una arquitectura robusta y flexible:
+
+- **S - Principio de Responsabilidad Única (Single Responsibility Principle):**
+  Cada clase debe tener una única responsabilidad. Por ejemplo, una clase `UserService` se encarga únicamente de la lógica relacionada con los usuarios.
+  
+  ```csharp
+  public class UserService
+  {
+      private readonly IUserRepository _userRepository;
+
+      public UserService(IUserRepository userRepository)
+      {
+          _userRepository = userRepository;
+      }
+
+      public void AddUser(User user)
+      {
+          // Lógica para añadir un usuario
+      }
+  }
+  ```
+
+- **O - Principio de Abierto/Cerrado (Open/Closed Principle):**
+  Las clases deben estar abiertas para extensión, pero cerradas para modificación. Utilizamos la herencia y la interfaz para extender el comportamiento sin modificar el código existente.
+
+  ```csharp
+  public interface IPaymentProcessor
+  {
+      void ProcessPayment(Payment payment);
+  }
+
+  public class CreditCardPaymentProcessor : IPaymentProcessor
+  {
+      public void ProcessPayment(Payment payment)
+      {
+          // Lógica para procesar pagos con tarjeta de crédito
+      }
+  }
+  ```
+
+- **L - Principio de Sustitución de Liskov (Liskov Substitution Principle):**
+  Las clases derivadas deben ser sustituibles por sus clases base. Las clases hijas deben implementar completamente la funcionalidad esperada por la clase padre.
+
+  ```csharp
+  public class Rectangle
+  {
+      public virtual int Width { get; set; }
+      public virtual int Height { get; set; }
+
+      public int Area => Width * Height;
+  }
+
+  public class Square : Rectangle
+  {
+      public override int Width
+      {
+          set { base.Width = base.Height = value; }
+      }
+
+      public override int Height
+      {
+          set { base.Width = base.Height = value; }
+      }
+  }
+  ```
+
+- **I - Principio de Segregación de Interfaces (Interface Segregation Principle):**
+  Una clase no debería estar forzada a implementar interfaces que no usa. Dividimos las interfaces grandes en otras más pequeñas y específicas.
+
+  ```csharp
+  public interface IPrint
+  {
+      void Print();
+  }
+
+  public interface IScan
+  {
+      void Scan();
+  }
+
+  public class MultiFunctionPrinter : IPrint, IScan
+  {
+      public void Print()
+      {
+          // Implementación de imprimir
+      }
+
+      public void Scan()
+      {
+          // Implementación de escanear
+      }
+  }
+  ```
+
+- **D - Principio de Inversión de Dependencia (Dependency Inversion Principle):**
+  Las dependencias deben ir desde los módulos de alto nivel hacia los módulos de bajo nivel. Utilizamos la inyección de dependencias para implementar este principio.
+
+  ```csharp
+  public interface IElectronicBillService
+  {
+      Task<ElectronicBillDto> CreateElectronicBill(ElectronicBillDto electronicBillDto);
+      Task<ElectronicBillDto> GetElectronicBillById(string electronicBillId);
+      Task<List<ElectronicBillDto>> GetElectronicBills();
+      Task<bool> UpdateElectronicBillStatus(string electronicBillId, string status);
+  }
+
+  public class ElectronicBillService : IElectronicBillService
+  {
+    private readonly IElectronicBillDomainService _electronicBillDomainService;
+
+    public ElectronicBillService(IElectronicBillDomainService electronicBillDomainService)
+    {
+        _electronicBillDomainService = electronicBillDomainService;
+    }
+
+    public async Task<ElectronicBillDto> CreateElectronicBill(ElectronicBillDto electronicBillDto)
+    {
+        var electronicBill = await _electronicBillDomainService.CreateElectronicBill(
+            electronicBillDto.StudentId,
+            new Money(electronicBillDto.TotalAmount.Amount, electronicBillDto.TotalAmount.Currency),
+            electronicBillDto.DueDate,
+            electronicBillDto.Items?.ConvertAll(item => new ElectronicBillItem
+            {
+                ElectronicBillItemId = item.ElectronicBillItemId,
+                Description = item.Description,
+                Amount = new Money(item.Amount.Amount, item.Amount.Currency)
+            }) ?? new List<ElectronicBillItem>()
+        );
+
+        return ElectronicBillMapper.ToDto(electronicBill);
+    }
+  }
+  ```
 
 ## 5. Instalación y Configuración
 
