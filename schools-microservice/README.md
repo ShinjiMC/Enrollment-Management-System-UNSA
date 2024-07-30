@@ -1570,6 +1570,11 @@ El siguiente informe presenta los resultados de las pruebas de rendimiento ejecu
 | --------------------------------------------------- | ------------ | -------- | ---------- | ---------------- | ------------ | ------------ | --------------- | ----------------- | ----------------- | ----------------- | ------------------ | --------------------- | ----------------- |
 | **GetAllTeachersWith10RequestsTest**                | 110          | 0        | 0.00%      | 2043.60          | 1502         | 5238         | 1927.00         | 2518.00           | 362
 
+
+<p align="center">
+  <img src="./src/Resources/performance_result.png" alt="Performance Test" />
+</p>
+
 ### 3.3. Pruebas de Seguridad
 
 #### 3.3.1. Herramientas y Tecnologías
@@ -1582,7 +1587,6 @@ El siguiente informe presenta los resultados de las pruebas de rendimiento ejecu
 Background:
     Given que el endpoint "http://localhost:8004" está accesible
 ```
-
 <details open>
   <summary><b><i>Escenario 1:</i></b> Verificación de encabezados de seguridad HTTP.</summary>
 
@@ -1715,6 +1719,10 @@ Scenario: Verificación de vulnerabilidades de exposición de información
 
 </details>
 
+
+<p align="center">
+  <img src="./src/Resources/securitytest_result.png" alt="Performance Test" />
+</p>
 
 ## 4. Referencias
 
