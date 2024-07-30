@@ -1,0 +1,1121 @@
+{
+	"info": {
+		"_postman_id": "2347539f-096b-4e87-a3ff-54829970dca5",
+		"name": "notifications-microservice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37160082"
+	},
+	"item": [
+		{
+			"name": "UsersController",
+			"item": [
+				{
+					"name": "GET api/v1/users",
+					"item": [
+						{
+							"name": "Obtener todos los usuarios",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Debería obtener un código de estado 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"La respuesta debería ser un array de usuarios\", function () {",
+											"    pm.response.to.be.json;",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.be.an('array');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8006/api/v1/users/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POST api/v1/users",
+					"item": [
+						{
+							"name": "Crear usuario con datos validos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const userDto = {",
+											"    id: 501,",
+											"    name: \"Lyon\",",
+											"    preference: \"Correo\",",
+											"    contactInfo: \"lyonelmessi@gmail.com\",",
+											"    isActive: true",
+											"};",
+											"pm.request.body.raw = JSON.stringify(userDto);",
+											"",
+											"pm.test(\"Debería obtener un código de estado 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"La respuesta debería contener el usuario creado\", function () {",
+											"    pm.response.to.be.json;",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('id');",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Definir la URL del endpoint de eliminación de usuario con ID 501",
+											"const deleteUserUrl = 'http://localhost:8006/api/v1/users/501';",
+											"",
+											"// Definir la solicitud DELETE",
+											"pm.sendRequest({",
+											"    url: deleteUserUrl,",
+											"    method: 'DELETE',",
+											"    header: 'Content-Type: application/json'",
+											"}, function (err, res) {",
+											"    if (err) {",
+											"        console.log('Error deleting user:', err);",
+											"    } else {",
+											"        // La respuesta se maneja en los tests",
+											"    }",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 501,\n  \"name\": \"Lyon\",\n  \"preference\": \"Correo\",\n  \"contactInfo\": \"lyonelmessi@gmail.com\",\n  \"isActive\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8006/api/v1/users/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear usuario con id duplicado",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const userDto = {",
+											"    id: 1,",
+											"    name: \"Lyon\",",
+											"    preference: \"Correo\",",
+											"    contactInfo: \"lyonelmessi@gmail.com\",",
+											"    isActive: true",
+											"};",
+											"pm.request.body.raw = JSON.stringify(userDto);",
+											"",
+											"pm.test(\"Debería obtener un código de estado 409\", function () {",
+											"    pm.response.to.have.status(409);",
+											"});",
+											"",
+											"pm.test(\"La respuesta debería contener un mensaje de error\", function () {",
+											"    pm.response.to.be.json;",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('message');",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 1,\n  \"name\": \"Lyon\",\n  \"preference\": \"Correo\",\n  \"contactInfo\": \"lyonelmessi@gmail.com\",\n  \"isActive\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8006/api/v1/users/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear usuario con datos incompletos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const userDto = {",
+											"    id: 502,",
+											"    name: \"Lyon\",",
+											"    preference: \"Correo\",",
+											"    isActive: true",
+											"};",
+											"pm.request.body.raw = JSON.stringify(userDto);",
+											"",
+											"pm.test(\"Debería obtener un código de estado 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"La respuesta debería contener un mensaje de error\", function () {",
+											"    pm.response.to.be.json;",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('errors');",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 502,\n  \"name\": \"Lyon\",\n  \"preference\": \"Correo\",\n  \"isActive\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8006/api/v1/users/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET api/v1/users/{id}",
+					"item": [
+						{
+							"name": "Obtener un usuario existente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Debería obtener un código de estado 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"La respuesta debería contener el usuario solicitado\", function () {",
+											"    pm.response.to.be.json;",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('id');",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8006/api/v1/users/501",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"501"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener un usuario inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Debería obtener un código de estado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"La respuesta debería contener un mensaje de usuario no existe\", function () {",
+											"    pm.response.to.have.header(\"Content-Type\", \"text/plain; charset=utf-8\");",
+											"    const responseBody = pm.response.text(); // Obtener el cuerpo de la respuesta como texto",
+											"    pm.expect(responseBody).to.include(\"User not found.\"); // Verificar que el mensaje de error esté incluido",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8006/api/v1/users/987",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"987"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PUT api/v1/users/{id}",
+					"item": [
+						{
+							"name": "Actualizar usuario existente",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const userDto = {",
+											"    id: 501,",
+											"    name: \"Lyon\",",
+											"    preference: \"SMS\",",
+											"    contactInfo: \"987654321\",",
+											"    isActive: true",
+											"};",
+											"pm.request.body.raw = JSON.stringify(userDto);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Debería obtener un código de estado 200\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 501,\n  \"name\": \"Lyon\",\n  \"preference\": \"SMS\",\n  \"contactInfo\": \"987654321\",\n  \"isActive\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8006/api/v1/users/501",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"501"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar usuario con datos invalidos",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const userDto = {",
+											"    id: 501,",
+											"    name: \"Lyon\",",
+											"    preference: \"SMS\",",
+											"    contactInfo: \"\",",
+											"    isActive: true",
+											"};",
+											"pm.request.body.raw = JSON.stringify(userDto);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Debería obtener un código de estado 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"La respuesta debería contener un mensaje de error\", function () {",
+											"    pm.response.to.be.json;",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('errors');",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 501,\n  \"name\": \"Lyon\",\n  \"preference\": \"SMS\",\n  \"contactInfo\": \"\",\n  \"isActive\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8006/api/v1/users/501",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"501"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar usuario inexistente",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const userDto = {",
+											"    id: 987,",
+											"    name: \"Lyon\",",
+											"    preference: \"SMS\",",
+											"    contactInfo: \"987654321\",",
+											"    isActive: true",
+											"};",
+											"pm.request.body.raw = JSON.stringify(userDto);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Debería obtener un código de estado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"La respuesta debería contener un mensaje de usuario no existe\", function () {",
+											"    pm.response.to.have.header(\"Content-Type\", \"text/plain; charset=utf-8\");",
+											"    const responseBody = pm.response.text(); // Obtener el cuerpo de la respuesta como texto",
+											"    pm.expect(responseBody).to.include(\"User not found.\"); // Verificar que el mensaje de error esté incluido",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 987,\n  \"name\": \"Lyon\",\n  \"preference\": \"SMS\",\n  \"contactInfo\": \"987654321\",\n  \"isActive\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8006/api/v1/users/0",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"0"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "DELETE api/v1/users/{id}",
+					"item": [
+						{
+							"name": "Eliminar usuario existente",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Definir la URL del endpoint de creación de usuario",
+											"const createUserUrl = 'http://localhost:8006/api/v1/users';",
+											"",
+											"// Datos para el nuevo usuario",
+											"const userDto = {",
+											"    id: 5001,",
+											"    name: \"Lyon\",",
+											"    preference: \"Correo\",",
+											"    contactInfo: \"lyonelmessi@gmail.com\",",
+											"    isActive: true",
+											"};",
+											"",
+											"// Realizar la solicitud POST para crear el usuario",
+											"pm.sendRequest({",
+											"    url: createUserUrl,",
+											"    method: 'POST',",
+											"    header: 'Content-Type: application/json',",
+											"    body: {",
+											"        mode: 'raw',",
+											"        raw: JSON.stringify(userDto)",
+											"    }",
+											"}, function (err, res) {",
+											"    if (err) {",
+											"        console.log('Error creating user:', err);",
+											"    } else {",
+											"        const jsonResponse = res.json();",
+											"        // Verificar que se ha creado el usuario y guardar el ID en una variable de entorno",
+											"        if (jsonResponse && jsonResponse.id) {",
+											"            console.log('Created user ID:', jsonResponse.id);",
+											"            pm.environment.set('userId', jsonResponse.id);",
+											"        } else {",
+											"            console.log('No user ID found in the response.');",
+											"        }",
+											"    }",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Debería obtener un código de estado 200\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8006/api/v1/users/5001",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"5001"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Eliminar usuario existente Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Debería obtener un código de estado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8006/api/v1/users/987",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"987"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "NotificationsController",
+			"item": [
+				{
+					"name": "POST api/v1/notifications",
+					"item": [
+						{
+							"name": "Crear notificacion con datos validos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Debería obtener un código de estado 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"pm.test(\"La respuesta debería contener la notificación creada\", function () {",
+											"    pm.response.to.be.json;",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('id');",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const notificationDto = {",
+											"    type: \"payment\",",
+											"    message: \"Su pago se realizo con exito\",",
+											"    recipientId: 501",
+											"};",
+											"pm.request.body.raw = JSON.stringify(notificationDto);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"payment\",\n  \"message\": \"Su pago se realizo con exito\",\n  \"recipientId\": 501\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8006/api/v1/notifications",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"notifications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear notificacion con recipientId invalido",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const notificationDto = {",
+											"    type: \"payment\",",
+											"    message: \"Su pago se realizo con exito\",",
+											"    recipientId: 987",
+											"};",
+											"pm.request.body.raw = JSON.stringify(notificationDto);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Debería obtener un código de estado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"La respuesta debería contener un mensaje de usuario no existe\", function () {",
+											"    pm.response.to.have.header(\"Content-Type\", \"text/plain; charset=utf-8\");",
+											"    const responseBody = pm.response.text(); // Obtener el cuerpo de la respuesta como texto",
+											"    pm.expect(responseBody).to.include(\"User does not have configured notifications\"); // Verificar que el mensaje de error esté incluido",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"payment\",\n  \"message\": \"Su pago se realizo con exito\",\n  \"recipientId\": 987\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8006/api/v1/notifications",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"notifications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear notificacion con datos incompletos",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const notificationDto = {",
+											"    type: \"payment\",",
+											"    recipientId: 0",
+											"};",
+											"pm.request.body.raw = JSON.stringify(notificationDto);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Debería obtener un código de estado 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"La respuesta debería contener un mensaje de error\", function () {",
+											"    pm.response.to.be.json;",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('errors');",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"payment\",\n  \"recipientId\": 0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8006/api/v1/notifications",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"notifications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear notificacion con datos invalidos",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const notificationDto = {",
+											"    type: \"payment\",",
+											"    message: \"\",",
+											"    recipientId: 0",
+											"};",
+											"pm.request.body.raw = JSON.stringify(notificationDto);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Debería obtener un código de estado 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"La respuesta debería contener un mensaje de error\", function () {",
+											"    pm.response.to.be.json;",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('errors');",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"type\": \"payment\",\n  \"message\": \"\",\n  \"recipientId\": 0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8006/api/v1/notifications",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"notifications"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET api/v1/notifications",
+					"item": [
+						{
+							"name": "Obtener todas las notificaciones",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Debería obtener un código de estado 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"La respuesta debería ser un array de usuarios\", function () {",
+											"    pm.response.to.be.json;",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.be.an('array');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8006/api/v1/notifications",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"notifications"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET api/v1/notifications/recipient/{id}",
+					"item": [
+						{
+							"name": "Obtener notificactiones por recipientId existente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Debería obtener un código de estado 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"La respuesta debería ser un array de notificaciones\", function () {",
+											"    pm.response.to.be.json;",
+											"    const jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.be.an('array');",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8006/api/v1/notifications/recipient/0",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"notifications",
+										"recipient",
+										"0"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener notificactiones por recipientId inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Debería obtener un código de estado 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"La respuesta debería contener no hay notificaciones\", function () {",
+											"    pm.response.to.have.header(\"Content-Type\", \"text/plain; charset=utf-8\");",
+											"    const responseBody = pm.response.text(); // Obtener el cuerpo de la respuesta como texto",
+											"    pm.expect(responseBody).to.include(\"No notifications found.\"); // Verificar que el mensaje de error esté incluido",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8006/api/v1/notifications/recipient/987",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8006",
+									"path": [
+										"api",
+										"v1",
+										"notifications",
+										"recipient",
+										"987"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
